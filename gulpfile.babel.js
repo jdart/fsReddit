@@ -3,6 +3,8 @@ import bg from 'gulp-bg';
 import eslint from 'gulp-eslint';
 import fs from 'fs';
 import gulp from 'gulp';
+import gutil from 'gulp-util';
+import mocha from 'gulp-mocha';
 import os from 'os';
 import path from 'path';
 import runSequence from 'run-sequence';
@@ -40,9 +42,24 @@ gulp.task('eslint-ci', () => {
   return runEslint().pipe(eslint.failAfterError());
 });
 
+gulp.task('mocha', () => {
+  // read: false, not to load file contents
+  gulp.src('src/**/__test__/**/*.js', {read: false})
+    .pipe(mocha({
+      require: ['./test/mochaSetup.js'],
+      reporter: 'spec'
+    }))
+    // .on('error', process.exit.bind(process, 1));
+    .on('error', gutil.log);
+});
+
+// Continuous test running
+gulp.task('mocha-watch', () => {
+  gulp.watch(['test/**/**', 'src/client/**', 'src/common/**'], ['mocha']);
+});
+
 gulp.task('test', done => {
-  // TODO: Add tests.
-  runSequence('eslint-ci', 'build-webpack', done);
+  runSequence('eslint-ci', 'mocha', 'build-webpack', done);
 });
 
 gulp.task('server-node', bg('node', './src/server'));

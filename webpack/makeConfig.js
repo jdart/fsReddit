@@ -3,6 +3,7 @@ import autoprefixer from 'autoprefixer';
 import constants from './constants';
 import path from 'path';
 import webpack from 'webpack';
+import ip from 'ip';
 
 const devtools = process.env.CONTINUOUS_INTEGRATION
   ? 'inline-source-map'
@@ -15,6 +16,8 @@ const loaders = {
   'css': '',
   'styl': '!stylus-loader'
 };
+
+const serverIp = ip.address();
 
 export default function makeConfig(isDevelopment) {
 
@@ -39,7 +42,7 @@ export default function makeConfig(isDevelopment) {
     devtool: isDevelopment ? devtools : '',
     entry: {
       app: isDevelopment ? [
-        `webpack-hot-middleware/client?path=http://localhost:${constants.HOT_RELOAD_PORT}/__webpack_hmr`,
+        `webpack-hot-middleware/client?path=http://${serverIp}:${constants.HOT_RELOAD_PORT}/__webpack_hmr`,
         path.join(constants.SRC_DIR, 'client/main.js')
       ] : [
         path.join(constants.SRC_DIR, 'client/main.js')
@@ -86,7 +89,7 @@ export default function makeConfig(isDevelopment) {
       path: constants.BUILD_DIR,
       filename: '[name].js',
       chunkFilename: '[name]-[chunkhash].js',
-      publicPath: `http://localhost:${constants.HOT_RELOAD_PORT}/build/`
+      publicPath: `http://${serverIp}:${constants.HOT_RELOAD_PORT}/build/`
     } : {
       path: constants.BUILD_DIR,
       filename: '[name].js',
