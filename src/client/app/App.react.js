@@ -1,7 +1,5 @@
 import './App.styl';
 import Component from 'react-pure-render/component';
-import Footer from './Footer.react';
-import Header from './Header.react';
 import React, {PropTypes} from 'react';
 import RouterHandler from '../../common/components/RouterHandler.react';
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
@@ -29,9 +27,7 @@ export default class App extends Component {
       // Pass data-pathname to allow route specific styling.
       <div className="page" data-pathname={pathname}>
         {/* Pathname enforces rerender so activeClassName is updated. */}
-        <Header msg={msg} pathname={pathname} viewer={viewer} />
         <RouterHandler {...this.props} />
-        <Footer msg={msg.app.footer} />
       </div>
     );
   }
