@@ -114,8 +114,8 @@ export default class Nav extends Component {
       <div className="entries-nav">
         <hgroup>
           <h2>{entry.get('title')}</h2>
-          <h3><Link to={`/r/${entry.get('subreddit')}`}>{entry.get('subreddit')}</Link></h3>
-          <h4><Link to={`/u/${entry.get('author')}`}>{entry.get('author')}</Link></h4>
+          <h3><Link to={`/r/${entry.get('subreddit')}`}><i className="fa fa-reddit" />{entry.get('subreddit')}</Link></h3>
+          <h4><Link to={`/u/${entry.get('author')}`}><i className="fa fa-user" />{entry.get('author')}</Link></h4>
         </hgroup>
         {horizLink('left', prev)}
         {horizLink('right', next)}
