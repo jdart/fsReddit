@@ -29,6 +29,16 @@ export function redditNavActions(id, prev, next) {
   }
 }
 
+export function redditFetchComments(api, entry) {
+  return asyncAction(
+    C.REDDIT_FETCH_COMMENTS,
+    api(entry.get('permalink') + '.json')
+      .get({ sort: 'hot' })
+      .then(response => { return { response, entry: entry }; }),
+    { entry },
+  );
+}
+
 export function redditFetchListing(type, api, url, after) {
   const params = { url, after };
   return asyncAction(

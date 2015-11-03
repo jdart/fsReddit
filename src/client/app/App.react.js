@@ -17,11 +17,10 @@ export default class App extends Component {
     children: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     msg: PropTypes.object.isRequired,
-    users: PropTypes.object.isRequired
   }
 
   render() {
-    const {location: {pathname}, msg, users: {viewer}} = this.props;
+    const {location: {pathname}, msg} = this.props;
 
     return (
       // Pass data-pathname to allow route specific styling.

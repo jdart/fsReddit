@@ -2,7 +2,7 @@
 import C from './consts';
 import _ from 'lodash';
 import {Record, List, Map} from 'immutable';
-import {User, Subreddits, Oauth, OauthData, Query} from './types';
+import {User, Subreddits, Oauth, OauthData, Query, Comment, Comments} from './types';
 import api from './api';
 import window from './window';
 import getRandomString from '../lib/getRandomString';
@@ -122,7 +122,14 @@ export default function redditReducer(state = initialState, action) {
       ))
       .update('entries', entries =>
         entries.merge(data.children.reduce(
-          (accu, entry) => _.set(accu, entry.data.id, entry.data),
+          (accu, entry) => _.set(
+            accu,
+            entry.data.id,
+            _.merge(
+              entry.data,
+              { comments: new Comments }
+            )
+          ),
           {}
         ))
       );
@@ -164,6 +171,23 @@ export default function redditReducer(state = initialState, action) {
       return invalidateIf401(state, action.payload.status);
     }
 
+    case C.REDDIT_FETCH_COMMENTS_PENDING: {
+      console.log(action.payload.entry.get('id'));
+      return state.update('entries', entries => entries.update(
+        action.payload.entry.get('id'),
+        entry => entry.set('isFetching', true)
+      ));
+    }
+
+    case C.REDDIT_FETCH_COMMENTS_SUCCESS: {
+      return state.update('entries', entries => entries.update(
+        action.payload.entry.get('id'),
+        entry => entry.update('comments', comments =>
+          comments.set('children', action.payload.response[1].data.children)
+            .set('isFetching', false)
+        )
+      ));
+    }
   }
 
   return state;

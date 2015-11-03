@@ -34,8 +34,11 @@ export default class Entries extends Component {
   }
 
   componentDidUpdate() {
+
+    console.log('zzzz')
     if (this.getEntry(1) || this.getQuery().isFetching)
       return;
+    console.log('zzzz')
     this.props.actions.redditFetchEntries(
       this.api(),
       this.url(),
@@ -67,7 +70,7 @@ export default class Entries extends Component {
           { ... this.props }
           next={this.navConfig(this.getEntry(1), 1)}
           prev={this.navConfig(this.getEntry(-1), -1)}></Nav>
-        <Content entry={entry} { ... this.props }></Content>
+        <Content entry={entry} query={this.getQuery()} { ... this.props }></Content>
       </div>
     );
   }

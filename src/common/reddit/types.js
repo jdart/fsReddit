@@ -1,5 +1,5 @@
 
-import {Record, List} from 'immutable';
+import {Record, List, Map} from 'immutable';
 
 export const Subreddits = Record({
   isFetching: null,
@@ -34,5 +34,15 @@ export const Query = Record({
   lastUpdated: null,
   entries: new List,
   index: null,
+});
+
+export const Comments = Record({
+  isFetching: null,
+  children: null
+});
+
+export const Comment = Record({
+  data: new Map,
+  children: new List
 });
 

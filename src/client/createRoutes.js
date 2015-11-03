@@ -3,6 +3,7 @@ import NotFound from './notfound/Page.react';
 import React from 'react';
 import Home from './reddit/Home.react';
 import Subreddit from './reddit/Subreddit.react';
+import User from './reddit/User.react';
 import Oauth from './reddit/Oauth.react';
 import {IndexRoute, Route} from 'react-router';
 
@@ -23,6 +24,7 @@ export default function createRoutes(getState) {
       <Route component={Subreddit} path="f/:sort" />
       <Route component={Subreddit} path="r/:name" />
       <Route component={Subreddit} path="r/:name/:sort" />
+      <Route component={User} path="u/:name" />
       <Route component={NotFound} path="*" />
     </Route>
   );

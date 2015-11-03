@@ -56,14 +56,27 @@ export default class Nav extends Component {
   }
 
   toggleFullScreen() {
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    } else if (document.documentElement.msRequestFullscreen) {
-      document.documentElement.msRequestFullscreen();
-    } else if (document.documentElement.mozRequestFullScreen) {
-      document.documentElement.mozRequestFullScreen();
-    } else if (document.documentElement.webkitRequestFullscreen) {
-      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    if (!document.fullscreenElement &&    // alternative standard method
+        !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) {
+        document.documentElement.msRequestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) {
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) {
+        document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
     }
   }
 
@@ -101,8 +114,8 @@ export default class Nav extends Component {
       <div className="entries-nav">
         <hgroup>
           <h2>{entry.get('title')}</h2>
-          <h3>{entry.get('subreddit')}</h3>
-          <h4>{entry.get('author')}</h4>
+          <h3><Link to={`/r/${entry.get('subreddit')}`}>{entry.get('subreddit')}</Link></h3>
+          <h4><Link to={`/u/${entry.get('author')}`}>{entry.get('author')}</Link></h4>
         </hgroup>
         {horizLink('left', prev)}
         {horizLink('right', next)}

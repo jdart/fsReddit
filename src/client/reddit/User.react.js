@@ -11,13 +11,9 @@ export default class Subreddit extends Component {
     msg: PropTypes.object,
   }
 
-  static fetchCount = 0;
-
   url() {
     const { params } = this.props;
-    if (!params.name)
-      return '/' + (params.sort || 'hot');
-    return '/r/' + params.name + '/' + (params.sort || 'hot');
+    return '/user/' + params.name + '/submitted';
   }
 
   api() {

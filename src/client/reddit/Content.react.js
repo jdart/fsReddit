@@ -5,6 +5,7 @@ import {Link} from 'react-router';
 import Imgur from './Imgur.react';
 import FsImg from './FsImg.react';
 import FsIframe from './FsIframe.react';
+import Reddit from './Reddit.react';
 import Gfycat from './Gfycat.react';
 import { parseUrl } from '../utils';
 
@@ -19,7 +20,7 @@ export default class Content extends Component {
     if (host.match(/^.*(\.?)gfycat.com$/))
       return (<Gfycat url={url} />);
     if (host.match(/^.*(\.?)reddit\.com$/))
-      return (<div>Content from reddit</div>);
+      return (<Reddit url={url} entry={entry} {...this.props} />);
     else if (host.match(/^.*(\.?)imgur\.com$/))
       return (<Imgur { ... this.props } url={url} />);
     return (<FsIframe url={url} />);
