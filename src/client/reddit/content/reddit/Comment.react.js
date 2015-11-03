@@ -23,9 +23,15 @@ export default class Comment extends Component {
   }
 
   render() {
+    const { data } = this.props;
+    if (!data.body_html)
+      return (<div/>);
     return (
       <div className="comment">
-        <div className="body" dangerouslySetInnerHTML={{__html: this.props.data.body}} />
+        <div className="details">
+          <Link to={`/u/${data.author}`}>{data.author}</Link>
+        </div>
+        <div className="body" dangerouslySetInnerHTML={{__html: data.body_html}} />
         {this.renderChildren()}
       </div>
     );

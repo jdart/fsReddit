@@ -5,7 +5,7 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import Entries from './Entries.react';
 
-export default class Subreddit extends Component {
+export default class User extends Component {
 
   static propTypes = {
     msg: PropTypes.object,

@@ -4,7 +4,7 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import FsImg from './FsImg.react';
 import _ from 'lodash';
-import { parseUrl } from '../utils';
+import { parseUrl } from '../../utils';
 
 export default class Entry extends Component {
 

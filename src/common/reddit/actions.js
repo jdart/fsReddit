@@ -33,7 +33,7 @@ export function redditFetchComments(api, entry) {
   return asyncAction(
     C.REDDIT_FETCH_COMMENTS,
     api(entry.get('permalink') + '.json')
-      .get({ sort: 'hot' })
+      .get({ sort: 'hot', raw_json: 1 })
       .then(response => { return { response, entry: entry }; }),
     { entry },
   );

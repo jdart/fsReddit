@@ -5,9 +5,9 @@ import {Link} from 'react-router';
 import Imgur from './Imgur.react';
 import FsImg from './FsImg.react';
 import FsIframe from './FsIframe.react';
-import Reddit from './Reddit.react';
+import Reddit from './reddit/Reddit.react';
 import Gfycat from './Gfycat.react';
-import { parseUrl } from '../utils';
+import { parseUrl } from '../../utils';
 
 export default class Content extends Component {
 

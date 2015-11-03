@@ -13,7 +13,7 @@ export default class FsIframe extends Component {
   render() {
     return (
       <div>
-        <div dangerouslySetInnerHTML={{__html: this.props.entry.get('selftext_html')}} />
+        <div className="content-reddit-body" dangerouslySetInnerHTML={{__html: this.props.entry.get('selftext_html')}} />
         <Comments entry={this.props.entry} {...this.props} />
       </div>
     );

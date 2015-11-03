@@ -25,7 +25,7 @@ body
   width 100vw
   height 100vh
   text-align center
-  display flex;
+  display flex
   align-items center
   justify-content center
 
@@ -34,10 +34,15 @@ body
   li
     list-style-type none
 
+.entries
+  display flex
+  align-content stretch
+
 .entries-content
-  height 100vh
-  width 75vw
+  order 1
+  flex auto
   background-color #ccc
+  overflow auto
 
 .entries-content-img
   width 100%
@@ -47,9 +52,9 @@ body
   background-position center
 
 .entries-nav
-  height 100vh
-  float right
+  min-height 100vh
   width 25vw
+  order 2
   padding 1em
   h2
     font-size: 20px
@@ -72,8 +77,19 @@ body
   -webkit-transform scale(1)
   width 100%
 
+.content-reddit-body
+  padding 0 1em
+  margin-bottom 3em
+
 .comments
+  padding 0 1em
+  > .comment:first-of-type
+    border-top solid 1px black
   .comment
-    border solid 1px black
+    .body
+      border-bottom solid 1px black
+    .details
+      padding-top 1em
   .replies
     margin-left 2em
+

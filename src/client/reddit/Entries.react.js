@@ -4,7 +4,7 @@ import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
 import Subreddit from './Subreddit.react';
 import {Link} from 'react-router';
-import Content from './Content.react';
+import Content from './content/Content.react';
 import Nav from './Nav.react';
 
 export default class Entries extends Component {
@@ -34,8 +34,6 @@ export default class Entries extends Component {
   }
 
   componentDidUpdate() {
-
-    console.log('zzzz')
     if (this.getEntry(1) || this.getQuery().isFetching)
       return;
     console.log('zzzz')
