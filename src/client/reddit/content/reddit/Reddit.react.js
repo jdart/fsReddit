@@ -11,10 +11,15 @@ export default class FsIframe extends Component {
   }
 
   render() {
+    const {entry} = this.props;
     return (
-      <div>
-        <div className="content-reddit-body" dangerouslySetInnerHTML={{__html: this.props.entry.get('selftext_html')}} />
-        <Comments entry={this.props.entry} {...this.props} />
+      <div className="content-reddit">
+        <hgroup>
+          <h2>{entry.get('title')}</h2>
+          <h4><Link to={`/u/${entry.get('author')}`}><i className="fa fa-user" />{entry.get('author')}</Link></h4>
+        </hgroup>
+        <div className="content-reddit-body" dangerouslySetInnerHTML={{__html: entry.get('selftext_html')}} />
+        <Comments entry={entry} {...this.props} />
       </div>
     );
   }

@@ -113,6 +113,7 @@ export default function redditReducer(state = initialState, action) {
         key,
         query => query
           .set('isFetching', false)
+          .set('failed', false)
           .set('index', 0)
           .update('entries', entries => entries.concat(
             data.children
@@ -136,8 +137,14 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_FETCH_ENTRIES_ERROR: {
-      debugger
-      return invalidateIf401(state, action.payload.response.status);
+      state = state.update('queries', queries =>
+          queries.map(query =>
+            query
+              .set('isFetching', false)
+              .set('failed', true)
+          )
+      );
+      return invalidateIf401(state, action.payload.status);
     }
 
     case C.REDDIT_QUERY_INDEX: {

@@ -32,6 +32,7 @@ export const Query = Record({
   isFetching: true,
   didInvalidate: null,
   lastUpdated: null,
+  failed: null,
   entries: new List,
   index: null,
 });

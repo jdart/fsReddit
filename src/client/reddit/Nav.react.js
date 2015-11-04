@@ -2,7 +2,7 @@
 import {Component} from 'react';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
-
+import url from 'url';
 import { Keys } from 'react-keydown';
 
 export default class Nav extends Component {
@@ -106,6 +106,20 @@ export default class Nav extends Component {
     );
   }
 
+  isRedditDotCom() {
+    const urlData = url.parse(this.props.entry.get('url'));
+    const hostParts = urlData.hostname.split('.');
+    return hostParts.slice(-2).join('.') === 'reddit.com';
+  }
+
+  renderH2(entry) {
+    if (this.isRedditDotCom.bind(this)())
+      return;
+    return (
+      <h2>{entry.get('title')}</h2>
+    );
+  }
+
   render() {
     const { entry, prev, next } = this.props;
     const horizLink = this.renderHorizLink.bind(this);
@@ -113,7 +127,7 @@ export default class Nav extends Component {
     return (
       <div className="entries-nav">
         <hgroup>
-          <h2>{entry.get('title')}</h2>
+          {this.renderH2.bind(this)(entry)}
           <h3><Link to={`/r/${entry.get('subreddit')}`}><i className="fa fa-reddit" />{entry.get('subreddit')}</Link></h3>
           <h4><Link to={`/u/${entry.get('author')}`}><i className="fa fa-user" />{entry.get('author')}</Link></h4>
         </hgroup>

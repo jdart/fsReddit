@@ -60,8 +60,7 @@ export default class Subreddit extends Component {
 
     return (
       <DocumentTitle title={msg.title}>
-        <Entries query={this.getQuery()} url={this.url()} { ... this.props }>
-        </Entries>
+        <Entries query={this.getQuery()} url={this.url()} { ... this.props } />
       </DocumentTitle>
     );
   }
