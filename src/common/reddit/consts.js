@@ -6,6 +6,7 @@ export default genConsts([
   'REDDIT_LOGIN',
   'REDDIT_QUERY_INDEX',
   'REDDIT_NAV_ACTIONS',
+  'REDDIT_ENTRY_PRELOADED',
 ], [
   'REDDIT_FETCH_COMMENTS',
   'REDDIT_LOGIN_VALIDATE',
@@ -13,5 +14,6 @@ export default genConsts([
   'REDDIT_FETCH_POST',
   'REDDIT_FETCH_SUBREDDITS',
   'REDDIT_FETCH_ENTRIES',
+  'REDDIT_VOTE',
 ]);
 

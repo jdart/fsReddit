@@ -4,7 +4,7 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import FsImg from './FsImg.react';
 import _ from 'lodash';
-import { parseUrl } from '../../utils';
+import { imgPreload, parseUrl } from '../../utils';
 
 export default class Entry extends Component {
 
@@ -42,8 +42,14 @@ export default class Entry extends Component {
   }
 
   fetchEntry() {
-    if (!this.getQuery())
+    const query = this.getQuery();
+    const { entry } = this.props;
+    if (!query)
       this.props.actions.imgurFetch(this.getRequest());
+    else if (entry && !entry.get('preloaded') && query.entries.size) {
+      this.props.actions.redditEntryPreload(entry);
+      query.entries.slice(1).map(imgPreload);
+    }
   }
 
   componentDidUpdate() {
@@ -53,7 +59,7 @@ export default class Entry extends Component {
 
   setNav() {
     const query = this.getQuery();
-    if (!query || !query.entries.size)
+    if (!query || !query.entries.size || !this.props.nav)
       return;
     const prev = this.getPrev();
     const next = this.getNext();
@@ -66,7 +72,8 @@ export default class Entry extends Component {
     this.props.actions.redditNavActions(
       id,
       prev ? (() => step(req, index - 1)) : null,
-      next ? (() => step(req, index + 1)) : null
+      next ? (() => step(req, index + 1)) : null,
+      (index+1) + '/' + query.entries.size
     );
   }
 

@@ -33,17 +33,6 @@ export default class Entries extends Component {
       );
   }
 
-  componentDidUpdate() {
-    if (this.getEntry(1) || this.getQuery().isFetching)
-      return;
-    console.log('zzzz')
-    this.props.actions.redditFetchEntries(
-      this.api(),
-      this.url(),
-      this.getEntry().get('name')
-    );
-  }
-
   navConfig(entry, index) {
     if (!entry)
       return { action: null, enty: null };
@@ -61,14 +50,31 @@ export default class Entries extends Component {
       return (<div>Loading</div>);
 
     const entry = this.getEntry();
+    const next = this.getEntry(1);
 
     return (
       <div className="entries">
         <Nav entry={entry}
+          api={this.props.reddit.get('api')}
           { ... this.props }
           next={this.navConfig(this.getEntry(1), 1)}
-          prev={this.navConfig(this.getEntry(-1), -1)}></Nav>
-        <Content entry={entry} query={this.getQuery()} { ... this.props }></Content>
+          prev={this.navConfig(this.getEntry(-1), -1)}
+        />
+        <Content
+          entry={entry}
+          query={this.getQuery()}
+          { ... this.props }
+          nav={true}
+        />
+        { next ? (
+          <div className="preloader">
+            <Content
+              entry={next}
+              query={this.getQuery()}
+              { ... this.props }
+            />
+          </div>
+        ) : '' }
       </div>
     );
   }

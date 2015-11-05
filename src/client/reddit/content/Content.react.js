@@ -14,7 +14,6 @@ export default class Content extends Component {
   renderContent(entry) {
     const url = entry.get('url');
     const host = parseUrl(url).host;
-    console.log(url)
     if (url.match(/\.(jpg|jpeg|png|gif)$/))
       return (<FsImg url={url} />);
     if (host.match(/^.*(\.?)gfycat.com$/))
@@ -22,7 +21,7 @@ export default class Content extends Component {
     if (host.match(/^.*(\.?)reddit\.com$/))
       return (<Reddit url={url} entry={entry} {...this.props} />);
     else if (host.match(/^.*(\.?)imgur\.com$/))
-      return (<Imgur { ... this.props } url={url} />);
+      return (<Imgur { ... this.props } entry={entry} url={url} />);
     return (<FsIframe url={url} />);
   }
 

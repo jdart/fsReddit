@@ -80,12 +80,13 @@ export default class Nav extends Component {
     }
   }
 
-  renderVertLink(icon, action) {
+  renderVertLink(icon, action, title) {
     if (!action)
       return;
     return (
       <a className={`direction-${icon}`} href="#" onClick={action}>
         <i className={`fa fa-arrow-${icon}`} />
+        { title ? (<span>{title}</span>) : '' }
       </a>
     );
   }
@@ -94,15 +95,22 @@ export default class Nav extends Component {
     const { navActions } = this.props.reddit;
     const up = navActions.get('up');
     const down = navActions.get('down');
+    const title = navActions.get('title');
     const vertLink = this.renderVertLink.bind(this);
     if (!up && !down)
       return (<div/>);
+    if (up)
+      return (
+        <div className="nav-vert links">
+          {vertLink('up', up, title)}
+          {vertLink('down', down)}
+        </div>
+      );
     return (
-      <p>
-        More:
+      <div className="nav-vert links">
         {vertLink('up', up)}
-        {vertLink('down', down)}
-      </p>
+        {vertLink('down', down, title)}
+      </div>
     );
   }
 
@@ -112,11 +120,35 @@ export default class Nav extends Component {
     return hostParts.slice(-2).join('.') === 'reddit.com';
   }
 
-  renderH2(entry) {
+  renderTitle(entry) {
     if (this.isRedditDotCom.bind(this)())
       return;
     return (
       <h2>{entry.get('title')}</h2>
+    );
+  }
+
+  renderVote(entry) {
+    const { redditVote } = this.props.actions;
+    const vote = () => redditVote(this.props.api, entry);
+    const icon = entry.get('voted') ? 'arrow-circle-up' : 'arrow-circle-o-up';
+    const title = entry.get('voted') ? 'Unvote' : 'Upvote';
+    return (
+      <a onClick={vote} href="#">
+        <i className={`fa fa-${icon}`} />
+        <span>{title}</span>
+      </a>
+    );
+  }
+
+  renderCommentLink(entry) {
+    if (this.isRedditDotCom())
+      return;
+    return (
+      <a href={`http://www.reddit.com/${entry.get('permalink')}`}>
+        <i className="fa fa-commenting" />
+        Comments
+      </a>
     );
   }
 
@@ -126,20 +158,30 @@ export default class Nav extends Component {
 
     return (
       <div className="entries-nav">
-        <hgroup>
-          {this.renderH2.bind(this)(entry)}
-          <h3><Link to={`/r/${entry.get('subreddit')}`}><i className="fa fa-reddit" />{entry.get('subreddit')}</Link></h3>
-          <h4><Link to={`/u/${entry.get('author')}`}><i className="fa fa-user" />{entry.get('author')}</Link></h4>
-        </hgroup>
-        {horizLink('left', prev)}
-        {horizLink('right', next)}
-        {this.renderVert()}
-        <Link to="/"><i className="fa fa-home"/>Home</Link>
-        <p>
+        {this.renderTitle.bind(this)(entry)}
+        <div className="links">
+          <Link to={`/r/${entry.get('subreddit')}`}>
+            <i className="fa fa-reddit" />
+            {entry.get('subreddit')}
+          </Link>
+          <Link to={`/u/${entry.get('author')}`}>
+            <i className="fa fa-user" />
+            {entry.get('author')}
+          </Link>
+          {this.renderVote.bind(this)(entry)}
+          {this.renderCommentLink.bind(this)(entry)}
+        </div>
+        <div className="nav-horiz links">
+          {horizLink('left', prev)}
+          {horizLink('right', next)}
+        </div>
+        <div className="links">
+          <Link to="/"><i className="fa fa-home"/>Home</Link>
           <a onClick={this.toggleFullScreen} href="#">
-            <i className="fa fa-expand" />Fullscreen
+            <i className="fa fa-expand" /><span>Fullscreen</span>
           </a>
-        </p>
+        </div>
+        {this.renderVert()}
       </div>
     );
   }

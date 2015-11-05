@@ -10,13 +10,15 @@ export default class FsImg extends Component {
   }
 
   render() {
-    const bgStyle = {
-      backgroundImage: 'url(' + this.props.url + ')'
-    };
     if (!this.props.url)
       return (<div/>);
     return (
-      <div className="entries-content-img" style={bgStyle} />
+      <div className="entries-content-img">
+        <img
+          style={{maxWidth: '100%', maxHeight: '100%'}}
+          src={this.props.url}
+        />
+      </div>
     );
   }
 

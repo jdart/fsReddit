@@ -4,6 +4,7 @@ import Promise from 'bluebird';
 import C from './consts';
 import { promiseConsts } from '../utils';
 
+
 function asyncRedditAction(type, api, url, options = {}) {
   return asyncAction(
     type,
@@ -18,13 +19,23 @@ function asyncAction(type, promise, payload) {
   };
 }
 
-export function redditNavActions(id, prev, next) {
+export function redditEntryPreload(entry) {
+  return {
+    type: C.REDDIT_ENTRY_PRELOADED,
+    payload: {
+      entry
+    }
+  };
+}
+
+export function redditNavActions(id, prev, next, title) {
   return {
     type: C.REDDIT_NAV_ACTIONS,
     payload: {
       id,
       prev,
-      next
+      next,
+      title
     }
   }
 }
@@ -47,6 +58,22 @@ export function redditFetchListing(type, api, url, after) {
       .get({ after, raw_json: 1 })
       .then(response => _.set(response, 'params', params)),
     { params },
+  );
+}
+
+export function redditVote(api, entry) {
+  const voted = entry.get('voted');
+  const dir = voted ? -1 : 1;
+  const data = { entry, dir };
+  return asyncAction(
+    C.REDDIT_VOTE,
+    api('/api/vote')
+      .post({
+        dir,
+        id: 't3_' + entry.get('id')
+      })
+      .then(response => _.merge(response, data)),
+    data
   );
 }
 
