@@ -5,10 +5,6 @@ import {Link} from 'react-router';
 
 export default class Comment extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   renderChildren() {
     const { replies } = this.props.data;
     if (!replies || !replies.data.children.length)

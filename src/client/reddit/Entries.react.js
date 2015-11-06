@@ -9,10 +9,6 @@ import Nav from './Nav.react';
 
 export default class Entries extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   getQuery() {
     return this.props.query;
   }
@@ -47,7 +43,7 @@ export default class Entries extends Component {
       this.props.history.pushState(null, '/')
 
     if (!this.getQuery() || !this.getQuery().entries.size)
-      return (<div>Loading</div>);
+      return (<div>Loading...</div>);
 
     const entry = this.getEntry();
     const next = this.getEntry(1);

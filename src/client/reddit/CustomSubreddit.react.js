@@ -5,10 +5,6 @@ import {Link} from 'react-router';
 
 export default class CustomSubreddit extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   go(event) {
     event.preventDefault();
     this.props.history.pushState(null, '/r/' + event.target[0].value + '/hot');

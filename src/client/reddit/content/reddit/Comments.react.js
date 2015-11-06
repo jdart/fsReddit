@@ -6,10 +6,6 @@ import Comment from './Comment.react';
 
 export default class Comments extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   componentDidMount() {
     this.fetch();
   }

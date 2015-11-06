@@ -112,7 +112,7 @@ export default function redditReducer(state = initialState, action) {
           .merge({
             isFetching: false,
             failed: false,
-            index: 0,
+            index: data.after ? query.get('index') : 0,
           })
           .update('entries', entries => entries.concat(
             data.children
@@ -125,7 +125,6 @@ export default function redditReducer(state = initialState, action) {
           entries.set(child.data.id, new Map(child.data)
             .merge({
               comments: new Comments,
-              voted: false,
               preloaded: false
             })),
           entries
@@ -152,11 +151,14 @@ export default function redditReducer(state = initialState, action) {
       );
     }
 
-    case C.REDDIT_VOTE_PENDING: {}
+    case C.REDDIT_VOTE_PENDING: {
+      return state;
+    }
+
     case C.REDDIT_VOTE_SUCCESS: {
       return state.setIn(
-        ['entries', action.payload.entry.get('id'), 'voted'],
-        action.payload.dir > 0
+        ['entries', action.payload.entry.get('id'), 'likes'],
+        action.payload.dir
       );
     }
 
@@ -194,7 +196,7 @@ export default function redditReducer(state = initialState, action) {
 
     case C.REDDIT_FETCH_COMMENTS_PENDING: {
       return state.setIn(
-        ['entries', action.payload.entry.get('id'), 'isFetching'],
+        ['entries', action.payload.entry.get('id'), 'comments', 'isFetching'],
         true
       );
     }

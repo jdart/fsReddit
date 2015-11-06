@@ -4,7 +4,6 @@ import fetch from './fetch';
 import injectDependencies from './lib/injectDependencies';
 import promiseMiddleware from 'redux-promise-middleware';
 import stateToJS from './lib/stateToJS';
-import validate from './validate';
 import {applyMiddleware, createStore} from 'redux';
 
 // TODO: Add example for browser/native storage.
@@ -15,7 +14,7 @@ export default function configureStore({engine, initialState}) {
   // Inject services for actions.
   const dependenciesMiddleware = injectDependencies(
     {fetch},
-    {validate}
+    {}
   );
 
   const middleware = [

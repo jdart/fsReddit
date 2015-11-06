@@ -5,10 +5,6 @@ import {Link} from 'react-router';
 
 export default class FsImg extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   render() {
     if (!this.props.url)
       return (<div/>);

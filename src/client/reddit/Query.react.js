@@ -6,13 +6,6 @@ import {Link} from 'react-router';
 
 export default class Home extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-    reddit: PropTypes.shape({
-      authenticated: PropTypes.bool,
-    }),
-  }
-
   renderRedditStatus(reddit, actions) {
     if (reddit.authenticated)
       return;
@@ -53,13 +46,12 @@ export default class Home extends Component {
 
   render() {
     const {
-      msg: {home: msg},
       reddit,
       actions
     } = this.props;
 
     return (
-      <DocumentTitle title={msg.title}>
+      <DocumentTitle title="Foobar">
         <div className="home-page">
           { this.renderRedditStatus(reddit, actions) }
           { this.renderFrontpage() }

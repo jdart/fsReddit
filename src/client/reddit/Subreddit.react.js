@@ -7,10 +7,6 @@ import Entries from './Entries.react';
 
 export default class Subreddit extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   static fetchCount = 0;
 
   url() {
@@ -42,8 +38,26 @@ export default class Subreddit extends Component {
 
     if (!this.apiReady())
       history.pushState(null, '/');
-    if (!query)
+
+    if (!query) {
       this.props.actions.redditFetchEntries(this.api(), this.url());
+      return;
+    }
+
+    const entries = query.get('entries');
+
+    if (!entries)
+      return;
+
+    if (
+      query
+      && (query.get('index')-1) === (entries.size-2)
+      && !query.get('isFetching')
+    ) this.props.actions.redditFetchEntries(
+        this.api(),
+        this.url(),
+        entries.last()
+      );
   }
 
   apiReady() {
@@ -53,13 +67,11 @@ export default class Subreddit extends Component {
 
   render() {
     const {
-      msg: {home: msg},
       reddit,
       actions
     } = this.props;
-
     return (
-      <DocumentTitle title={msg.title}>
+      <DocumentTitle title={this.url()}>
         <Entries query={this.getQuery()} url={this.url()} { ... this.props } />
       </DocumentTitle>
     );

@@ -7,10 +7,6 @@ import queryString from 'query-string';
 
 export default class Oauth extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object
-  }
-
   componentDidMount() {
     const qs = queryString.parse(window.location.hash);
     this.props.actions.redditLoginValidate(qs);
@@ -23,10 +19,8 @@ export default class Oauth extends Component {
   }
 
   render() {
-    const {msg: {home: msg}} = this.props;
-
     return (
-      <DocumentTitle title={msg.title}>
+      <DocumentTitle title="Authenticate">
         <div></div>
       </DocumentTitle>
     );

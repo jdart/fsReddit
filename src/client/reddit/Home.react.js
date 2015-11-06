@@ -9,13 +9,6 @@ import CustomSubreddit from './CustomSubreddit.react';
 
 export default class Home extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-    reddit: PropTypes.shape({
-      authenticated: PropTypes.bool,
-    }),
-  }
-
   apiReady() {
     const store = this.props.reddit;
     return store.api && store.user.get('authenticated');
@@ -37,12 +30,8 @@ export default class Home extends Component {
   }
 
   render() {
-    const {
-      msg: {home: msg},
-    } = this.props;
-
     return (
-      <DocumentTitle title={msg.title}>
+      <DocumentTitle title="FullScreen Reddit">
         <div className="home-page">
           {this.apiReady() ? this.renderReady() : this.renderLogin()}
         </div>

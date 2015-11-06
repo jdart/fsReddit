@@ -5,7 +5,6 @@ import configureStore from '../common/configureStore';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import createEngine from 'redux-storage/engines/localStorage';
 import createRoutes from './createRoutes';
-import {IntlProvider} from 'react-intl';
 import {Provider} from 'react-redux';
 
 // TODO: Add app storage example.
@@ -19,11 +18,9 @@ const routes = createRoutes(store.getState);
 
 ReactDOM.render(
   <Provider store={store}>
-    <IntlProvider>
-      <Router history={createBrowserHistory()}>
-        {routes}
-      </Router>
-    </IntlProvider>
+    <Router history={createBrowserHistory()}>
+      {routes}
+    </Router>
   </Provider>,
   app,
   () => {

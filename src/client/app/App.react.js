@@ -16,11 +16,10 @@ export default class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    msg: PropTypes.object.isRequired,
   }
 
   render() {
-    const {location: {pathname}, msg} = this.props;
+    const {location: {pathname}} = this.props;
 
     return (
       // Pass data-pathname to allow route specific styling.

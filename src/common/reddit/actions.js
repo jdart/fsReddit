@@ -62,8 +62,7 @@ export function redditFetchListing(type, api, url, after) {
 }
 
 export function redditVote(api, entry) {
-  const voted = entry.get('voted');
-  const dir = voted ? -1 : 1;
+  const dir = entry.get('likes') ? 0 : 1;
   const data = { entry, dir };
   return asyncAction(
     C.REDDIT_VOTE,

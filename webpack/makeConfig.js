@@ -1,4 +1,5 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import constants from './constants';
 import path from 'path';
@@ -102,7 +103,7 @@ export default function makeConfig(isDevelopment) {
             NODE_ENV: JSON.stringify(isDevelopment ? 'development' : 'production'),
             IS_BROWSER: true
           }
-        })
+        }),
       ];
       if (isDevelopment) plugins.push(
         new webpack.optimize.OccurenceOrderPlugin(),
@@ -110,6 +111,9 @@ export default function makeConfig(isDevelopment) {
         new webpack.NoErrorsPlugin()
       );
       else plugins.push(
+        new HtmlWebpackPlugin({
+          template: './src/client/index.html'
+        }),
         // Render styles into separate cacheable file to prevent FOUC and
         // optimize for critical rendering path.
         new ExtractTextPlugin('app.css', {

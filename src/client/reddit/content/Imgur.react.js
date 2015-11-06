@@ -8,10 +8,6 @@ import { imgPreload, parseUrl } from '../../utils';
 
 export default class Entry extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   getRequest() {
     const url = parseUrl(this.props.url);
     const album = url.pathname.match(/\/a\/([A-Za-z0-9]{4,})/);

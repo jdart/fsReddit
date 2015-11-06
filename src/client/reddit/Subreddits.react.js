@@ -5,13 +5,6 @@ import {Link} from 'react-router';
 
 export default class Subreddits extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-    reddit: PropTypes.shape({
-      authenticated: PropTypes.bool,
-    }),
-  }
-
   componentDidUpdate() {
     this.fetch();
   }

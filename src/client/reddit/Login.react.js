@@ -5,13 +5,6 @@ import {Link} from 'react-router';
 
 export default class Login extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-    reddit: PropTypes.shape({
-      authenticated: PropTypes.bool,
-    }),
-  }
-
   getStore() {
     return this.props.reddit;
   }

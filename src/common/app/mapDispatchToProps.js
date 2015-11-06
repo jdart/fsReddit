@@ -1,11 +1,9 @@
-import * as uiActions from '../ui/actions';
 import * as redditActions from '../reddit/actions';
 import * as imgurActions from '../imgur/actions';
 import {Map} from 'immutable';
 import {bindActionCreators} from 'redux';
 
 const actions = [
-  uiActions,
   redditActions,
   imgurActions
 ];

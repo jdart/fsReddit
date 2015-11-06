@@ -6,10 +6,6 @@ import {parseUrl} from '../../utils';
 
 export default class FsImg extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   parseId(url) {
     const parts = parseUrl(url);
     const pathParts = parts.pathname.split('/');

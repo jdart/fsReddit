@@ -7,10 +7,6 @@ import { Keys } from 'react-keydown';
 
 export default class Nav extends Component {
 
-  static propTypes = {
-    msg: PropTypes.object,
-  }
-
   goVert(direction) {
     const action = this.props.reddit.navActions.get(direction);
     if (action)
@@ -101,13 +97,13 @@ export default class Nav extends Component {
       return (<div/>);
     if (up)
       return (
-        <div className="nav-vert links">
+        <div className="nav-vert icon-title">
           {vertLink('up', up, title)}
           {vertLink('down', down)}
         </div>
       );
     return (
-      <div className="nav-vert links">
+      <div className="nav-vert icon-title">
         {vertLink('up', up)}
         {vertLink('down', down, title)}
       </div>
@@ -131,8 +127,8 @@ export default class Nav extends Component {
   renderVote(entry) {
     const { redditVote } = this.props.actions;
     const vote = () => redditVote(this.props.api, entry);
-    const icon = entry.get('voted') ? 'arrow-circle-up' : 'arrow-circle-o-up';
-    const title = entry.get('voted') ? 'Unvote' : 'Upvote';
+    const icon = entry.get('likes') ? 'arrow-circle-up' : 'arrow-circle-o-up';
+    const title = entry.get('likes') ? 'Unvote' : 'Upvote';
     return (
       <a onClick={vote} href="#">
         <i className={`fa fa-${icon}`} />
@@ -159,7 +155,7 @@ export default class Nav extends Component {
     return (
       <div className="entries-nav">
         {this.renderTitle.bind(this)(entry)}
-        <div className="links">
+        <div className="icon-title">
           <Link to={`/r/${entry.get('subreddit')}`}>
             <i className="fa fa-reddit" />
             {entry.get('subreddit')}
@@ -171,11 +167,11 @@ export default class Nav extends Component {
           {this.renderVote.bind(this)(entry)}
           {this.renderCommentLink.bind(this)(entry)}
         </div>
-        <div className="nav-horiz links">
+        <div className="icon-title nav-horiz">
           {horizLink('left', prev)}
           {horizLink('right', next)}
         </div>
-        <div className="links">
+        <div className="icon-title">
           <Link to="/"><i className="fa fa-home"/>Home</Link>
           <a onClick={this.toggleFullScreen} href="#">
             <i className="fa fa-expand" /><span>Fullscreen</span>

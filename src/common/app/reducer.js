@@ -4,15 +4,11 @@ import {combineReducers} from 'redux';
 // pass platform specific reducers in configureStore, but there is no reason to
 // do that, until app is really large.
 import device from '../device/reducer';
-import intl from '../intl/reducer';
-import ui from '../ui/reducer';
 import reddit from '../reddit/reducer';
 import imgur from '../imgur/reducer';
 
 const appReducer = combineReducers({
   device,
-  intl,
-  ui,
   reddit,
   imgur
 });
