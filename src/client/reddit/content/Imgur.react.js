@@ -4,14 +4,15 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import FsImg from './FsImg.react';
 import _ from 'lodash';
-import { imgPreload, parseUrl } from '../../utils';
+import { imgPreload } from '../../utils';
+import url from 'url';
 
 export default class Entry extends Component {
 
   getRequest() {
-    const url = parseUrl(this.props.url);
-    const album = url.pathname.match(/\/a\/([A-Za-z0-9]{4,})/);
-    const solo = url.pathname.match(/\/([A-Za-z0-9]{4,})/);
+    const imgUrl = url.parse(this.props.url);
+    const album = imgUrl.pathname.match(/\/a\/([A-Za-z0-9]{4,})/);
+    const solo = imgUrl.pathname.match(/\/([A-Za-z0-9]{4,})/);
     if (album)
       return 'album/' + album[1];
     return 'image/' + solo[1];
@@ -34,7 +35,7 @@ export default class Entry extends Component {
     const index = query.index + offset;
     if (index < 0 || index > query.entries.size)
       return null;
-    return query.entries.get(index);
+    return this.treatGif(query.entries.get(index));
   }
 
   fetchEntry() {
@@ -82,9 +83,51 @@ export default class Entry extends Component {
     this.props.actions.redditNavActions('none', null, null);
   }
 
+  treatGif(imgUrl) {
+    if (!imgUrl)
+      return imgUrl;
+    const { pathname } = url.parse(imgUrl);
+    if (pathname.match(/\.gif$/))
+      return imgUrl + 'v';
+    return imgUrl;
+  }
+
+  isVideo(imgUrl) {
+    const { pathname } = url.parse(imgUrl);
+    return pathname.match(/\.gifv$/);
+  }
+
+  imgId(imgUrl) {
+    const { pathname } = url.parse(imgUrl);
+    const parts = pathname.match(/\/([A-Za-z0-9]{4,})\./);
+    return parts[1];
+  }
+
+  renderGifv(imgUrl) {
+    const id = this.imgId(imgUrl);
+    return (
+      <div className="imgurGifv-aligner">
+        <video
+          preload="auto"
+          autoPlay="autoplay"
+          loop="loop"
+          className="imgurGifv"
+        >
+          <source
+            src={`//i.imgur.com/${id}.webm`}
+            type="video/webm"
+          />
+        </video>
+      </div>
+    );
+  }
+
   render() {
     if (!this.getQuery())
       return (<div>Loading...</div>);
+    const entry = this.getEntry();
+    if (this.isVideo(entry))
+      return this.renderGifv(entry);
     return (
       <div className="imgur">
         <FsImg url={this.getEntry()}></FsImg>

@@ -7,6 +7,9 @@ import FsImg from './FsImg.react';
 import FsIframe from './FsIframe.react';
 import Reddit from './reddit/Reddit.react';
 import Gfycat from './Gfycat.react';
+import Youtube from './Youtube.react';
+import Streamable from './Streamable.react';
+import Readability from './Readability.react';
 import { parseUrl } from '../../utils';
 
 export default class Content extends Component {
@@ -16,13 +19,18 @@ export default class Content extends Component {
     const host = parseUrl(url).host;
     if (url.match(/\.(jpg|jpeg|png|gif)$/))
       return (<FsImg url={url} />);
+    if (host.match(/^.*(\.?)streamable.com$/))
+      return (<Streamable url={url} />);
     if (host.match(/^.*(\.?)gfycat.com$/))
       return (<Gfycat url={url} />);
+    if (host.match(/^.*(\.?)youtube.com$/))
+      return (<Youtube url={url} />);
     if (host.match(/^.*(\.?)reddit\.com$/))
-      return (<Reddit url={url} entry={entry} {...this.props} />);
+      return (<Reddit {...this.props} url={url} entry={entry} />);
     else if (host.match(/^.*(\.?)imgur\.com$/))
-      return (<Imgur { ... this.props } entry={entry} url={url} />);
-    return (<FsIframe url={url} />);
+      return (<Imgur {...this.props} entry={entry} url={url} />);
+    //return (<FsIframe url={url}Readability/>);
+    return (<Readability {...this.props} url={url} />);
   }
 
   render() {

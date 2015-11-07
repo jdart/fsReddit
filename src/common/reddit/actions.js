@@ -19,6 +19,16 @@ function asyncAction(type, promise, payload) {
   };
 }
 
+export function redditFriend(api, author) {
+  return asyncAction(
+    C.REDDIT_FRIEND,
+    api('/api/v1/me/friends/' + author)
+      .put({json: JSON.stringify({ name: author })})
+      .then(response => _.set(response, 'author', author)),
+    { author }
+  );
+}
+
 export function redditEntryPreload(entry) {
   return {
     type: C.REDDIT_ENTRY_PRELOADED,

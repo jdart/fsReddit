@@ -9,7 +9,7 @@ export default new Snoocore({
     mobile: true,
     key: 'aqvghrAKQxHm7g',
     redirectUri: 'http://localhost:8000/r/oauth',
-    scope: ['identity', 'read', 'vote', 'history', 'mysubreddits']
+    scope: ['identity', 'read', 'vote', 'history', 'mysubreddits', 'subscribe']
   }
 });
 

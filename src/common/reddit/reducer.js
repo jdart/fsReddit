@@ -92,6 +92,17 @@ export default function redditReducer(state = initialState, action) {
       return state;
     }
 
+    case C.REDDIT_FRIEND_SUCCESS: {
+      const { author } = action.payload;
+      return state.update('entries', entries =>
+        entries.map(entry =>
+          entry.get('author') === author
+          ? entry.set('author_followed', true)
+          : entry
+        )
+      );
+    }
+
     case C.REDDIT_FETCH_ENTRIES_PENDING: {
       if (payload.params.after)
         return state.setIn(

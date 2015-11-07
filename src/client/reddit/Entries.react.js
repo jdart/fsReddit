@@ -6,6 +6,7 @@ import Subreddit from './Subreddit.react';
 import {Link} from 'react-router';
 import Content from './content/Content.react';
 import Nav from './Nav.react';
+import url from 'url';
 
 export default class Entries extends Component {
 
@@ -38,6 +39,25 @@ export default class Entries extends Component {
     };
   }
 
+  preRender(entry) {
+    if (!entry)
+      return;
+    const { host, pathname } = url.parse(entry.get('url'));
+    if (
+      !pathname.match(/\.(jpg|jpeg|png|gif)$/)
+      && !host.match(/^.*(\.?)imgur\.com$/)
+    ) return;
+    return (
+      <div className="preloader">
+        <Content
+          entry={entry}
+          query={this.getQuery()}
+          { ... this.props }
+        />
+      </div>
+    );
+  }
+
   render() {
     if (!this.props.reddit.user.get('authenticated'))
       this.props.history.pushState(null, '/')
@@ -62,15 +82,7 @@ export default class Entries extends Component {
           { ... this.props }
           nav={true}
         />
-        { next ? (
-          <div className="preloader">
-            <Content
-              entry={next}
-              query={this.getQuery()}
-              { ... this.props }
-            />
-          </div>
-        ) : '' }
+        {this.preRender(next)}
       </div>
     );
   }

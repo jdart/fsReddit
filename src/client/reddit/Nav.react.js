@@ -23,27 +23,43 @@ export default class Nav extends Component {
       this.props.prev.action();
   }
 
-  componentDidMount() {
-    document.addEventListener('keydown', event => {
-      const key = event.which;
-      if (key === Keys.RIGHT)
-        this.goNext();
-      else if (key === Keys.LEFT)
-        this.goPrev();
-      else if (key === Keys.UP)
-        this.goVert('up');
-      else if (key === Keys.DOWN)
-        this.goVert('down');
-    });
+  keyboardHandler(event) {
+    const key = event.which;
+    if (key === Keys.RIGHT)
+      this.goNext();
+    else if (key === Keys.LEFT)
+      this.goPrev();
+    else if (key === Keys.UP)
+      this.goVert('up');
+    else if (key === Keys.DOWN)
+      this.goVert('down');
   }
 
-  renderHorizLink(icon, config) {
+  componentWillUnmount() {
+    document.removeEventListener(
+      'keydown',
+      this.keyboardHandlerRef
+    );
+  }
+
+  componentDidMount() {
+    this.keyboardHandlerRef = this.keyboardHandler.bind(this);
+    document.addEventListener(
+      'keydown',
+      this.keyboardHandlerRef
+    );
+  }
+
+  renderHorizLink(icon, config, truncate) {
     const { entry, action } = config;
+    let className = `direction-${icon}`;
+    if (truncate)
+      className += ' truncate';
     if (!entry)
       return '';
     return (
       <p>
-        <a className={`direction-${icon}`} href="#" onClick={action}>
+        <a className={className} href="#" onClick={action}>
           <i className={`fa fa-arrow-${icon}`} />
           {entry.get('title')}
         </a>
@@ -151,6 +167,7 @@ export default class Nav extends Component {
   render() {
     const { entry, prev, next } = this.props;
     const horizLink = this.renderHorizLink.bind(this);
+    const friend = () => this.props.actions.redditFriend(this.props.api, entry.get('author'));
 
     return (
       <div className="entries-nav">
@@ -160,16 +177,26 @@ export default class Nav extends Component {
             <i className="fa fa-reddit" />
             {entry.get('subreddit')}
           </Link>
-          <Link to={`/u/${entry.get('author')}`}>
-            <i className="fa fa-user" />
-            {entry.get('author')}
-          </Link>
+          <div className="author">
+            <Link to={`/u/${entry.get('author')}`}>
+              <i className="fa fa-user" />
+              {entry.get('author')}
+            </Link>
+            <a href="#" onClick={friend}>
+              <i className="fa fa-eye" />
+              <span>
+                Follow{entry.get('author_followed')
+                ? (<span>ed<i className="fa fa-check"/></span>)
+                : ''}
+              </span>
+            </a>
+          </div>
           {this.renderVote.bind(this)(entry)}
           {this.renderCommentLink.bind(this)(entry)}
         </div>
         <div className="icon-title nav-horiz">
-          {horizLink('left', prev)}
           {horizLink('right', next)}
+          {horizLink('left', prev, true)}
         </div>
         <div className="icon-title">
           <Link to="/"><i className="fa fa-home"/>Home</Link>

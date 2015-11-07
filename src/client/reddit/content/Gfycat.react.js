@@ -4,7 +4,7 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import {parseUrl} from '../../utils';
 
-export default class FsImg extends Component {
+export default class Gfycat extends Component {
 
   parseId(url) {
     const parts = parseUrl(url);

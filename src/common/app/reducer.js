@@ -6,11 +6,13 @@ import {combineReducers} from 'redux';
 import device from '../device/reducer';
 import reddit from '../reddit/reducer';
 import imgur from '../imgur/reducer';
+import readability from '../readability/reducer';
 
 const appReducer = combineReducers({
   device,
   reddit,
-  imgur
+  imgur,
+  readability,
 });
 
 export default appReducer;
