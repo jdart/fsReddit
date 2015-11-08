@@ -1,10 +1,10 @@
 import App from './app/App.react';
 import NotFound from './notfound/Page.react';
 import React from 'react';
-import Home from './reddit/Home.react';
-import Subreddit from './reddit/Subreddit.react';
-import User from './reddit/User.react';
-import Oauth from './reddit/Oauth.react';
+import Home from './home/Home.react';
+import Subreddit from './reader/Subreddit.react';
+import User from './reader/User.react';
+import Oauth from './auth/Oauth.react';
 import {IndexRoute, Route} from 'react-router';
 
 export default function createRoutes(getState) {

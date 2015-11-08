@@ -13,10 +13,10 @@
 
 a
   text-decoration none
-  color lightness(#4D4291, 50%)
+  color #337ab7
 
 a:visited
-  color lightness(#4D4291, 50%)
+  color #337ab7
 
 html,
 body
@@ -25,128 +25,21 @@ body
 body
   background-color: #eee;
 
-.custom-subreddit
-  text-align center
-
-.login
-  width 100vw
-  height 100vh
-  text-align center
-  display flex
-  align-items center
-  justify-content center
-
-.home-subreddits
-  column-count 3
-  line-height 1.6em
-  li
-    list-style-type none
-
-.entries
-  display flex
-  align-content stretch
-
-.entries-content
-  order 1
-  flex auto
-  background-color #dfdfdf
-  overflow auto
-
-.preloader
-  display none
-
-.entries-content-img
-  width 100%
-  height 100vh
-  overflow hidden
-  display flex
-  align-items center
-  justify-content center
-
-.entries-nav
-  min-height 100vh
-  width 25vw
-  order 2
-  padding 1em
-  h2
-    font-size: 16px
-    margin-top 0
-  a
-    margin-bottom 0.3em
-  .truncate
-    white-space nowrap
-    span
-      overflow hidden
-      text-overflow ellipsis
-
 .icon-title
   a
     display flex
     align-content flex
     text-decoration none
-    span
+    > span
       flex auto
       overflow auto
       float left
-  i
-    margin-right 5px
-    width 20px
-    text-align center
-    height 100%
-    display block
-    float left
-
-.nav-vert
-  margin-top 1em
-
-.fsIframe
-  height 100vh
-  width 75vw
-  border none
-
-.gfycat-aligner, .imgurGifv-aligner
-  text-align center
-  display flex
-  align-items center
-  justify-content center
-  height 100vh
-
-.gfycat, .imgurGifv
-  -webkit-backface-visibility hidden
-  -webkit-transform scale(1)
-  width 100%
-  max-height 100%
-
-.youtube-aligner
-  height 100vh
-  position relative
-  padding-bottom 56.25%
-  height 0
-  overflow hidden
-  max-width 100%
-
-iframe.youtube
-  position absolute
-  top 0
-  left 0
-  width 100%
-  height 100%
-
-.content-reddit
-  padding 0 1em
-
-.content-reddit-body
-  margin-bottom 3em
-
-.comments
-  padding 0 1em
-  > .comment:first-of-type
-    border-top solid 1px #aaa
-  .comment
-    .body
-      border-bottom solid 1px #aaa
-    .details
-      padding-top 1em
-  .replies
-    margin-left 2em
+      width 0
+    > i
+      margin-right 5px
+      width 20px
+      text-align center
+      height 100%
+      display block
+      float left
 

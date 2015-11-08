@@ -1,0 +1,37 @@
+
+orange = #F6A45D
+
+@keyframes pulse
+  0%
+    opacity 1
+  100%
+    opacity 0
+
+.loader
+  display flex
+  position absolute
+  top 0
+  right 0
+  bottom 0
+  left 0
+
+.ldr
+  display flex
+  flex-direction row
+  flex-wrap wrap
+  justify-content space-around
+  align-items center
+  margin auto
+  width 2.5em
+  height 2.5em
+
+.ldr-blk
+  height 35%
+  width 35%
+  animation pulse 0.75s ease-in infinite alternate
+  background-color lightness(orange, 35%)
+
+.an_delay
+  animation-delay 0.75s
+
+
