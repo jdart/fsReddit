@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import FsImg from './FsImg.react';
-import {imgPreload, imgurParse} from '../utils';
+import {imgPreload, urlParse} from '../utils';
 import Loader from '../ui/Loader.react';
 import css from './Gfycat.styl';
 
@@ -17,9 +17,9 @@ export default class Imgur extends Component {
   }
 
   getRequest() {
-    const imgUrl = urlParse(this.props.url);
-    const album = imgUrl.pathname.match(/\/a\/([A-Za-z0-9]{4,})/);
-    const solo = imgUrl.pathname.match(/\/([A-Za-z0-9]{4,})/);
+    const url = urlParse(this.props.url);
+    const album = url.pathname.match(/\/a\/([A-Za-z0-9]{4,})/);
+    const solo = url.pathname.match(/\/([A-Za-z0-9]{4,})/);
     if (album)
       return 'album/' + album[1];
     return 'image/' + solo[1];
@@ -47,7 +47,7 @@ export default class Imgur extends Component {
 
   fetchEntry() {
     const query = this.getQuery();
-    const { entry } = this.props;
+    const {entry} = this.props;
     if (!query)
       this.props.actions.imgurFetch(this.getRequest());
     else if (entry && !entry.get('preloaded') && query.entries.size) {
@@ -90,28 +90,28 @@ export default class Imgur extends Component {
     this.props.actions.redditNavActions('none', null, null);
   }
 
-  treatGif(imgUrl) {
-    if (!imgUrl)
-      return imgUrl;
-    const { pathname } = url.parse(imgUrl);
+  treatGif(url) {
+    if (!url)
+      return url;
+    const {pathname} = urlParse(url);
     if (pathname.match(/\.gif$/))
-      return imgUrl + 'v';
-    return imgUrl;
+      return url + 'v';
+    return url;
   }
 
-  isVideo(imgUrl) {
-    const { pathname } = url.parse(imgUrl);
+  isVideo(url) {
+    const {pathname} = urlParse(url);
     return pathname.match(/\.gifv$/);
   }
 
-  imgId(imgUrl) {
-    const { pathname } = url.parse(imgUrl);
+  imgId(url) {
+    const {pathname} = urlParse(url);
     const parts = pathname.match(/\/([A-Za-z0-9]{4,})\./);
     return parts[1];
   }
 
-  renderGifv(imgUrl) {
-    const id = this.imgId(imgUrl);
+  renderGifv(url) {
+    const id = this.imgId(url);
     return (
       <div className="imgurGifv-aligner">
         <video
