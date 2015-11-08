@@ -24,8 +24,8 @@ export default class Gfycat extends Component {
     return (
       <div className="gfycat-aligner">
         <video className="gfycat" autoPlay="true" loop="true" poster={`//thumbs.gfycat.com/${id}-poster.jpg`}>
-          <source id="webmsource" src={`//fat.gfycat.com/${id}.webm`} type="video/webm" />
-          <source id="mp4source" src={`//giant.gfycat.com/${id}.mp4`} type="video/mp4" />
+          <source id="webmsource" src={`//zippy.gfycat.com/${id}.webm`} type="video/webm" />
+          <source id="mp4source" src={`//fat.gfycat.com/${id}.mp4`} type="video/mp4" />
         </video>
       </div>
     );

@@ -11,6 +11,12 @@ const InitialState = Record({
 const initialState = new InitialState;
 const revive = () => initialState;
 
+function pickBestSrc(data) {
+  if (data.gifv)
+    return data.gifv;
+  return data.link;
+}
+
 export default function imgurReducer(state = initialState, action) {
   if (!(state instanceof InitialState)) return revive();
 
@@ -31,8 +37,8 @@ export default function imgurReducer(state = initialState, action) {
           .set('isFetching', false)
           .update('entries', entries => {
             if (response.data.images)
-              return entries.push(... response.data.images.map(image => image.link));
-            return entries.push(response.data.link);
+              return entries.push(... response.data.images.map(pickBestSrc));
+            return entries.push(pickBestSrc(response.data));
           })
         )
       )
