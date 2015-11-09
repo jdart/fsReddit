@@ -61,7 +61,7 @@ export default class Subreddit extends Component {
     ) this.props.actions.redditFetchEntries(
         this.api(),
         this.url(),
-        entries.last()
+        't3_' + entries.last()
       );
   }
 

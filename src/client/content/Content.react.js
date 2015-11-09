@@ -27,7 +27,7 @@ export default class Content extends Component {
     if (hostMatch('streamable.com', url))
       return (<Streamable url={url} />);
     if (hostMatch('gfycat.com', url))
-      return (<Gfycat url={url} />);
+      return (<Gfycat {...this.props} url={url} />);
     if (hostMatch('youtube.com', url))
       return (<Youtube url={url} />);
     if (hostMatch('reddit.com', url))

@@ -4,6 +4,7 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import url from 'url';
 import getYouTubeID from 'get-youtube-id';
+import css from './Youtube.styl';
 
 
 export default class Youtube extends Component {

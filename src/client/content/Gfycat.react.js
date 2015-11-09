@@ -2,6 +2,7 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
+import Loader from '../ui/Loader.react';
 import url from 'url';
 import css from './Gfycat.styl';
 
@@ -9,6 +10,38 @@ export default class Gfycat extends Component {
 
   static propTypes = {
     url: PropTypes.string,
+    gfycat: PropTypes.object,
+  }
+
+  componentDidMount() {
+    this.fetch();
+  }
+
+  componentDidUpdate() {
+    this.fetch();
+  }
+
+  getId() {
+    return this.parseId(this.props.url);
+  }
+
+  getQuery() {
+    return this.props.gfycat
+      .queries
+      .get(this.getId());
+  }
+
+  getData() {
+    const query = this.getQuery();
+    if (!query)
+      return;
+    return query.get('data');
+  }
+
+  fetch() {
+    const query = this.getQuery();
+    if (!query || query.get('fetching') === null)
+      this.props.actions.gfycatFetch(this.getId());
   }
 
   parseId(input) {
@@ -18,15 +51,21 @@ export default class Gfycat extends Component {
   }
 
   render() {
-    if (!this.props.url)
-      return (<div />);
-    const id = this.parseId(this.props.url);
+    const data = this.getData();
+    const id = this.getId();
+    if (!data)
+      return (<Loader />);
     return (
       <div className="gfycat-aligner">
-        <video className="gfycat" autoPlay="true" loop="true" poster={`//thumbs.gfycat.com/${id}-poster.jpg`}>
-          <source id="webmsource" src={`//zippy.gfycat.com/${id}.webm`} type="video/webm" />
-          <source id="mp4source" src={`//fat.gfycat.com/${id}.mp4`} type="video/mp4" />
-        </video>
+        <video
+          id={`gfycat-${id}`}
+          className="gfycat"
+          autoPlay="true"
+          loop="true"
+          poster={`//thumbs.gfycat.com/${id}-poster.jpg`}
+          src={data.webmUrl}
+          preload="auto"
+        />
       </div>
     );
   }
