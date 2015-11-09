@@ -56,6 +56,7 @@ export default class Subreddit extends Component {
 
     if (
       query
+      && entries.size > 2
       && (query.get('index')-1) === (entries.size-2)
       && !query.get('isFetching')
     ) this.props.actions.redditFetchEntries(

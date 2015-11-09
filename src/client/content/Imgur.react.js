@@ -119,12 +119,8 @@ export default class Imgur extends Component {
           autoPlay="autoplay"
           loop="loop"
           className="imgurGifv"
-        >
-          <source
-            src={`//i.imgur.com/${id}.webm`}
-            type="video/webm"
-          />
-        </video>
+          src={`//i.imgur.com/${id}.webm`}
+        />
       </div>
     );
   }
