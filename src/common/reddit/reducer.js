@@ -223,6 +223,18 @@ export default function redditReducer(state = initialState, action) {
           .set('isFetching', false)
       );
     }
+
+    case C.REDDIT_COMMENT_QUERY: {
+      console.log(action.payload.entry);
+      return state.setIn(
+        ['queries', action.payload.url],
+        new Query({
+          isFetching: false,
+          entries: new List([action.payload.entry]),
+          index: 0,
+        })
+      );
+    }
   }
 
   return state;

@@ -90,6 +90,14 @@ export function redditFetchEntries(api, url, after) {
   return redditFetchListing(C.REDDIT_FETCH_ENTRIES, api, url, after);
 }
 
+export function redditCommentQuery(url, entry) {
+  debugger;
+  return {
+    type: C.REDDIT_COMMENT_QUERY,
+    payload: { url, entry }
+  };
+}
+
 export function redditFetchSubreddits(api) {
   return asyncRedditAction(
     C.REDDIT_FETCH_SUBREDDITS,

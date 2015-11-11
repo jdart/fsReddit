@@ -23,14 +23,16 @@ export default class Nav extends Component {
       action();
   }
 
+  entry(key) {
+    return this.props.entries[key];
+  }
+
   goNext() {
-    if (this.props.next.action)
-      this.props.next.action();
+    this.entry('next').action();
   }
 
   goPrev() {
-    if (this.props.prev.action)
-      this.props.prev.action();
+    this.entry('prev').action();
   }
 
   keyboardHandler(event) {
@@ -114,7 +116,7 @@ export default class Nav extends Component {
   }
 
   renderVert() {
-    const { navActions } = this.props.reddit;
+    const {navActions} = this.props.reddit;
     const up = navActions.get('up');
     const down = navActions.get('down');
     const title = navActions.get('title');
@@ -137,11 +139,14 @@ export default class Nav extends Component {
   }
 
   isRedditDotCom() {
-    return hostMatch('reddit.com', this.props.entry.get('url'));
+    return hostMatch(
+      'reddit.com',
+      this.props.entries.current.entry.get('url')
+    );
   }
 
   renderTitle(entry) {
-    if (this.isRedditDotCom.bind(this)())
+    if (this.isRedditDotCom())
       return;
     return (
       <h2>{entry.get('title')}</h2>
@@ -165,6 +170,12 @@ export default class Nav extends Component {
     if (this.isRedditDotCom())
       return;
     return (
+      <Link to={`/c/${entry.get('id')}`}>
+        <i className="fa fa-commenting" />
+        Comments
+      </Link>
+    );
+    return (
       <a href={`http://www.reddit.com/${entry.get('permalink')}`}>
         <i className="fa fa-commenting" />
         Comments
@@ -173,34 +184,37 @@ export default class Nav extends Component {
   }
 
   render() {
-    const { entry, prev, next } = this.props;
+    const { current, prev, next } = this.props.entries;
     const horizLink = this.renderHorizLink.bind(this);
-    const friend = () => this.props.actions.redditFriend(this.props.api, entry.get('author'));
+    const friend = () => this.props.actions.redditFriend(
+      this.props.api,
+      current.entry.get('author')
+    );
 
     return (
       <div className="reader-nav">
-        {this.renderTitle.bind(this)(entry)}
+        {this.renderTitle.bind(this)(current.entry)}
         <div className="icon-title">
-          <Link to={`/r/${entry.get('subreddit')}`}>
+          <Link to={`/r/${current.entry.get('subreddit')}`}>
             <i className="fa fa-reddit" />
-            {entry.get('subreddit')}
+            {current.entry.get('subreddit')}
           </Link>
           <div className="author">
-            <Link to={`/u/${entry.get('author')}`}>
+            <Link to={`/u/${current.entry.get('author')}`}>
               <i className="fa fa-user" />
-              {entry.get('author')}
+              {current.entry.get('author')}
             </Link>
             <a href="#" onClick={friend}>
               <i className="fa fa-eye" />
               <span>
-                Follow{entry.get('author_followed')
+                Follow{current.entry.get('author_followed')
                 ? (<span>ed<i className="fa fa-check"/></span>)
                 : ''}
               </span>
             </a>
           </div>
-          {this.renderVote.bind(this)(entry)}
-          {this.renderCommentLink.bind(this)(entry)}
+          {this.renderVote.bind(this)(current.entry)}
+          {this.renderCommentLink.bind(this)(current.entry)}
         </div>
         <div className="icon-title nav-horiz">
           {horizLink('right', next)}

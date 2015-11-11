@@ -34,15 +34,14 @@ export default class Content extends Component {
       return (<Reddit {...this.props} url={url} entry={entry} />);
     else if (hostMatch('imgur.com', url))
       return (<Imgur {...this.props} entry={entry} url={url} />);
-    //return (<FsIframe url={url}Readability/>);
+    return (<FsIframe url={url} />);
     return (<Readability {...this.props} url={url} />);
   }
 
   render() {
-    const {entry} = this.props;
     return (
       <div className="reader-content">
-        {this.renderContent.bind(this)(entry)}
+        {this.renderContent(this.props.entry)}
       </div>
     );
   }

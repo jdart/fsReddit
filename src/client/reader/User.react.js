@@ -8,9 +8,8 @@ import Reader from './Reader.react';
 
 export default class User extends Subreddit {
 
-  url() {
-    const { params } = this.props;
-    return '/user/' + params.name + '/submitted';
+  generateUrl(props) {
+    return '/user/' + props.params.name + '/submitted';
   }
 
 }

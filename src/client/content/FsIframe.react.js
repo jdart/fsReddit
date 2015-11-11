@@ -15,9 +15,10 @@ export default class FsIframe extends Component {
 
   isKnownIframeBlocker() {
     const host = url.parse(this.props.url).host;
-    return _.includes(host, [
+    return _.includes([
       'github.com',
-    ]);
+      'twitter.com',
+    ], host);
   }
 
   render() {

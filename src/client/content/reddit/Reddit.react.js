@@ -5,7 +5,7 @@ import {Link} from 'react-router';
 import Comments from './Comments.react';
 import css from './Reddit.styl';
 
-export default class FsIframe extends Component {
+export default class Reddit extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
