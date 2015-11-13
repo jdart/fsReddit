@@ -31,7 +31,7 @@ export default class Content extends Component {
       return (<Streamable url={url} />);
     else if (hostMatch('gfycat.com', url))
       return (<Gfycat {...this.props} url={url} />);
-    else if (hostMatch('youtube.com', url))
+    else if (hostMatch('youtube.com', url) || hostMatch('youtu.be', url))
       return (<Youtube url={url} />);
     else if (hostMatch('imgur.com', url))
       return (<Imgur {...this.props} entry={entry} url={url} />);
