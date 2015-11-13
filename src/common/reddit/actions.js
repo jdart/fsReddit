@@ -50,13 +50,13 @@ export function redditNavActions(id, prev, next, title) {
   }
 }
 
-export function redditFetchComments(api, entry) {
+export function redditFetchComments(api, id) {
   return asyncAction(
     C.REDDIT_FETCH_COMMENTS,
-    api(entry.get('permalink') + '.json')
+    api('/comments/' + id + '.json')
       .get({ sort: 'hot', raw_json: 1 })
-      .then(response => { return { response, entry: entry }; }),
-    { entry },
+      .then(response => { return { response, id }; }),
+    { id },
   );
 }
 
@@ -88,14 +88,6 @@ export function redditVote(api, entry) {
 
 export function redditFetchEntries(api, url, after) {
   return redditFetchListing(C.REDDIT_FETCH_ENTRIES, api, url, after);
-}
-
-export function redditCommentQuery(url, entry) {
-  debugger;
-  return {
-    type: C.REDDIT_COMMENT_QUERY,
-    payload: { url, entry }
-  };
 }
 
 export function redditFetchSubreddits(api) {

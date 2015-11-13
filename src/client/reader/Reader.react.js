@@ -17,6 +17,7 @@ export default class Reader extends Component {
     actions: PropTypes.object,
     entries: PropTypes.object,
     history: PropTypes.object,
+    comments: PropTypes.bool,
   }
 
   image(entry) {
@@ -38,7 +39,6 @@ export default class Reader extends Component {
     );
   }
 
-
   render() {
     const {current, next} = this.props.entries;
 
@@ -56,6 +56,7 @@ export default class Reader extends Component {
           {...this.props}
           entry={current.entry}
           nav={true}
+          comments={this.props.comments}
         />
         {this.preRender(next.entry)}
       </div>

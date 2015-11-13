@@ -17,21 +17,22 @@ export default class Content extends Component {
   static propTypes = {
     actions: PropTypes.object,
     entry: PropTypes.object,
+    comments: PropTypes.bool,
   }
 
   renderContent(entry) {
     const url = entry.get('url');
     const host = urlParse(url).host;
-    if (url.match(/\.(jpg|jpeg|png|gif)$/))
-      return (<FsImg url={url} />);
-    if (hostMatch('streamable.com', url))
-      return (<Streamable url={url} />);
-    if (hostMatch('gfycat.com', url))
-      return (<Gfycat {...this.props} url={url} />);
-    if (hostMatch('youtube.com', url))
-      return (<Youtube url={url} />);
-    if (hostMatch('reddit.com', url))
+    if (hostMatch('reddit.com', url) || this.props.comments)
       return (<Reddit {...this.props} url={url} entry={entry} />);
+    else if (url.match(/\.(jpg|jpeg|png|gif)$/))
+      return (<FsImg url={url} />);
+    else if (hostMatch('streamable.com', url))
+      return (<Streamable url={url} />);
+    else if (hostMatch('gfycat.com', url))
+      return (<Gfycat {...this.props} url={url} />);
+    else if (hostMatch('youtube.com', url))
+      return (<Youtube url={url} />);
     else if (hostMatch('imgur.com', url))
       return (<Imgur {...this.props} entry={entry} url={url} />);
     return (<FsIframe url={url} />);

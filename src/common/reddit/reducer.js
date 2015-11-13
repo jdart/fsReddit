@@ -207,34 +207,29 @@ export default function redditReducer(state = initialState, action) {
 
     case C.REDDIT_FETCH_COMMENTS_PENDING: {
       return state.setIn(
-        ['entries', action.payload.entry.get('id'), 'comments', 'isFetching'],
+        ['entries', action.payload.id, 'comments', 'isFetching'],
         true
       );
     }
 
     case C.REDDIT_FETCH_COMMENTS_SUCCESS: {
-      return state.updateIn([
-        'entries',
-        action.payload.entry.get('id'),
-        'comments'
-      ], comments =>
-        comments
-          .set('children', action.payload.response[1].data.children)
-          .set('isFetching', false)
-      );
-    }
-
-    case C.REDDIT_COMMENT_QUERY: {
-      console.log(action.payload.entry);
+      const response = action.payload.response;
       return state.setIn(
-        ['queries', action.payload.url],
-        new Query({
-          isFetching: false,
-          entries: new List([action.payload.entry]),
-          index: 0,
+        ['entries', action.payload.id],
+        new Map(response[0].data.children[0].data).merge({
+          comments: new Comments({
+            children: response[1].data.children,
+            isFetching: false,
+          }),
+          preloaded: true
         })
       );
     }
+
+    case C.REDDIT_FETCH_COMMENTS_ERROR: {
+      return invalidateIf401(state, action.payload.status);
+    }
+
   }
 
   return state;

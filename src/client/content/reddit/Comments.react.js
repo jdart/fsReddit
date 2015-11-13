@@ -30,7 +30,7 @@ export default class Comments extends Component {
       return;
     this.props.actions.redditFetchComments(
       this.props.reddit.api,
-      this.props.entry
+      this.props.entry.get('id')
     );
   }
 
