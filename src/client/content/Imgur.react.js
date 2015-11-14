@@ -67,6 +67,8 @@ export default class Imgur extends Component {
       return;
     const prev = this.getPrev();
     const next = this.getNext();
+    const first = this.getEntry(-query.index);
+    const last = this.getEntry(query.entries.size-1);
     const step = this.props.actions.imgurStep;
     const index = query.index;
     const req = this.getRequest();
@@ -77,6 +79,8 @@ export default class Imgur extends Component {
       id,
       prev ? (() => step(req, index - 1)) : null,
       next ? (() => step(req, index + 1)) : null,
+      first ? (() => step(req, 0)) : null,
+      last ? (() => step(req, query.entries.size-1)) : null,
       (index+1) + '/' + query.entries.size
     );
   }

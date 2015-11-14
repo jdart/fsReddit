@@ -38,13 +38,15 @@ export function redditEntryPreload(entry) {
   };
 }
 
-export function redditNavActions(id, prev, next, title) {
+export function redditNavActions(id, prev, next, first, last, title) {
   return {
     type: C.REDDIT_NAV_ACTIONS,
     payload: {
       id,
       prev,
       next,
+      first,
+      last,
       title
     }
   }

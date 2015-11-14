@@ -97,12 +97,15 @@ export default function makeConfig(isDevelopment) {
       chunkFilename: '[name]-[chunkhash].js'
     },
     plugins: (() => {
+      const reddit_key_env = process.env.REDDIT_KEY;
+      const reddit_key = reddit_key_env ? reddit_key_env : constants.REDDIT_KEY;
       const plugins = [
         new webpack.DefinePlugin({
           'process.env': {
             NODE_ENV: JSON.stringify(isDevelopment ? 'development' : 'production'),
-            IS_BROWSER: true
-          }
+            IS_BROWSER: true,
+            REDDIT_KEY: JSON.stringify(reddit_key),
+          },
         }),
       ];
       if (isDevelopment) plugins.push(

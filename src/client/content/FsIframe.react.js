@@ -5,6 +5,7 @@ import {Link} from 'react-router';
 import url from 'url';
 import _ from 'lodash';
 import css from './FsIframe.styl';
+import {hostMatch} from '../utils';
 
 export default class FsIframe extends Component {
 
@@ -15,10 +16,11 @@ export default class FsIframe extends Component {
 
   isKnownIframeBlocker() {
     const host = url.parse(this.props.url).host;
-    return _.includes([
+    return [
       'github.com',
       'twitter.com',
-    ], host);
+      'facebook.com',
+    ].some(blocked => hostMatch(blocked, 'http://' + host));
   }
 
   render() {

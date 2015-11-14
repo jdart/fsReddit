@@ -181,12 +181,14 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_NAV_ACTIONS: {
-      const { prev, next, id, title } = action.payload;
+      const { prev, next, first, last, id, title } = action.payload;
       return state.update('navActions', navActions =>
         navActions.merge({
           id,
           up: prev,
           down: next,
+          first,
+          last,
           title,
         })
       );

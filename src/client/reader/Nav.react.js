@@ -18,7 +18,11 @@ export default class Nav extends Component {
   }
 
   goVert(direction) {
-    const action = this.props.reddit.navActions.get(direction);
+    let action = this.props.reddit.navActions.get(direction);
+    if (!action)
+      action = this.props.reddit.navActions.get(
+        direction === 'up' ? 'last' : 'first'
+      );
     if (action)
       action();
   }
