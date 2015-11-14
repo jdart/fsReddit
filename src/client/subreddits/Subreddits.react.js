@@ -30,7 +30,7 @@ export default class Subreddits extends Component {
   }
 
   empty() {
-    return this.props.reddit.subreddits.get('isFetching') === null;
+    return this.props.reddit.subreddits.get('fetching') === null;
   }
 
   render() {

@@ -2,7 +2,7 @@
 import {Record, List, Map} from 'immutable';
 
 export const Subreddits = Record({
-  isFetching: null,
+  fetching: null,
   didInvalidate: null,
   lastUpdated: null,
   list: new List,
@@ -17,7 +17,7 @@ export const OauthData = Record({
 });
 
 export const Oauth = Record({
-  isFetching: true,
+  fetching: true,
   didInvalidate: null,
   lastUpdated: null,
   data: new OauthData,
@@ -29,7 +29,7 @@ export const User = Record({
 });
 
 export const Query = Record({
-  isFetching: true,
+  fetching: true,
   didInvalidate: null,
   lastUpdated: null,
   failed: null,
@@ -38,7 +38,7 @@ export const Query = Record({
 });
 
 export const Comments = Record({
-  isFetching: null,
+  fetching: null,
   children: null
 });
 

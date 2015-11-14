@@ -7,6 +7,7 @@ import FsImg from './FsImg.react';
 import FsIframe from './FsIframe.react';
 import Reddit from './reddit/Reddit.react';
 import Gfycat from './Gfycat.react';
+import Instagram from './Instagram.react';
 import Youtube from './Youtube.react';
 import Streamable from './Streamable.react';
 import Readability from './Readability.react';
@@ -15,8 +16,8 @@ import {hostMatch, urlParse} from '../utils';
 export default class Content extends Component {
 
   static propTypes = {
-    actions: PropTypes.object,
-    entry: PropTypes.object,
+    actions: PropTypes.object.isRequired,
+    entry: PropTypes.object.isRequired,
     comments: PropTypes.bool,
   }
 
@@ -31,6 +32,8 @@ export default class Content extends Component {
       return (<Streamable url={url} />);
     else if (hostMatch('gfycat.com', url))
       return (<Gfycat {...this.props} url={url} />);
+    else if (hostMatch('instagram.com', url))
+      return (<Instagram {...this.props} url={url} />);
     else if (hostMatch('youtube.com', url) || hostMatch('youtu.be', url))
       return (<Youtube url={url} />);
     else if (hostMatch('imgur.com', url))

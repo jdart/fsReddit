@@ -64,7 +64,7 @@ export default class Subreddit extends Component {
     return this.entries
       && this.entries.size > 2
       && (this.query.get('index')-1) === (this.entries.size-2)
-      && !this.query.get('isFetching');
+      && !this.query.get('fetching');
   }
 
   fetch() {

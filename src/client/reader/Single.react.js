@@ -45,7 +45,7 @@ export default class Single extends Component {
   fetch(props) {
     const entry = this.entry(props);
     const comments = entry ? entry.get('comments') : null;
-    const fetching = comments ? comments.get('isFetching') : null;
+    const fetching = comments ? comments.get('fetching') : null;
     if (!entry || fetching === null)
       this.fetchInitial(props);
   }
@@ -62,7 +62,7 @@ export default class Single extends Component {
   readerOrLoader() {
     const entry = this.entry();
     const comments = entry ? entry.get('comments') : false;
-    if (!entry || comments.get('isFetching') !== false)
+    if (!entry || comments.get('fetching') !== false)
       return (<Loader />);
     return (
       <Reader

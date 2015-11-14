@@ -70,7 +70,7 @@ export default function redditReducer(state = initialState, action) {
 
     case C.REDDIT_LOGIN_VALIDATE_PENDING: {
       return invalidate(state)
-        .setIn(['user', 'oauth', 'isFetching'], true);
+        .setIn(['user', 'oauth', 'fetching'], true);
     }
 
     case C.REDDIT_LOGIN_VALIDATE_SUCCESS: {
@@ -80,7 +80,7 @@ export default function redditReducer(state = initialState, action) {
         user: {
           oauth: {
             data: oauth,
-            isFetching: false,
+            fetching: false,
           },
           authenticated: true
         }
@@ -106,12 +106,12 @@ export default function redditReducer(state = initialState, action) {
     case C.REDDIT_FETCH_ENTRIES_PENDING: {
       if (payload.params.after)
         return state.setIn(
-          ['queries', payload.params.url, 'isFetching'],
+          ['queries', payload.params.url, 'fetching'],
           true
         );
       return state.setIn(
         ['queries', payload.params.url],
-        new Query({ isFetching: true })
+        new Query({ fetching: true })
       );
     }
 
@@ -121,7 +121,7 @@ export default function redditReducer(state = initialState, action) {
       return state.updateIn(['queries', key], query =>
         query
           .merge({
-            isFetching: false,
+            fetching: false,
             failed: false,
             index: data.after ? query.get('index') : 0,
           })
@@ -147,7 +147,7 @@ export default function redditReducer(state = initialState, action) {
       state = state.update('queries', queries =>
           queries.map(query =>
             query.merge({
-              isFetching: false,
+              fetching: false,
               failed: true,
             })
           )
@@ -198,7 +198,7 @@ export default function redditReducer(state = initialState, action) {
         'friends',
         ... action.payload.data.children.map(sr => sr.data.display_name)
       ))
-      .setIn(['subreddits', 'isFetching'], false);
+      .setIn(['subreddits', 'fetching'], false);
     }
 
     case C.REDDIT_FETCH_SUBREDDITS_ERROR: {
@@ -207,7 +207,7 @@ export default function redditReducer(state = initialState, action) {
 
     case C.REDDIT_FETCH_COMMENTS_PENDING: {
       return state.setIn(
-        ['entries', action.payload.id, 'comments', 'isFetching'],
+        ['entries', action.payload.id, 'comments', 'fetching'],
         true
       );
     }
@@ -219,7 +219,7 @@ export default function redditReducer(state = initialState, action) {
         new Map(response[0].data.children[0].data).merge({
           comments: new Comments({
             children: response[1].data.children,
-            isFetching: false,
+            fetching: false,
           }),
           preloaded: true
         })

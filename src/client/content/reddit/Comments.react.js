@@ -25,7 +25,7 @@ export default class Comments extends Component {
   }
 
   fetch() {
-    const fetching = this.comments().get('isFetching');
+    const fetching = this.comments().get('fetching');
     if (fetching !== null)
       return;
     this.props.actions.redditFetchComments(
@@ -35,7 +35,7 @@ export default class Comments extends Component {
   }
 
   ready() {
-    const fetching = this.comments().get('isFetching');
+    const fetching = this.comments().get('fetching');
     return !fetching && fetching !== null;
   }
 

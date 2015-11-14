@@ -25,7 +25,7 @@ export default function imgurReducer(state = initialState, action) {
     case C.IMGUR_FETCH_PENDING: {
       const reqid = action.payload.reqid;
       return state.update('queries', queries =>
-        queries.set(action.payload.reqid, new Query({isFetching: true}))
+        queries.set(action.payload.reqid, new Query({fetching: true}))
       );
     }
 
@@ -34,7 +34,7 @@ export default function imgurReducer(state = initialState, action) {
       const response = action.payload;
       return state.update('queries', queries =>
         queries.update(reqid, query => query
-          .set('isFetching', false)
+          .set('fetching', false)
           .update('entries', entries => {
             if (response.data.images)
               return entries.push(... response.data.images.map(pickBestSrc));

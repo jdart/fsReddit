@@ -2,7 +2,7 @@
 import {Record, List} from 'immutable';
 
 export const Query = Record({
-  isFetching: null,
+  fetching: null,
   entries: new List,
   index: 0,
 });
