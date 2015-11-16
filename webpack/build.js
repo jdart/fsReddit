@@ -1,6 +1,7 @@
 import gutil from 'gulp-util';
 import makeWebpackConfig from './makeConfig';
 import webpack from 'webpack';
+import fs from 'fs';
 
 export default function build(callback) {
   const config = makeWebpackConfig(false);
@@ -10,8 +11,7 @@ export default function build(callback) {
     // We can save jsonStats to be analyzed with
     // http://webpack.github.io/analyse or
     // https://github.com/robertknight/webpack-bundle-size-analyzer.
-    // import fs from 'fs';
-    // fs.writeFileSync('./bundle-stats.json', JSON.stringify(jsonStats));
+    fs.writeFileSync('./bundle-stats.json', JSON.stringify(jsonStats));
 
     const buildError = fatalError || jsonStats.errors[0] || jsonStats.warnings[0];
 

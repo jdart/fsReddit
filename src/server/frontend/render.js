@@ -73,10 +73,10 @@ function fetchComponentData(dispatch, req, {components, location, params}) {
 }
 
 function renderPage(store, renderProps, req) {
-  const clientState = store.getState();
+  //const clientState = store.getState();
   const {headers, hostname} = req;
   const appHtml = getAppHtml(store, renderProps);
-  const scriptHtml = getScriptHtml(clientState, headers, hostname);
+  const scriptHtml = getScriptHtml(headers, hostname);
 
   return '<!DOCTYPE html>' + ReactDOMServer.renderToStaticMarkup(
     <Html
@@ -99,7 +99,7 @@ function getAppHtml(store, renderProps) {
   );
 }
 
-function getScriptHtml(clientState, headers, hostname) {
+function getScriptHtml(headers, hostname) {
   let scriptHtml = '';
 
   const ua = useragent.is(headers['user-agent']);
@@ -118,9 +118,6 @@ function getScriptHtml(clientState, headers, hostname) {
   // Note how clientState is serialized. JSON.stringify is anti-pattern.
   // https://github.com/yahoo/serialize-javascript#user-content-automatic-escaping-of-html-characters
   return scriptHtml + `
-    <script>
-      window.__INITIAL_STATE__ = ${serialize(clientState)};
-    </script>
     <script src="${appScriptSrc}"></script>
   `;
 }

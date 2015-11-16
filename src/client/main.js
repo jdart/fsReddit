@@ -6,14 +6,12 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 import createEngine from 'redux-storage/engines/localStorage';
 import createRoutes from './createRoutes';
 import {Provider} from 'react-redux';
-
-// TODO: Add app storage example.
-// import storage from 'redux-storage';
+import storage from 'redux-storage';
 
 const app = document.getElementById('app');
-const engine = createEngine('este-app');
-const initialState = window.__INITIAL_STATE__;
-const store = configureStore({engine, initialState});
+const engine = createEngine('fs-reddit');
+
+const store = configureStore({engine});
 const routes = createRoutes(store.getState);
 
 ReactDOM.render(
@@ -25,6 +23,6 @@ ReactDOM.render(
   app,
   () => {
     // This is where state from local storage should be retrieved.
-    // storage.createLoader(engine)(store);
+    storage.createLoader(engine)(store);
   }
 );

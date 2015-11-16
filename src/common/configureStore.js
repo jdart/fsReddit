@@ -5,9 +5,7 @@ import injectDependencies from './lib/injectDependencies';
 import promiseMiddleware from 'redux-promise-middleware';
 import stateToJS from './lib/stateToJS';
 import {applyMiddleware, createStore} from 'redux';
-
-// TODO: Add example for browser/native storage.
-// import storage from 'redux-storage';
+import storage from 'redux-storage';
 
 export default function configureStore({engine, initialState}) {
 
@@ -22,15 +20,14 @@ export default function configureStore({engine, initialState}) {
     promiseMiddleware
   ];
 
-  // TODO: Add storage example.
-  // if (engine) {
-  //   // The order is important.
-  //   engine = storage.decorators.filter(engine, [
-  //     ['todos', 'list']
-  //   ]);
-  //   engine = storage.decorators.debounce(engine, 1500);
-  //   middleware.push(storage.createMiddleware(engine));
-  // }
+  if (engine) {
+    // The order is important.
+    engine = storage.decorators.filter(engine, [
+      ['reddit', 'user']
+    ]);
+    engine = storage.decorators.debounce(engine, 1500);
+    middleware.push(storage.createMiddleware(engine));
+  }
 
   const loggerEnabled =
     process.env.NODE_ENV !== 'production' && // eslint-disable-line no-undef

@@ -6,16 +6,10 @@ import {User, Subreddits, Oauth, OauthData, Query, Comment, Comments} from './ty
 import api from './api';
 import window from './window';
 import getRandomString from '../lib/getRandomString';
-import localStorage from './localStorage';
-
-const keys = {
-  oauth: 'reddit_oauth_data',
-  state: 'reddit_oauth_state'
-};
-
-const savedState = localStorage.get(keys.oauth, {});
+import { LOAD, SAVE } from 'redux-storage';
 
 const InitialState = Record({
+  loaded: false,
   api: null,
   user: new User,
   entries: new Map,
@@ -26,45 +20,38 @@ const InitialState = Record({
     down: null,
   }),
 });
-const initialState = new InitialState;
-const revive = () => {
-  const accessToken = savedState.access_token || null;
-  if (accessToken)
-    api.auth(accessToken);
-  return initialState.merge({
-    api,
-    user: {
-      authenticated: Boolean(accessToken),
-      oauth: {
-        data: savedState
-      }
-    }
-  });
-}
+
+const initialState = new InitialState();
 
 function invalidate(state) {
-  localStorage.set(keys.state, null);
-  localStorage.set(keys.oauth, {});
   return state.setIn(['user', 'oauth', 'data'], {})
     .setIn(['user', 'authenticated'], false);
 }
 
 function invalidateIf401(state, status) {
-  if (status !== 401)
+  if (status !== 401 && status !== 0)
     return state;
   return invalidate(state);
 }
 
 export default function redditReducer(state = initialState, action) {
-  const { payload } = action;
+  const {payload} = action;
   const oauth = (payload && payload.oauth) || null;
-  if (!(state instanceof InitialState)) return revive();
 
   switch (action.type) {
 
+    case LOAD: {
+      const access_token = payload.reddit.user.oauth.data;
+      if (access_token)
+        api.auth(access_token);
+      return state
+        .mergeIn(['user'], payload.reddit.user)
+        .set('api', access_token ? api : null)
+        .set('loaded', true);
+    }
+
     case C.REDDIT_LOGIN: {
       const oauthState = getRandomString();
-      localStorage.set(keys.state, oauthState);
       window.location = api.getAuthUrl(oauthState);
     }
 
@@ -74,7 +61,6 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_LOGIN_VALIDATE_SUCCESS: {
-      localStorage.set(keys.oauth, oauth);
       return state.merge({
         api,
         user: {
@@ -83,6 +69,18 @@ export default function redditReducer(state = initialState, action) {
             fetching: false,
           },
           authenticated: true
+        }
+      });
+    }
+
+    case C.REDDIT_LOGIN_VALIDATE_ERROR: {
+      return state.merge({
+        user: {
+          oauth: {
+            data: {},
+            fetching: false,
+          },
+          authenticated: false
         }
       });
     }
@@ -194,6 +192,10 @@ export default function redditReducer(state = initialState, action) {
       );
     }
 
+    case C.REDDIT_FETCH_SUBREDDITS_PENDING: {
+      return state.setIn(['subreddits', 'fetching'], true);
+    }
+
     case C.REDDIT_FETCH_SUBREDDITS_SUCCESS: {
       return state.updateIn(['subreddits', 'list'], list => list.push(
         'all',
@@ -204,7 +206,8 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_FETCH_SUBREDDITS_ERROR: {
-      return invalidateIf401(state, action.payload.status);
+      return invalidateIf401(state, action.payload.status)
+        .setIn(['subreddits', 'fetching'], false);
     }
 
     case C.REDDIT_FETCH_COMMENTS_PENDING: {

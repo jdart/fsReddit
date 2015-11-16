@@ -1,6 +1,5 @@
 
 import api from './api';
-import Promise from 'bluebird';
 import C from './consts';
 import { promiseConsts } from '../utils';
 

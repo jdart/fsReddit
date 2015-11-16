@@ -14,14 +14,23 @@ export default class Oauth extends Component {
   }
 
   componentDidMount() {
-    const qs = queryString.parse(window.location.hash);
-    this.props.actions.redditLoginValidate(qs);
+    this.runActions();
   }
 
   componentDidUpdate() {
+    this.runActions();
+  }
+
+  runActions() {
     const {reddit, history} = this.props;
-    if (reddit.user.get('authenticated'))
-      this.props.actions.redditLoggedIn(history)
+    const qs = queryString.parse(window.location.hash);
+    if (!this.props.reddit.get('loaded'))
+      return;
+    if (this.props.reddit.user.oauth.fetching === null) {
+      this.props.actions.redditLoginValidate(qs);
+    } else if (reddit.user.get('authenticated')) {
+      this.props.actions.redditLoggedIn(history);
+    }
   }
 
   render() {
