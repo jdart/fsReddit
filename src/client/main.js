@@ -22,7 +22,6 @@ ReactDOM.render(
   </Provider>,
   app,
   () => {
-    // This is where state from local storage should be retrieved.
     storage.createLoader(engine)(store);
   }
 );

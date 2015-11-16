@@ -6,7 +6,9 @@ import {User, Subreddits, Oauth, OauthData, Query, Comment, Comments} from './ty
 import api from './api';
 import window from './window';
 import getRandomString from '../lib/getRandomString';
-import { LOAD, SAVE } from 'redux-storage';
+import {LOAD, SAVE} from 'redux-storage';
+
+console.log('load const', LOAD)
 
 const InitialState = Record({
   loaded: false,
@@ -40,7 +42,7 @@ export default function redditReducer(state = initialState, action) {
 
   switch (action.type) {
 
-    case LOAD: {
+    case 'REDUX_STORAGE_LOAD': {
       const newState = state.set('loaded', true);
       if (!payload.reddit)
         return newState;
