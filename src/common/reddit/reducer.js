@@ -41,18 +41,22 @@ export default function redditReducer(state = initialState, action) {
   switch (action.type) {
 
     case LOAD: {
-      const access_token = payload.reddit.user.oauth.data;
+      const newState = state.set('loaded', true);
+      if (!payload.reddit)
+        return newState;
+      const {access_token} = payload.reddit.user.oauth.data;
       if (access_token)
         api.auth(access_token);
-      return state
-        .mergeIn(['user'], payload.reddit.user)
+      return newState
+        .mergeIn(['user', 'oauth', 'data'], payload.reddit.user.oauth.data)
         .set('api', access_token ? api : null)
-        .set('loaded', true);
+        .setIn(['user', 'authenticated'], access_token ? true : false);
     }
 
     case C.REDDIT_LOGIN: {
       const oauthState = getRandomString();
       window.location = api.getAuthUrl(oauthState);
+      return state;
     }
 
     case C.REDDIT_LOGIN_VALIDATE_PENDING: {
@@ -61,28 +65,15 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_LOGIN_VALIDATE_SUCCESS: {
-      return state.merge({
-        api,
-        user: {
-          oauth: {
-            data: oauth,
-            fetching: false,
-          },
-          authenticated: true
-        }
-      });
+      return state
+        .set('api', api)
+        .setIn(['user', 'oauth', 'fetching'], false)
+        .setIn(['user', 'authenticated'], true)
+        .mergeIn(['user', 'oauth', 'data'], oauth);
     }
 
     case C.REDDIT_LOGIN_VALIDATE_ERROR: {
-      return state.merge({
-        user: {
-          oauth: {
-            data: {},
-            fetching: false,
-          },
-          authenticated: false
-        }
-      });
+      return state.setIn(['user', 'oauth', 'fetching'], false);
     }
 
     case C.REDDIT_LOGGED_IN: {

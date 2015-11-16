@@ -17,7 +17,7 @@ export const OauthData = Record({
 });
 
 export const Oauth = Record({
-  fetching: true,
+  fetching: null,
   didInvalidate: null,
   lastUpdated: null,
   data: new OauthData,

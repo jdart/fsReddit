@@ -26,9 +26,9 @@ export default class Oauth extends Component {
     const qs = queryString.parse(window.location.hash);
     if (!this.props.reddit.get('loaded'))
       return;
-    if (this.props.reddit.user.oauth.fetching === null) {
+    if (this.props.reddit.user.oauth.get('fetching') === null) {
       this.props.actions.redditLoginValidate(qs);
-    } else if (reddit.user.get('authenticated')) {
+    } else if (this.props.reddit.user.get('authenticated')) {
       this.props.actions.redditLoggedIn(history);
     }
   }
@@ -36,7 +36,9 @@ export default class Oauth extends Component {
   render() {
     return (
       <DocumentTitle title="Authenticate">
-        <div />
+        <div>
+          <h2>Validating user...</h2>
+        </div>
       </DocumentTitle>
     );
   }

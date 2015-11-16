@@ -23,7 +23,7 @@ export default function configureStore({engine, initialState}) {
   if (engine) {
     // The order is important.
     engine = storage.decorators.filter(engine, [
-      ['reddit', 'user']
+      ['reddit', 'user', 'oauth', 'data'],
     ]);
     engine = storage.decorators.debounce(engine, 1500);
     middleware.push(storage.createMiddleware(engine));
