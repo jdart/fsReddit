@@ -6,12 +6,14 @@ import url from 'url';
 import _ from 'lodash';
 import css from './FsIframe.styl';
 import {hostMatch} from '../utils';
+import Reddit from './reddit/Reddit.react';
 
 export default class FsIframe extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
     url: PropTypes.string,
+    entry: PropTypes.object,
   }
 
   isKnownIframeBlocker() {
@@ -26,10 +28,13 @@ export default class FsIframe extends Component {
   render() {
     if (this.isKnownIframeBlocker())
       return (
-        <p>
-          <span>Unable to display pages from this domain. </span>
-          <a target="BLANK" href={this.props.url}>{this.props.url}</a>
-        </p>
+        <div>
+          <p>
+            <span>Unable to display pages from this domain. </span>
+            <a target="BLANK" href={this.props.url}>{this.props.url}</a>
+          </p>
+          <Reddit {...this.props} url={this.props.url} entry={this.props.entry} />
+        </div>
       );
     return (
       <iframe className="fsIframe" src={this.props.url} />

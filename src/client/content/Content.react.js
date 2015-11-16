@@ -38,7 +38,7 @@ export default class Content extends Component {
       return (<Youtube url={url} />);
     else if (hostMatch('imgur.com', url))
       return (<Imgur {...this.props} entry={entry} url={url} />);
-    return (<FsIframe url={url} />);
+    return (<FsIframe {...this.props} url={url} entry={entry} />);
     return (<Readability {...this.props} url={url} />);
   }
 
