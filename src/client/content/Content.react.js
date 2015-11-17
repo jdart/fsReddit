@@ -39,7 +39,7 @@ export default class Content extends Component {
     else if (hostMatch('imgur.com', url))
       return (<Imgur {...this.props} entry={entry} url={url} />);
     return (<FsIframe {...this.props} url={url} entry={entry} />);
-    return (<Readability {...this.props} url={url} />);
+    //return (<Readability {...this.props} url={url} />);
   }
 
   render() {

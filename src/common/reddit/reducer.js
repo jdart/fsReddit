@@ -6,9 +6,6 @@ import {User, Subreddits, Oauth, OauthData, Query, Comment, Comments} from './ty
 import api from './api';
 import window from './window';
 import getRandomString from '../lib/getRandomString';
-import {LOAD, SAVE} from 'redux-storage';
-
-console.log('load const', LOAD)
 
 const InitialState = Record({
   loaded: false,
