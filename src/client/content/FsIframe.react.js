@@ -25,19 +25,33 @@ export default class FsIframe extends Component {
     ].some(blocked => hostMatch(blocked, 'http://' + host));
   }
 
-  render() {
-    if (this.isKnownIframeBlocker())
-      return (
-        <div>
-          <p>
-            <span>Unable to display pages from this domain. </span>
-            <a target="BLANK" href={this.props.url}>{this.props.url}</a>
-          </p>
-          <Reddit {...this.props} url={this.props.url} entry={this.props.entry} />
-        </div>
-      );
+  renderFailedIframe() {
     return (
-      <iframe className="fsIframe" src={this.props.url} />
+      <div className="fsIframeFailed">
+        <p>
+          <span>Unable to display pages from this domain. </span>
+          <a target="BLANK" href={this.props.url}>{this.props.url}</a>
+        </p>
+        <Reddit {...this.props} url={this.props.url} entry={this.props.entry} />
+      </div>
+    );
+  }
+
+  loaded() {
+    if (this.props.entry.get('iframeLoadMs') !== null)
+      return;
+    this.props.actions.redditIframeLoaded(
+      this.props.entry,
+      Date.now() - this.startTime
+    );
+  }
+
+  render() {
+    if (this.isKnownIframeBlocker() || this.props.entry.get('iframeLoadMs') < 500)
+      return this.renderFailedIframe();
+    this.startTime = Date.now();
+    return (
+      <iframe className="fsIframe" src={this.props.url} onLoad={this.loaded.bind(this)} />
     );
   }
 

@@ -110,6 +110,16 @@ export function redditQueryIndex(url, index) {
   };
 }
 
+export function redditIframeLoaded(entry, time) {
+  return {
+    type: C.REDDIT_IFRAME_LOADED,
+    payload: {
+      entry,
+      time
+    }
+  };
+}
+
 export function redditFetchPost(id) {
   return {
     type: promiseConsts(C.REDDIT_FETCH_POST),

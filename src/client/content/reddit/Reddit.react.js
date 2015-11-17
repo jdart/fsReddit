@@ -18,7 +18,7 @@ export default class Reddit extends Component {
       <div className="reddit">
         <hgroup>
           <h2>{entry.get('title')}</h2>
-          <h4><Link className="icon-title" to={`/u/${entry.get('author')}`}>
+          <h4><Link className="reddit-author icon-title" to={`/u/${entry.get('author')}`}>
             <i className="fa fa-user" />{entry.get('author')}
           </Link></h4>
         </hgroup>
@@ -26,7 +26,9 @@ export default class Reddit extends Component {
           className="reddit-body"
           dangerouslySetInnerHTML={{__html: entry.get('selftext_html')}}
         />
-        <Comments {...this.props} entry={entry} />
+        <div className="reddit-comments-root">
+          <Comments {...this.props} entry={entry} />
+        </div>
       </div>
     );
   }

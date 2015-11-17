@@ -24,7 +24,7 @@ export default class Comment extends Component {
 
   render() {
     const {data} = this.props;
-    if (!data.body_html)
+    if (!data.body_html || data.body_html === '<div class="md"></div>')
       return (<div/>);
     return (
       <div className="reddit-comment">

@@ -127,7 +127,8 @@ export default function redditReducer(state = initialState, action) {
           entries.set(child.data.id, new Map(child.data)
             .merge({
               comments: new Comments,
-              preloaded: false
+              preloaded: false,
+              iframeLoadMs: null,
             })),
           entries
         )
@@ -212,6 +213,8 @@ export default function redditReducer(state = initialState, action) {
 
     case C.REDDIT_FETCH_COMMENTS_SUCCESS: {
       const response = action.payload.response;
+      const entry = state.entries.get(action.payload.id);
+      const iframeLoadMs = entry ? entry.get('iframeLoadMs') : null;
       return state.setIn(
         ['entries', action.payload.id],
         new Map(response[0].data.children[0].data).merge({
@@ -219,13 +222,21 @@ export default function redditReducer(state = initialState, action) {
             children: response[1].data.children,
             fetching: false,
           }),
-          preloaded: true
+          preloaded: true,
+          iframeLoadMs,
         })
       );
     }
 
     case C.REDDIT_FETCH_COMMENTS_ERROR: {
       return invalidateIf401(state, action.payload.status);
+    }
+
+    case C.REDDIT_IFRAME_LOADED: {
+      return state.setIn(
+        ['entries', action.payload.entry.get('id'), 'iframeLoadMs'],
+        action.payload.time
+      );
     }
 
   }

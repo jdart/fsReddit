@@ -2,18 +2,46 @@
 .reddit
   padding 0 1em
 
+.reddit-author i
+  margin-right 0.3em
+
 .reddit-body
   margin-bottom 3em
 
+.reddit-comments-root > .reddit-comments
+  padding 0
+  > .reddit-comment
+    padding-left 0
+
 .reddit-comments
   padding 0 1em
-  > .comment:first-of-type
-    border-top solid 1px #aaa
-  .comment
-    .body
-      border-bottom solid 1px #aaa
+  > .reddit-comment:first-of-type
+    border-top solid 1px #ddd
+  .reddit-comment
+    padding-left 0.66em
     .details
-      padding-top 1em
+      padding-top 0.66em
   .replies
-    margin-left 2em
+    padding-bottom 0.66em
+
+.reddit-comment
+  background-color #ddd
+  .reddit-comment
+    background-color lightness(#ddd, 97.5%)
+    .reddit-comment
+      background-color lightness(#ddd, 95%)
+      .reddit-comment
+        background-color lightness(#ddd, 92.5%)
+        .reddit-comment
+          background-color lightness(#ddd, 90%)
+          .reddit-comment
+            background-color lightness(#ddd, 87.5%)
+            .reddit-comment
+              background-color lightness(#ddd, 85%)
+              .reddit-comment
+                background-color lightness(#ddd, 82.5%)
+                .reddit-comment
+                  background-color lightness(#ddd, 80%)
+                  .reddit-comment
+                    background-color lightness(#ddd, 77.5%)
 
