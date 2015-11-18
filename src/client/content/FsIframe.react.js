@@ -46,8 +46,13 @@ export default class FsIframe extends Component {
     );
   }
 
+  wasTooFast() {
+    const loadMs = this.props.entry.get('iframeLoadMs');
+    return loadMs !== null && loadMs < 500;
+  }
+
   render() {
-    if (this.isKnownIframeBlocker() || this.props.entry.get('iframeLoadMs') < 500)
+    if (this.isKnownIframeBlocker() || this.wasTooFast())
       return this.renderFailedIframe();
     this.startTime = Date.now();
     return (
