@@ -12,8 +12,8 @@ export default class FsIframe extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
-    url: PropTypes.string,
-    entry: PropTypes.object,
+    url: PropTypes.string.isRequired,
+    entry: PropTypes.object.isRequired,
   }
 
   isKnownIframeBlocker() {

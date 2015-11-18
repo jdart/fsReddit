@@ -4,8 +4,6 @@ import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import Subreddits from '../subreddits/Subreddits.react';
-import Login from './Login.react';
-import CustomSubreddit from '../subreddits/CustomSubreddit.react';
 
 export default class Home extends Component {
 
@@ -13,22 +11,10 @@ export default class Home extends Component {
     reddit: PropTypes.object,
   }
 
-  apiReady() {
-    const store = this.props.reddit;
-    return store.api && store.user.get('authenticated');
-  }
-
-  renderLogin() {
-    return (
-      <Login {...this.props} />
-    );
-  }
-
   renderReady() {
     return (
       <div>
         <Subreddits {...this.props} />
-        <CustomSubreddit {...this.props} />
       </div>
     );
   }
@@ -37,7 +23,7 @@ export default class Home extends Component {
     return (
       <DocumentTitle title="FullScreen Reddit">
         <div className="home-page">
-          {this.apiReady() ? this.renderReady() : this.renderLogin()}
+          {this.renderReady()}
         </div>
       </DocumentTitle>
     );

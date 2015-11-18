@@ -30,19 +30,12 @@ export default class Subreddit extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.shortcuts(nextProps);
-    this.redirect() || this.fetch();
+    this.fetch();
   }
 
   componentWillMount() {
     this.shortcuts(this.props);
-    this.redirect() || this.fetch();
-  }
-
-  redirect() {
-    if (this.props.reddit.api && this.props.reddit.user.get('authenticated'))
-      return false;
-    this.props.history.pushState(null, '/');
-    return true;
+    this.fetch();
   }
 
   fetchInitial() {
@@ -68,6 +61,9 @@ export default class Subreddit extends Component {
   }
 
   fetch() {
+    if (typeof window === 'undefined')
+      return;
+
     if (!this.query)
       this.fetchInitial();
     else if (this.needMore())

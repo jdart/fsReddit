@@ -2,38 +2,59 @@
 import api from './api';
 import C from './consts';
 import { promiseConsts } from '../utils';
+import fetch from 'isomorphic-fetch';
+import queryString from 'query-string';
 
-
-function asyncRedditAction(type, api, url, options = {}) {
-  return asyncAction(
-    type,
-    api(url).get(options)
-  );
-}
-
-function asyncAction(type, promise, payload) {
+function asyncAction(type, promise, payload = {}) {
   return {
     type: Object.keys(promiseConsts(type)),
-    payload: { promise, data: payload },
+    payload: {
+      promise: promise.then(response => _.merge(response, payload)),
+      data: payload
+    },
   };
 }
 
-export function redditFriend(api, author) {
+function asyncRedditAction(api, type, action, url, options = {}, payload = {}) {
+  if (api)
+    return asyncAction(
+      type,
+      api(url)[action](options),
+      payload
+    );
+
+  return asyncUnauthRedditAction(type, action, url, options, payload);
+}
+
+function asyncUnauthRedditAction(type, action, url, options = {}, payload = {}) {
+  const fullUrl = [
+    'https://api.reddit.com',
+    url,
+    '?', queryString.stringify(options),
+  ].join('');
+
   return asyncAction(
+    type,
+    fetch(fullUrl).then(response => response.json()),
+    payload
+  );
+}
+
+export function redditFriend(api, author) {
+  return asyncRedditAction(
+    api,
     C.REDDIT_FRIEND,
-    api('/api/v1/me/friends/' + author)
-      .put({json: JSON.stringify({ name: author })})
-      .then(response => _.set(response, 'author', author)),
-    { author }
+    'put',
+    '/api/v1/me/friends/' + author,
+    {json: JSON.stringify({name: author})},
+    {author}
   );
 }
 
 export function redditEntryPreload(entry) {
   return {
     type: C.REDDIT_ENTRY_PRELOADED,
-    payload: {
-      entry
-    }
+    payload: {entry}
   };
 }
 
@@ -52,37 +73,37 @@ export function redditNavActions(id, prev, next, first, last, title) {
 }
 
 export function redditFetchComments(api, id) {
-  return asyncAction(
+  return asyncRedditAction(
+    api,
     C.REDDIT_FETCH_COMMENTS,
-    api('/comments/' + id + '.json')
-      .get({ sort: 'hot', raw_json: 1 })
-      .then(response => { return { response, id }; }),
-    { id },
+    'get',
+    `/comments/${id}.json`,
+    {sort: 'hot', raw_json: 1},
+    {id},
   );
 }
 
 export function redditFetchListing(type, api, url, after) {
-  const params = { url, after };
-  return asyncAction(
+  return asyncRedditAction(
+    api,
     type,
-    api(url + '.json')
-      .get({ after, raw_json: 1 })
-      .then(response => _.set(response, 'params', params)),
-    { params },
+    'get',
+    `${url}.json`,
+    {after, raw_json: 1},
+    {url, after}
   );
 }
 
 export function redditVote(api, entry) {
   const dir = entry.get('likes') ? 0 : 1;
-  const data = { entry, dir };
-  return asyncAction(
+  const data = {entry, dir};
+
+  return asyncRedditAction(
+    api,
     C.REDDIT_VOTE,
-    api('/api/vote')
-      .post({
-        dir,
-        id: 't3_' + entry.get('id')
-      })
-      .then(response => _.merge(response, data)),
+    'post',
+    '/api/vote',
+    {dir, id: 't3_' + entry.get('id')},
     data
   );
 }
@@ -93,10 +114,11 @@ export function redditFetchEntries(api, url, after) {
 
 export function redditFetchSubreddits(api) {
   return asyncRedditAction(
-    C.REDDIT_FETCH_SUBREDDITS,
     api,
-    '/subreddits/mine/subscriber',
-    { limit: 100 }
+    C.REDDIT_FETCH_SUBREDDITS,
+    'get',
+    api ? '/subreddits/mine/subscriber' : '/subreddits/default',
+    {limit: 100}
   );
 }
 
@@ -116,15 +138,6 @@ export function redditIframeLoaded(entry, time) {
     payload: {
       entry,
       time
-    }
-  };
-}
-
-export function redditFetchPost(id) {
-  return {
-    type: promiseConsts(C.REDDIT_FETCH_POST),
-    payload: {
-      promise: api('')
     }
   };
 }

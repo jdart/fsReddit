@@ -16,18 +16,11 @@ export default class Single extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.redirect() || this.fetch(nextProps);
+    this.fetch(nextProps);
   }
 
   componentWillMount() {
-    this.redirect() || this.fetch(this.props);
-  }
-
-  redirect() {
-    if (this.props.reddit.api && this.props.reddit.user.get('authenticated'))
-      return false;
-    this.props.history.pushState(null, '/');
-    return true;
+    this.fetch(this.props);
   }
 
   entry(props) {

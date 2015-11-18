@@ -158,6 +158,8 @@ export default class Nav extends Component {
   }
 
   renderVote(entry) {
+    if (!this.props.reddit.user.get('authenticated'))
+      return;
     const { redditVote } = this.props.actions;
     const vote = () => redditVote(this.props.api, entry);
     const icon = entry.get('likes') ? 'arrow-circle-up' : 'arrow-circle-o-up';
@@ -187,13 +189,30 @@ export default class Nav extends Component {
     );
   }
 
+  renderFollow(entry) {
+    if (!this.props.reddit.user.get('authenticated'))
+      return;
+
+    const friend = () => this.props.actions.redditFriend(
+      this.props.api,
+      entry.get('author')
+    );
+
+    return (
+      <a href="#" onClick={friend}>
+        <i className="fa fa-eye" />
+        <span>
+          Follow{entry.get('author_followed')
+          ? (<span>ed<i className="fa fa-check"/></span>)
+          : ''}
+        </span>
+      </a>
+    );
+  }
+
   render() {
     const { current, prev, next } = this.props.entries;
     const horizLink = this.renderHorizLink.bind(this);
-    const friend = () => this.props.actions.redditFriend(
-      this.props.api,
-      current.entry.get('author')
-    );
 
     return (
       <div className="reader-nav">
@@ -208,14 +227,7 @@ export default class Nav extends Component {
               <i className="fa fa-user" />
               {current.entry.get('author')}
             </Link>
-            <a href="#" onClick={friend}>
-              <i className="fa fa-eye" />
-              <span>
-                Follow{current.entry.get('author_followed')
-                ? (<span>ed<i className="fa fa-check"/></span>)
-                : ''}
-              </span>
-            </a>
+            {this.renderFollow.bind(this)(current.entry)}
           </div>
           {this.renderVote.bind(this)(current.entry)}
           {this.renderCommentLink.bind(this)(current.entry)}

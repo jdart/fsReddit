@@ -4,6 +4,8 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import Loader from '../ui/Loader.react';
 import css from './Subreddits.styl';
+import Login from '../home/Login.react';
+import CustomSubreddit from './CustomSubreddit.react';
 
 export default class Subreddits extends Component {
 
@@ -19,6 +21,14 @@ export default class Subreddits extends Component {
 
   componentDidMount() {
     this.fetch();
+  }
+
+  renderLogin() {
+    if (this.props.reddit.user.get('authenticated'))
+      return;
+    return (
+      <Login {...this.props} />
+    );
   }
 
   fetch() {
@@ -39,6 +49,10 @@ export default class Subreddits extends Component {
       return (<Loader />);
     return (
       <ul className="home-subreddits">
+        <li className="extras">
+          {this.renderLogin()}
+          <CustomSubreddit {...this.props} />
+        </li>
         <li key="frontpage">
           <Link to="/f/hot">
             Frontpage

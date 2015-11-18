@@ -92,20 +92,22 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_FETCH_ENTRIES_PENDING: {
-      if (payload.params.after)
+      if (payload.after)
         return state.setIn(
-          ['queries', payload.params.url, 'fetching'],
+          ['queries', payload.url, 'fetching'],
           true
         );
+
       return state.setIn(
-        ['queries', payload.params.url],
+        ['queries', payload.url],
         new Query({ fetching: true })
       );
     }
 
     case C.REDDIT_FETCH_ENTRIES_SUCCESS: {
-      const key = payload.params.url;
+      const key = payload.url;
       const data = payload.data;
+
       return state.updateIn(['queries', key], query =>
         query
           .merge({
@@ -188,10 +190,12 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_FETCH_SUBREDDITS_SUCCESS: {
+      let extras = ['all'];
+      if (state.user.get('authenticated'))
+        extras.push('friends');
       return state.updateIn(['subreddits', 'list'], list => list.push(
-        'all',
-        'friends',
-        ... action.payload.data.children.map(sr => sr.data.display_name)
+        ...extras,
+        ...action.payload.data.children.map(sr => sr.data.display_name)
       ))
       .setIn(['subreddits', 'fetching'], false);
     }
@@ -209,14 +213,16 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_FETCH_COMMENTS_SUCCESS: {
-      const response = action.payload.response;
+      const commentData = action.payload[0];
+      const entryData = action.payload[1];
       const entry = state.entries.get(action.payload.id);
       const iframeLoadMs = entry ? entry.get('iframeLoadMs') : null;
+
       return state.setIn(
         ['entries', action.payload.id],
-        new Map(response[0].data.children[0].data).merge({
+        new Map(commentData.data.children[0].data).merge({
           comments: new Comments({
-            children: response[1].data.children,
+            children: entryData.data.children,
             fetching: false,
           }),
           preloaded: true,
