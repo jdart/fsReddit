@@ -115,7 +115,8 @@ export default function makeConfig(isDevelopment) {
       );
       else plugins.push(
         new HtmlWebpackPlugin({
-          template: './src/client/index.html'
+          template: './src/client/index.html',
+          hash: true,
         }),
         // Render styles into separate cacheable file to prevent FOUC and
         // optimize for critical rendering path.
