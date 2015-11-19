@@ -45,7 +45,7 @@ export default class Subreddits extends Component {
 
   render() {
     const {actions} = this.props;
-    if (this.props.reddit.subreddits.get('fetching'))
+    if (this.empty(this.props) || this.props.reddit.subreddits.get('fetching'))
       return (<Loader />);
 
     return (

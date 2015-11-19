@@ -70,7 +70,8 @@ export default function redditReducer(state = initialState, action) {
         .setIn(['user', 'oauth', 'fetching'], false)
         .setIn(['user', 'authenticated'], true)
         .mergeIn(['user', 'oauth', 'data'], oauth)
-        .mergeDeep('subreddits', {fetching: null, list: new List});
+        .setIn(['subreddits', 'fetching'], null)
+        .setIn(['subreddits', 'list'], new List);
     }
 
     case C.REDDIT_LOGIN_VALIDATE_ERROR: {
