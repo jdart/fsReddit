@@ -34,10 +34,6 @@ function invalidateIf401(state, status) {
 }
 
 export default function redditReducer(state = initialState, action) {
-  if (!(state instanceof InitialState)) {
-    return initialState.mergeDeep(state);
-  }
-
   const {payload} = action;
   const oauth = (payload && payload.oauth) || null;
 
@@ -74,10 +70,7 @@ export default function redditReducer(state = initialState, action) {
         .setIn(['user', 'oauth', 'fetching'], false)
         .setIn(['user', 'authenticated'], true)
         .mergeIn(['user', 'oauth', 'data'], oauth)
-        .updateIn('subreddits', subreddits => subreddits
-          .set('fetching', null)
-          .set('list', new List)
-        );
+        .mergeDeep('subreddits', {fetching: null, list: new List});
     }
 
     case C.REDDIT_LOGIN_VALIDATE_ERROR: {
@@ -123,6 +116,7 @@ export default function redditReducer(state = initialState, action) {
             fetching: false,
             failed: false,
             index: data.after ? query.get('index') : 0,
+            after: data.after === null ? false : data.after,
           })
           .update('entries', entries => entries.concat(
             data.children

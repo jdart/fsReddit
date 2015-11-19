@@ -49,13 +49,14 @@ export default class Subreddit extends Component {
     this.props.actions.redditFetchEntries(
       this.props.reddit.api,
       this.url,
-      't3_' + this.entries.last()
+      't3_' + this.query.get('after')
     );
   }
 
   needMore() {
     return this.entries
       && this.entries.size > 2
+      && this.query.get('after') !== false
       && (this.query.get('index')-1) === (this.entries.size-2)
       && !this.query.get('fetching');
   }
