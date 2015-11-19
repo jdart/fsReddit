@@ -7,6 +7,7 @@ import _ from 'lodash';
 import css from './FsIframe.styl';
 import {hostMatch} from '../utils';
 import Reddit from './reddit/Reddit.react';
+import Loader from '../ui/Loader.react';
 
 export default class FsIframe extends Component {
 
@@ -48,15 +49,22 @@ export default class FsIframe extends Component {
 
   wasTooFast() {
     const loadMs = this.props.entry.get('iframeLoadMs');
-    return loadMs !== null && loadMs < 500;
+    return loadMs !== null && loadMs < 333;
   }
 
   render() {
     if (this.isKnownIframeBlocker() || this.wasTooFast())
       return this.renderFailedIframe();
     this.startTime = Date.now();
+    const loaded = !!this.props.entry.get('iframeLoadMs');
     return (
-      <iframe className="fsIframe" src={this.props.url} onLoad={this.loaded.bind(this)} />
+      <div className="fsIframe">
+        <iframe
+          src={this.props.url}
+          onLoad={this.loaded.bind(this)}
+        />
+        {loaded ? '' : (<Loader />)}
+      </div>
     );
   }
 
