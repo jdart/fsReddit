@@ -17,13 +17,34 @@ export default class FsIframe extends Component {
     entry: PropTypes.object.isRequired,
   }
 
-  isKnownIframeBlocker() {
+  componentWillMount() {
+    this.timers = {};
+  }
+
+  startTimer() {
+    if (this.timers[this.props.url])
+      return;
+
+    this.timers[this.props.url] = Date.now();
+  }
+
+  blacklisted() {
+    if (this.whitelisted())
+      return false;
+
     const host = url.parse(this.props.url).host;
     return [
       'github.com',
       'twitter.com',
       'facebook.com',
     ].some(blocked => hostMatch(blocked, 'http://' + host));
+  }
+
+  whitelisted() {
+    const host = url.parse(this.props.url).host;
+    return [
+      'nytimes.com',
+    ].some(fastSite => hostMatch(fastSite, 'http://' + host));
   }
 
   renderFailedIframe() {
@@ -41,22 +62,24 @@ export default class FsIframe extends Component {
   loaded() {
     if (this.props.entry.get('iframeLoadMs') !== null)
       return;
+
     this.props.actions.redditIframeLoaded(
       this.props.entry,
-      Date.now() - this.startTime
+      Date.now() - this.timers[this.props.url]
     );
   }
 
-  wasTooFast() {
+  tooFast() {
     const loadMs = this.props.entry.get('iframeLoadMs');
     return loadMs !== null && loadMs < 333;
   }
 
   render() {
-    if (this.isKnownIframeBlocker() || this.wasTooFast())
+    if (this.blacklisted() || this.tooFast())
       return this.renderFailedIframe();
-    this.startTime = Date.now();
+
     const loaded = !!this.props.entry.get('iframeLoadMs');
+    this.startTimer();
     return (
       <div className="fsIframe">
         <iframe
