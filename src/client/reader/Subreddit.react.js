@@ -49,7 +49,7 @@ export default class Subreddit extends Component {
     this.props.actions.redditFetchEntries(
       this.props.reddit.api,
       this.url,
-      't3_' + this.query.get('after')
+      this.query.get('after')
     );
   }
 
