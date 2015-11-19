@@ -18,7 +18,13 @@ export default function render(req, res, next) {
   const initialState = {
     device: {
       isMobile: ['phone', 'tablet'].indexOf(req.device.type) > -1
-    }
+    },
+    reddit: {
+      subreddits: {
+        fetching: false,
+        list: ["all", "gadgets", "sports", "gaming", "pics", "worldnews", "videos", "AskReddit", "aww", "Music", "funny", "news", "movies", "blog", "books", "history", "food", "philosophy", "television", "Jokes", "Art", "DIY", "space", "Documentaries", "Fitness", "askscience", "nottheonion", "todayilearned", "personalfinance", "gifs", "listentothis", "IAmA", "announcements", "TwoXChromosomes", "creepy", "nosleep", "GetMotivated", "WritingPrompts", "LifeProTips", "EarthPorn", "explainlikeimfive", "Showerthoughts", "Futurology", "photoshopbattles", "mildlyinteresting", "dataisbeautiful", "tifu", "OldSchoolCool", "UpliftingNews", "InternetIsBeautiful", "science"]
+      },
+    },
   };
   const store = configureStore({initialState});
 
@@ -73,10 +79,10 @@ function fetchComponentData(dispatch, req, {components, location, params}) {
 }
 
 function renderPage(store, renderProps, req) {
-  //const clientState = store.getState();
+  const clientState = store.getState();
   const {headers, hostname} = req;
   const appHtml = getAppHtml(store, renderProps);
-  const scriptHtml = getScriptHtml(headers, hostname);
+  const scriptHtml = getScriptHtml(clientState, headers, hostname);
 
   return '<!DOCTYPE html>' + ReactDOMServer.renderToStaticMarkup(
     <Html
@@ -99,7 +105,7 @@ function getAppHtml(store, renderProps) {
   );
 }
 
-function getScriptHtml(headers, hostname) {
+function getScriptHtml(clientState, headers, hostname) {
   let scriptHtml = '';
 
   const ua = useragent.is(headers['user-agent']);
@@ -118,6 +124,9 @@ function getScriptHtml(headers, hostname) {
   // Note how clientState is serialized. JSON.stringify is anti-pattern.
   // https://github.com/yahoo/serialize-javascript#user-content-automatic-escaping-of-html-characters
   return scriptHtml + `
+    <script>
+      window.__INITIAL_STATE__ = ${serialize(clientState)};
+    </script>
     <script src="${appScriptSrc}"></script>
   `;
 }

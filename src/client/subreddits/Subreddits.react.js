@@ -15,12 +15,12 @@ export default class Subreddits extends Component {
     actions: PropTypes.object,
   }
 
-  componentDidUpdate() {
-    this.fetch();
+  componentWillReceiveProps(nextProps) {
+    this.fetch(nextProps);
   }
 
-  componentDidMount() {
-    this.fetch();
+  componentWillMount() {
+    this.fetch(this.props);
   }
 
   renderLogin() {
@@ -31,22 +31,23 @@ export default class Subreddits extends Component {
     );
   }
 
-  fetch() {
-    if (!this.empty())
+  fetch(props) {
+    if (!this.empty(props))
       return;
-    this.props.actions.redditFetchSubreddits(
-      this.props.reddit.get('api')
+    props.actions.redditFetchSubreddits(
+      props.reddit.get('api')
     );
   }
 
-  empty() {
-    return this.props.reddit.subreddits.get('fetching') === null;
+  empty(props) {
+    return props.reddit.subreddits.get('fetching') === null;
   }
 
   render() {
     const {actions} = this.props;
-    if (this.empty())
+    if (this.props.reddit.subreddits.get('fetching'))
       return (<Loader />);
+
     return (
       <ul className="home-subreddits">
         <li className="extras">

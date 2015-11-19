@@ -117,6 +117,7 @@ export default function makeConfig(isDevelopment) {
         new HtmlWebpackPlugin({
           template: './src/client/index.html',
           hash: true,
+          title: 'FullScreenit',
         }),
         // Render styles into separate cacheable file to prevent FOUC and
         // optimize for critical rendering path.

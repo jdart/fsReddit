@@ -34,6 +34,10 @@ function invalidateIf401(state, status) {
 }
 
 export default function redditReducer(state = initialState, action) {
+  if (!(state instanceof InitialState)) {
+    return initialState.mergeDeep(state);
+  }
+
   const {payload} = action;
   const oauth = (payload && payload.oauth) || null;
 
@@ -49,6 +53,7 @@ export default function redditReducer(state = initialState, action) {
       return newState
         .mergeIn(['user', 'oauth', 'data'], payload.reddit.user.oauth.data)
         .set('api', access_token ? api : null)
+        .setIn(['subreddits', 'fetching'], access_token ? null : false)
         .setIn(['user', 'authenticated'], access_token ? true : false);
     }
 
@@ -68,7 +73,11 @@ export default function redditReducer(state = initialState, action) {
         .set('api', api)
         .setIn(['user', 'oauth', 'fetching'], false)
         .setIn(['user', 'authenticated'], true)
-        .mergeIn(['user', 'oauth', 'data'], oauth);
+        .mergeIn(['user', 'oauth', 'data'], oauth)
+        .updateIn('subreddits', subreddits => subreddits
+          .set('fetching', null)
+          .set('list', new List)
+        );
     }
 
     case C.REDDIT_LOGIN_VALIDATE_ERROR: {
@@ -193,10 +202,10 @@ export default function redditReducer(state = initialState, action) {
       let extras = ['all'];
       if (state.user.get('authenticated'))
         extras.push('friends');
-      return state.updateIn(['subreddits', 'list'], list => list.push(
+      return state.updateIn(['subreddits', 'list'], list => new List([
         ...extras,
         ...action.payload.data.children.map(sr => sr.data.display_name)
-      ))
+      ]))
       .setIn(['subreddits', 'fetching'], false);
     }
 

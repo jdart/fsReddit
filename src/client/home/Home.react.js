@@ -11,19 +11,11 @@ export default class Home extends Component {
     reddit: PropTypes.object,
   }
 
-  renderReady() {
-    return (
-      <div>
-        <Subreddits {...this.props} />
-      </div>
-    );
-  }
-
   render() {
     return (
       <DocumentTitle title="FullScreen Reddit">
         <div className="home-page">
-          {this.renderReady()}
+          <Subreddits {...this.props} />
         </div>
       </DocumentTitle>
     );

@@ -11,7 +11,8 @@ import storage from 'redux-storage';
 const app = document.getElementById('app');
 const engine = createEngine('fs-reddit');
 
-const store = configureStore({engine});
+const initialState = window.__INITIAL_STATE__;
+const store = configureStore({engine, initialState});
 const routes = createRoutes(store.getState);
 
 ReactDOM.render(
