@@ -169,9 +169,10 @@ export default class Imgur extends Component {
     if (!this.query || this.query.get('fetching') !== false)
       return (<Loader />);
     const image = this.getImage();
+    const gifv = image.get('gifv');
     const url = this.imageUrl(image.get('url'));
-    if (this.isVideo(url))
-      return this.renderGifv(url);
+    if (gifv)
+      return this.renderGifv(gifv);
     return (
       <div className="imgur">
         <FsImg url={url}></FsImg>

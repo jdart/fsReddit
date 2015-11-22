@@ -13,6 +13,7 @@ export const Image = Record({
   preloaded: null,
   preloadImg: null,
   url: null,
+  gifv: null,
   title: null,
   width: null,
   height: null,

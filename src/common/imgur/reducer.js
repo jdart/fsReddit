@@ -19,18 +19,13 @@ const InitialState = Record({
 const initialState = new InitialState;
 const revive = () => initialState;
 
-//function pickBestSrc(data) {
-  //if (data.gifv)
-    //return data.gifv;
-  //return data.link;
-//}
-
 function imagesArrayToKVP(data) {
   return data.reduce(
     (output, image) => set(output, image.id, new Image(
       {
         id: image.id,
         url: image.link,
+        gifv: image.gifv,
         title: image.title,
         description: image.description,
         width: image.width,
