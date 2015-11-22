@@ -1,6 +1,5 @@
 
 import C from './consts';
-import _ from 'lodash';
 import {Record, List, Map} from 'immutable';
 import {Query} from './types';
 

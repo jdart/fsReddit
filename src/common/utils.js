@@ -1,13 +1,15 @@
 
-import _ from 'lodash';
+import isArray from 'lodash/lang/isArray';
+import merge from 'lodash/object/merge';
+import set from 'lodash/object/set';
 
 export function arrayToKeyValuePairs(array) {
-  return array.reduce((hash, next) => _.set(hash, next, next), {});
+  return array.reduce((hash, next) => set(hash, next, next), {});
 }
 
 export function promiseConsts(base) {
-  if (_.isArray(base))
-    return _.merge(... base.map(promiseConsts));
+  if (isArray(base))
+    return merge(... base.map(promiseConsts));
 
   return arrayToKeyValuePairs(
       ['PENDING', 'SUCCESS', 'ERROR']
@@ -16,7 +18,7 @@ export function promiseConsts(base) {
 }
 
 export function genConsts(simple, promise) {
-  return _.merge(
+  return merge(
     arrayToKeyValuePairs(simple),
     arrayToKeyValuePairs(promise),
     promiseConsts(promise)

@@ -16,8 +16,8 @@ export default class Imgur extends Component {
     reddit: PropTypes.object
   }
 
-  getRequest() {
-    const url = urlParse(this.props.url);
+  getRequest(props) {
+    const url = urlParse(props.url);
     const album = url.pathname.match(/\/a\/([A-Za-z0-9]{4,})/);
     const solo = url.pathname.match(/\/([A-Za-z0-9]{4,})/);
     if (album)
@@ -25,53 +25,94 @@ export default class Imgur extends Component {
     return 'image/' + solo[1];
   }
 
-  getQuery() {
-    return this.props.imgur.queries.get(this.getRequest());
-  }
-
   getNext() {
-    return this.getEntry(1);
+    return this.getImage(1);
   }
 
   getPrev() {
-    return this.getEntry(-1);
+    return this.getImage(-1);
   }
 
-  getEntry(offset=0) {
-    const query = this.getQuery();
+  getImage(offset=0) {
+    const query = this.query;
     const index = query.index + offset;
     if (index < 0 || index > query.entries.size)
       return null;
-    return this.treatGif(query.entries.get(index));
+    return this.props.imgur.images.get(
+      query.entries.get(index)
+    );
   }
 
-  fetchEntry() {
-    const query = this.getQuery();
-    const {entry} = this.props;
-    if (!query)
-      this.props.actions.imgurFetch(this.getRequest());
-    else if (entry && !entry.get('preloaded') && query.entries.size) {
-      this.props.actions.redditEntryPreload(entry);
-      query.entries.slice(1).map(imgPreload);
+  getImageByIndex(index) {
+    const query = this.query;
+    if (index < 0 || index > query.entries.size)
+      return null;
+    return this.props.imgur.images.get(
+      query.entries.get(index)
+    );
+  }
+
+  fetchImageData(props) {
+    const {entry, actions} = props;
+    if (!this.query) {
+      actions.imgurFetch(this.request);
+      return;
+    }
+    if (
+      !entry.get('preloaded')
+      && this.query.get('fetching') === false
+    ) {
+      actions.redditEntryPreload(entry, {
+        key: this.request,
+        index: props.preloading ? 0 : 1,
+      });
+      return;
+    }
+    if (
+      !props.preloading
+      && props.imgur.preloadQueue.get('images').size
+      && !props.imgur.preloadQueue.get('working')
+    ) {
+      actions.imgurPreloadNext(
+        props.imgur.images.get(
+          props.imgur.preloadQueue.get('images').first(),
+        )
+      );
     }
   }
 
-  componentDidUpdate() {
-    this.fetchEntry();
+  shortcuts(props) {
+    this.request = this.getRequest(props);
+    this.query = props.imgur.queries.get(this.request);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.shortcuts(nextProps);
+    this.fetchImageData(nextProps);
     this.setNav();
   }
 
-  setNav() {
-    const query = this.getQuery();
-    if (!query || !query.entries.size || !this.props.nav)
+  componentWillMount() {
+    this.shortcuts(this.props);
+    this.fetchImageData(this.props);
+    this.setNav();
+  }
+
+  componentWillUnmount() {
+    this.props.actions.redditNavActions('none', null, null);
+  }
+
+  setNav(props) {
+    const query = this.query;
+    if (!query || !query.entries.size || this.props.preloading)
       return;
     const prev = this.getPrev();
     const next = this.getNext();
-    const first = this.getEntry(-query.index);
-    const last = this.getEntry(query.entries.size-1);
+    const first = this.getImage(-query.index);
+    const last = this.getImage(query.entries.size-1);
     const step = this.props.actions.imgurStep;
     const index = query.index;
-    const req = this.getRequest();
+    const req = this.request;
     const id = req + '/' + index;
     if (this.props.reddit.navActions.get('id') === id)
       return;
@@ -83,15 +124,6 @@ export default class Imgur extends Component {
       last ? (() => step(req, query.entries.size-1)) : null,
       (index+1) + '/' + query.entries.size
     );
-  }
-
-  componentDidMount() {
-    this.fetchEntry();
-    this.setNav();
-  }
-
-  componentWillUnmount() {
-    this.props.actions.redditNavActions('none', null, null);
   }
 
   treatGif(url) {
@@ -129,17 +161,20 @@ export default class Imgur extends Component {
     );
   }
 
+  imageUrl(url) {
+    return this.treatGif(url);
+  }
+
   render() {
-    if (!this.getQuery())
+    if (!this.query || this.query.get('fetching') !== false)
       return (<Loader />);
-    const entry = this.getEntry();
-    if (!entry)
-      return (<Loader />);
-    if (this.isVideo(entry))
-      return this.renderGifv(entry);
+    const image = this.getImage();
+    const url = this.imageUrl(image.get('url'));
+    if (this.isVideo(url))
+      return this.renderGifv(url);
     return (
       <div className="imgur">
-        <FsImg url={this.getEntry()}></FsImg>
+        <FsImg url={url}></FsImg>
       </div>
     );
   }

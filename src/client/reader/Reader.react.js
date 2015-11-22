@@ -34,7 +34,7 @@ export default class Reader extends Component {
 
     return (
       <div className="reader-preloader">
-        <Content {...this.props} entry={entry} />
+        <Content {...this.props} preloading={true} entry={entry} />
       </div>
     );
   }
@@ -55,7 +55,7 @@ export default class Reader extends Component {
         <Content
           {...this.props}
           entry={current.entry}
-          nav={true}
+          preloading={false}
           comments={this.props.comments}
         />
         {this.preRender(next.entry)}

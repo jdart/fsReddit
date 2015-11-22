@@ -51,10 +51,10 @@ export function redditFriend(api, author) {
   );
 }
 
-export function redditEntryPreload(entry) {
+export function redditEntryPreload(entry, extra) {
   return {
     type: C.REDDIT_ENTRY_PRELOADED,
-    payload: {entry}
+    payload: {entry, extra}
   };
 }
 
