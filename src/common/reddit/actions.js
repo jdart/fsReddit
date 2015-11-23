@@ -4,12 +4,13 @@ import C from './consts';
 import { promiseConsts } from '../utils';
 import fetch from 'isomorphic-fetch';
 import queryString from 'query-string';
+import merge from 'lodash/object/merge';
 
 function asyncAction(type, promise, payload = {}) {
   return {
     type: Object.keys(promiseConsts(type)),
     payload: {
-      promise: promise.then(response => _.merge(response, payload)),
+      promise: promise.then(response => merge(response, payload)),
       data: payload
     },
   };
@@ -51,10 +52,10 @@ export function redditFriend(api, author) {
   );
 }
 
-export function redditEntryPreload(entry) {
+export function redditEntryPreload(entry, extra) {
   return {
     type: C.REDDIT_ENTRY_PRELOADED,
-    payload: {entry}
+    payload: {entry, extra}
   };
 }
 

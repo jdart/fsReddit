@@ -1,6 +1,6 @@
 
 import C from './consts';
-import _ from 'lodash';
+import set from 'lodash/object/set';
 import {Record, List, Map} from 'immutable';
 import {User, Subreddits, Oauth, OauthData, Query, Comment, Comments} from './types';
 import api from './api';

@@ -2,7 +2,7 @@
 import fetch from 'isomorphic-fetch';
 import C from './consts';
 import { promiseConsts } from '../utils';
-import _ from 'lodash';
+import set from 'lodash/object/set';
 
 
 function fetcher(id) {
@@ -15,7 +15,7 @@ export function gfycatFetch(id) {
     payload: {
       promise: fetcher(id)
         .then(response => response.json())
-        .then(response => _.set(response, 'id', id)),
+        .then(response => set(response, 'id', id)),
       data: { id }
     }
   };

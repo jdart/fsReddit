@@ -3,7 +3,6 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import url from 'url';
-import _ from 'lodash';
 import css from './FsIframe.styl';
 import {hostMatch} from '../utils';
 import Reddit from './reddit/Reddit.react';

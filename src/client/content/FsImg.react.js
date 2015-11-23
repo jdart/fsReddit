@@ -10,14 +10,27 @@ export default class FsImg extends Component {
     url: PropTypes.string,
   }
 
+  onload(e) {
+    if (this.props.onload)
+      this.props.onload(e);
+    const img = e.target;
+    const tall = (img.height / img.width) > 2;
+    this.setState({tall});
+  }
+
   render() {
     if (!this.props.url)
       return (<div/>);
+
+    const tall = this.state && this.state.tall;
+    const style = tall ? {} : {maxHeight: '100%'};
+    const className = 'fs-img ' + (tall ? 'fs-img-tall' : '');
     return (
-      <div className="fs-img">
+      <div className={className}>
         <img
-          style={{maxWidth: '100%', maxHeight: '100%'}}
+          style={style}
           src={this.props.url}
+          onLoad={this.onload.bind(this)}
         />
       </div>
     );
