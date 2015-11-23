@@ -46,7 +46,7 @@ function responseToImageArray(response) {
       height: null,
       width: null,
     }];
-  console.log(response.data.images);
+
   if (response.data.images)
     return response.data.images;
   return [response.data];
@@ -102,6 +102,13 @@ export default function imgurReducer(state = initialState, action) {
     case C.IMGUR_FETCH_ERROR: {
       return state.setIn(
         ['queries', action.payload.reqid, 'failed'],
+        true
+      );
+    }
+
+    case C.IMGUR_IMAGE_PRELOADED: {
+      return state.setIn(
+        ['images', action.payload.image.get('id'), 'preloaded'],
         true
       );
     }

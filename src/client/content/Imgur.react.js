@@ -165,17 +165,27 @@ export default class Imgur extends Component {
     return this.treatGif(url);
   }
 
+  onload() {
+    const image = this.getImage();
+    if (!image.get('preloaded'))
+      this.props.actions.imgurImagePreloaded(image);
+  }
+
   render() {
     if (!this.query || this.query.get('fetching') !== false)
       return (<Loader />);
+
     const image = this.getImage();
     const gifv = image.get('gifv');
     const url = this.imageUrl(image.get('url'));
+
     if (gifv)
       return this.renderGifv(gifv);
+
     return (
       <div className="imgur">
-        <FsImg url={url}></FsImg>
+        {image.get('preloaded') ? '' : (<Loader />)}
+        <FsImg onload={this.onload.bind(this)} url={url}></FsImg>
       </div>
     );
   }

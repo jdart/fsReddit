@@ -49,3 +49,10 @@ export function imgurPreloadNext(image, current, index) {
   };
 }
 
+export function imgurImagePreloaded(image) {
+  return {
+    type: C.IMGUR_IMAGE_PRELOADED,
+    payload: { image },
+  };
+}
+
