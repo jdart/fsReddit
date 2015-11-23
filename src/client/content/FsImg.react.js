@@ -23,12 +23,8 @@ export default class FsImg extends Component {
       return (<div/>);
 
     const tall = this.state && this.state.tall;
-    const style = tall
-      ? {maxWidth: '100%'}
-      : {maxWidth: '100%', maxHeight: '100%'};
-    const className = tall
-      ? "fs-img fs-img-tall"
-      : "fs-img";
+    const style = tall ? {} : {maxHeight: '100%'};
+    const className = 'fs-img ' + (tall ? 'fs-img-tall' : '');
     return (
       <div className={className}>
         <img
