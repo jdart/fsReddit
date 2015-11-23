@@ -118,15 +118,6 @@ export default function imgurReducer(state = initialState, action) {
       const keys = state.queries.get(reqid).get('entries');
       const next = keys.slice(index + 1, index + 4);
       const curr = keys.get(index);
-      if (state.preloadQueue.get('images').contains(curr)) // cancel current preloading
-        state = state.updateIn(['images', curr], image => {
-          if (image.preloadImg)
-            image.update('preloadImg', img => {
-              img.src = null;
-              return img
-            });
-          return image.set('preloaded', true);
-        });
       return addToQueue(state, next.toJS())
       .setIn(
         ['queries', action.payload.reqid, 'index'],

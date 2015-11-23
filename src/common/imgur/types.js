@@ -11,7 +11,6 @@ export const Query = Record({
 export const Image = Record({
   id: null,
   preloaded: null,
-  preloadImg: null,
   url: null,
   gifv: null,
   title: null,
