@@ -137,6 +137,13 @@ export default function imgurReducer(state = initialState, action) {
 
     case C.IMGUR_PRELOAD_NEXT_ERROR: {}
     case C.IMGUR_PRELOAD_NEXT_SUCCESS: {
+      const id = action.payload.image.get('id');
+
+      state.queries.forEach((query, key) => {
+        if (query.entries.contains(id))
+          console.log('preloaded', key, query.entries.indexOf(id))
+      })
+
       return state.setIn(['preloadQueue', 'working'], false)
         .setIn(
           ['images', action.payload.image.get('id'), 'preloaded'],
