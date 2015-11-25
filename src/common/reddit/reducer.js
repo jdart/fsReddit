@@ -15,8 +15,14 @@ const InitialState = Record({
   queries: new Map,
   subreddits: new Subreddits,
   navActions: new Map({
+    id: null,
+    prev: null,
+    next: null,
+    first: null,
+    last: null,
     up: null,
     down: null,
+    title: null,
   }),
 });
 
@@ -177,16 +183,14 @@ export default function redditReducer(state = initialState, action) {
 
     case C.REDDIT_NAV_ACTIONS: {
       const { prev, next, first, last, id, title } = action.payload;
-      return state.update('navActions', navActions =>
-        navActions.merge({
-          id,
-          up: prev,
-          down: next,
-          first,
-          last,
-          title,
-        })
-      );
+      return state.mergeIn(['navActions'], {
+        id,
+        up: prev,
+        down: next,
+        first,
+        last,
+        title,
+      });
     }
 
     case C.REDDIT_FETCH_SUBREDDITS_PENDING: {
