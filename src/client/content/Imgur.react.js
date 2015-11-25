@@ -97,6 +97,10 @@ export default class Imgur extends Component {
     this.propsChanged(this.props);
   }
 
+  componentWillUnmount() {
+    this.props.actions.redditNavActions('none', null, null);
+  }
+
   setNav(props) {
     const query = this.query;
     const index = query.index;

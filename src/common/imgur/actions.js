@@ -18,7 +18,7 @@ function imgurRobustFetcher(id, album, created) {
     return response.json()
     .then(response => {
       const diff = Math.abs(created - response.data.datetime);
-      const day = 60 * 60 * 48;
+      const day = 60 * 60 * 24 * 365;
       if (diff >= day)
         return imgurFetchType('gallery', id);
       return response;
