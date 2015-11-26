@@ -73,6 +73,13 @@ export default class FsIframe extends Component {
     return loadMs !== null && loadMs < 333;
   }
 
+  forceFail() {
+    this.props.actions.redditIframeLoaded(
+      this.props.entry,
+      1
+    );
+  }
+
   render() {
     if (this.blacklisted() || this.tooFast())
       return this.renderFailedIframe();
@@ -81,6 +88,7 @@ export default class FsIframe extends Component {
     this.startTimer();
     return (
       <div className="fsIframe">
+        <div className="help" onClick={this.forceFail.bind(this)}>Taking too long? Click here to just see comments.</div>
         <iframe
           src={this.props.url}
           onLoad={this.loaded.bind(this)}
