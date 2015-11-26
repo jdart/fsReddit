@@ -7,23 +7,36 @@ import Promise from 'bluebird';
 import url from 'url';
 import basename from 'basename';
 
+const maxAge = 60 * 60 * 24 * 30;
+
 function imgurRobustFetcher(id, album, created) {
   if (album)
     return imgurFetchType('album', id);
 
+  // yikes
   return imgurFetchType('image', id)
   .then(response => {
-    if (response.status === 404)
+    if (response.status !== 200)
       return imgurFetchType('gallery', id);
+
     return response.json()
-    .then(response => {
-      const diff = Math.abs(created - response.data.datetime);
-      const day = 60 * 60 * 24 * 365;
-      if (diff >= day)
-        return imgurFetchType('gallery', id);
-      return response;
+    .then(imageResponse => {
+      const imageDiff = Math.abs(created - imageResponse.data.datetime);
+      if (imageDiff <= maxAge)
+        return imageResponse;
+
+      return imgurFetchType('gallery', id)
+      .then(response => response.json())
+      .then(galleryResponse => {
+        if (galleryResponse.status !== 200)
+          return imageResponse;
+
+        console.log(galleryDiff, imageDiff)
+        const galleryDiff = Math.abs(created - galleryResponse.data.datetime);
+        return galleryDiff < imageDiff ? galleryResponse : imageResponse;
+      });
     });
-  })
+  });
 }
 
 function imgurFetchType(type, id) {
@@ -62,9 +75,9 @@ export function imgurStep(id, index) {
   };
 }
 
-export function imgurPreloadNext(image, current, index) {
+export function imgurCacheImage(image, current, index) {
   return {
-    type: Object.keys(promiseConsts(C.IMGUR_PRELOAD_NEXT)),
+    type: Object.keys(promiseConsts(C.IMGUR_CACHE_IMAGE)),
     payload: {
       promise: imageLoader(image, current, index),
       data: { image }
@@ -72,9 +85,16 @@ export function imgurPreloadNext(image, current, index) {
   };
 }
 
-export function imgurImagePreloaded(image) {
+export function imgurEnqueue(query, images) {
   return {
-    type: C.IMGUR_IMAGE_PRELOADED,
+    type: C.IMGUR_ENQUEUE,
+    payload: { images }
+  };
+}
+
+export function imgurImageCached(image) {
+  return {
+    type: C.IMGUR_IMAGE_CACHED,
     payload: { image },
   };
 }

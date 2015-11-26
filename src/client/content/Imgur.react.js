@@ -7,6 +7,7 @@ import {imgPreload, urlParse} from '../utils';
 import Loader from '../ui/Loader.react';
 import css from './Gfycat.styl';
 import basename from 'basename';
+import without from 'lodash/array/without';
 
 export default class Imgur extends Component {
 
@@ -17,21 +18,21 @@ export default class Imgur extends Component {
     reddit: PropTypes.object
   }
 
-  getImage(offset=0) {
+  getImage(offset=0, props) {
     const query = this.query;
     const index = query.index + offset;
     if (index < 0 || index > query.entries.size)
       return null;
-    return this.props.imgur.images.get(
+    return props.imgur.images.get(
       query.entries.get(index)
     );
   }
 
-  getImageByIndex(index) {
+  getImageByIndex(index, props) {
     const query = this.query;
     if (index < 0 || index > query.entries.size)
       return null;
-    return this.props.imgur.images.get(
+    return props.imgur.images.get(
       query.entries.get(index)
     );
   }
@@ -40,9 +41,14 @@ export default class Imgur extends Component {
     this.request = this.imgId(props.url);
     this.query = props.imgur.queries.get(this.request);
 
-    if (!this.fetchApiData(props))
-      if (!this.preload(props))
-        this.preloadMore(props);
+    if (this.fetchApiData(props))
+      return;
+
+    if (props.preloading)
+      return this.preload(props);
+
+    if (!this.enqueueImages(props))
+      this.runQueue(props);
 
     if (
       !props.preloading
@@ -67,25 +73,46 @@ export default class Imgur extends Component {
       || this.query.get('fetching') !== false
     ) return false;
 
-    actions.redditEntryPreload(entry, {
-      key: this.request,
-      index: props.preloading ? 0 : 1,
-    });
-    return true;
+    actions.redditEntryPreload(entry, { key: this.request });
   }
 
-  preloadMore(props) {
+  enqueueImages(props) {
     const {actions} = props;
     const queue = props.imgur.preloadQueue;
+    const next = [
+      this.getImage(1, props),
+      this.getImage(2, props),
+    ].map(image =>
+      image && image.get('preloaded') === null
+        ? image.get('id')
+        : null
+    )
+    .filter(image => image);
+
+    const add = without(next, ...queue.get('images').toJS());
+
+    if (add.length) {
+      actions.imgurEnqueue(this.query, add);
+      return true;
+    }
+
+    return false;
+  }
+
+  runQueue(props) {
+    const queue = props.imgur.preloadQueue;
     if (
-      props.preloading
-      || !queue.get('images').size
+      !queue.get('images').size
       || queue.get('working')
     ) return false;
 
-    const key = props.imgur.preloadQueue.get('images').first();
+    const key = queue.get('images').first();
     const image = props.imgur.images.get(key);
-    actions.imgurPreloadNext(image);
+
+    if (image.get('gifv'))
+      return false;
+
+    props.actions.imgurCacheImage(image);
     return true;
   }
 
@@ -109,10 +136,10 @@ export default class Imgur extends Component {
     if (props.reddit.navActions.get('id') === id)
       return;
 
-    const prev = this.getImage(-1);
-    const next = this.getImage(1);
-    const first = this.getImage(-query.index);
-    const last = this.getImage(query.entries.size-1);
+    const prev = this.getImage(-1, props);
+    const next = this.getImage(1, props);
+    const first = this.getImage(-query.index, props);
+    const last = this.getImage(query.entries.size-1, props);
     const step = props.actions.imgurStep;
 
     props.actions.redditNavActions(
@@ -132,6 +159,7 @@ export default class Imgur extends Component {
 
   renderGifv(url) {
     const id = this.imgId(url);
+    this.onload();
     return (
       <div className="imgurGifv-aligner">
         <video
@@ -146,16 +174,17 @@ export default class Imgur extends Component {
   }
 
   onload() {
-    const image = this.getImage();
-    if (!image.get('preloaded'))
-      this.props.actions.imgurImagePreloaded(image);
+    const image = this.getImage(0, this.props);
+    if (image.get('preloaded'))
+      return;
+    this.props.actions.imgurImageCached(image);
   }
 
   render() {
     if (!this.query || this.query.get('fetching') !== false)
       return (<Loader />);
 
-    const image = this.getImage();
+    const image = this.getImage(0, this.props);
     const gifv = image.get('gifv');
     const url = image.get('url');
 
