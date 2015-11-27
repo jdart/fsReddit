@@ -122,7 +122,7 @@ export default function redditReducer(state = initialState, action) {
           .merge({
             fetching: false,
             failed: false,
-            index: data.after ? query.get('index') : 0,
+            index: payload.after ? query.get('index') : 0,
             after: data.after === null ? false : data.after,
           })
           .update('entries', entries => entries.concat(

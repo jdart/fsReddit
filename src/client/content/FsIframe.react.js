@@ -73,14 +73,28 @@ export default class FsIframe extends Component {
     return loadMs !== null && loadMs < 333;
   }
 
+  forceFail() {
+    this.props.actions.redditIframeLoaded(
+      this.props.entry,
+      1
+    );
+  }
+
   render() {
     if (this.blacklisted() || this.tooFast())
       return this.renderFailedIframe();
 
     const loaded = !!this.props.entry.get('iframeLoadMs');
+    const host = url.parse(this.props.url).host;
     this.startTimer();
     return (
       <div className="fsIframe">
+        <p className="help">
+          Taking a long time? This site ({ host }) might be blocking you.
+        </p>
+        <p className="help">
+          Click the "<i className="fa fa-sign-out"/>" icon on the sidebar to open the original site in a new tab.
+        </p>
         <iframe
           src={this.props.url}
           onLoad={this.loaded.bind(this)}

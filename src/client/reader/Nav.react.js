@@ -4,6 +4,7 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import {hostMatch} from '../utils';
 import {Keys} from 'react-keydown';
+import url from 'url';
 import css from './Nav.styl';
 
 export default class Nav extends Component {
@@ -181,10 +182,15 @@ export default class Nav extends Component {
         Comments
       </Link>
     );
+  }
+
+  renderOpenInTab(entry) {
+    if (this.isRedditDotCom())
+      return;
     return (
-      <a href={`http://www.reddit.com/${entry.get('permalink')}`}>
-        <i className="fa fa-commenting" />
-        Comments
+      <a href={entry.get('url')} target="_blank">
+        <i className="fa fa-sign-out" />
+        {url.parse(entry.get('url')).host}
       </a>
     );
   }
@@ -231,6 +237,7 @@ export default class Nav extends Component {
           </div>
           {this.renderVote.bind(this)(current.entry)}
           {this.renderCommentLink.bind(this)(current.entry)}
+          {this.renderOpenInTab.bind(this)(current.entry)}
         </div>
         <div className="icon-title nav-horiz">
           {horizLink('right', next)}

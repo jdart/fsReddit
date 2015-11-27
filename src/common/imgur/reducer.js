@@ -21,17 +21,15 @@ const revive = () => initialState;
 
 function imagesArrayToKVP(data) {
   return data.reduce(
-    (output, image) => set(output, image.id, new Image(
-      {
-        id: image.id,
-        url: image.link,
-        gifv: image.gifv,
-        title: image.title,
-        description: image.description,
-        width: image.width,
-        height: image.height,
-      }
-    )),
+    (output, image) => set(output, image.id, new Image({
+      id: image.id,
+      url: image.link,
+      gifv: image.gifv,
+      title: image.title,
+      description: image.description,
+      width: image.width,
+      height: image.height,
+    })),
     {}
   );
 }
@@ -106,11 +104,15 @@ export default function imgurReducer(state = initialState, action) {
       );
     }
 
-    case C.IMGUR_IMAGE_PRELOADED: {
+    case C.IMGUR_IMAGE_CACHED: {
       return state.setIn(
         ['images', action.payload.image.get('id'), 'preloaded'],
         true
       );
+    }
+
+    case C.IMGUR_ENQUEUE: {
+      return addToQueue(state, action.payload.images);
     }
 
     case C.IMGUR_STEP: {
@@ -125,8 +127,11 @@ export default function imgurReducer(state = initialState, action) {
       );
     }
 
-    case C.IMGUR_PRELOAD_NEXT_PENDING: {
-      return state.update('preloadQueue', preloadQueue =>
+    case C.IMGUR_CACHE_IMAGE_PENDING: {
+      const id = action.payload.image.get('id');
+      return state
+      .setIn(['images', id, 'preloaded'], false)
+      .update('preloadQueue', preloadQueue =>
         preloadQueue
           .set('working', true)
           .update('images', images =>
@@ -135,8 +140,8 @@ export default function imgurReducer(state = initialState, action) {
       );
     }
 
-    case C.IMGUR_PRELOAD_NEXT_ERROR: {}
-    case C.IMGUR_PRELOAD_NEXT_SUCCESS: {
+    case C.IMGUR_CACHE_IMAGE_ERROR: {}
+    case C.IMGUR_CACHE_IMAGE_SUCCESS: {
       const id = action.payload.image.get('id');
 
       state.queries.forEach((query, key) => {
@@ -145,17 +150,14 @@ export default function imgurReducer(state = initialState, action) {
       })
 
       return state.setIn(['preloadQueue', 'working'], false)
-        .setIn(
-          ['images', action.payload.image.get('id'), 'preloaded'],
-          true
-        );
+        .setIn(['images', id, 'preloaded'], true);
     }
 
     case RC.REDDIT_ENTRY_PRELOADED: {
-      const {index, key} = action.payload.extra;
+      const {key} = action.payload.extra;
       const next = state.queries.get(key)
         .get('entries')
-        .slice(index, index+3).toJS();
+        .slice(0, 1).toJS();
       return addToQueue(state, next);
     }
   }
