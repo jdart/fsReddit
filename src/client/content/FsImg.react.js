@@ -18,11 +18,17 @@ export default class FsImg extends Component {
     this.setState({tall});
   }
 
+  isTall() {
+    if (this.props.tallMode === false)
+      return false;
+    return this.state && this.state.tall;
+  }
+
   render() {
     if (!this.props.url)
       return (<div/>);
 
-    const tall = this.state && this.state.tall;
+    const tall = this.isTall();
     const style = tall ? {} : {maxHeight: '100%'};
     const className = 'fs-img ' + (tall ? 'fs-img-tall' : '');
     return (

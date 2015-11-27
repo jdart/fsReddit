@@ -85,10 +85,16 @@ export default class FsIframe extends Component {
       return this.renderFailedIframe();
 
     const loaded = !!this.props.entry.get('iframeLoadMs');
+    const host = url.parse(this.props.url).host;
     this.startTimer();
     return (
       <div className="fsIframe">
-        <div className="help" onClick={this.forceFail.bind(this)}>Taking too long? Click here to just see comments.</div>
+        <p className="help">
+          Taking a long time? This site ({ host }) might be blocking you.
+        </p>
+        <p className="help">
+          Click the "<i className="fa fa-sign-out"/>" icon on the sidebar to open the original site in a new tab.
+        </p>
         <iframe
           src={this.props.url}
           onLoad={this.loaded.bind(this)}

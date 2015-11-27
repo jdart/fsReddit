@@ -9,9 +9,16 @@ export default class Comment extends Component {
     data: PropTypes.object,
   }
 
+  hasChildren() {
+    const {replies} = this.props.data;
+    if (!replies)
+      return false;
+    return replies.data.children.some(comment => !!comment.data.body_html);
+  }
+
   renderChildren() {
     const {replies} = this.props.data;
-    if (!replies || !replies.data.children.length)
+    if (!this.hasChildren())
       return;
     return (
       <div className="replies">

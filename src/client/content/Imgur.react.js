@@ -187,6 +187,7 @@ export default class Imgur extends Component {
     const image = this.getImage(0, this.props);
     const gifv = image.get('gifv');
     const url = image.get('url');
+    const images = this.query.get('entries');
 
     if (gifv)
       return this.renderGifv(gifv);
@@ -194,7 +195,11 @@ export default class Imgur extends Component {
     return (
       <div className="imgur">
         {image.get('preloaded') ? '' : (<Loader />)}
-        <FsImg onload={this.onload.bind(this)} url={url}></FsImg>
+        <FsImg
+          onload={this.onload.bind(this)}
+          url={url}
+          tallMode={images.size === 1}
+        />
       </div>
     );
   }

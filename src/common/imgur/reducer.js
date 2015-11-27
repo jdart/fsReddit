@@ -21,17 +21,15 @@ const revive = () => initialState;
 
 function imagesArrayToKVP(data) {
   return data.reduce(
-    (output, image) => set(output, image.id, new Image(
-      {
-        id: image.id,
-        url: image.link,
-        gifv: image.gifv,
-        title: image.title,
-        description: image.description,
-        width: image.width,
-        height: image.height,
-      }
-    )),
+    (output, image) => set(output, image.id, new Image({
+      id: image.id,
+      url: image.link,
+      gifv: image.gifv,
+      title: image.title,
+      description: image.description,
+      width: image.width,
+      height: image.height,
+    })),
     {}
   );
 }
