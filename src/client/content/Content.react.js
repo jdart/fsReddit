@@ -31,7 +31,7 @@ export default class Content extends Component {
     else if (url.match(/\.(jpg|jpeg|png|gif)$/))
       return (<FsImg url={url} />);
     else if (hostMatch('streamable.com', url))
-      return (<Streamable url={url} />);
+      return (<Streamable {...this.props} url={url} entry={entry} />);
     else if (hostMatch('gfycat.com', url))
       return (<Gfycat {...this.props} url={url} />);
     else if (hostMatch('instagram.com', url))
