@@ -27,7 +27,7 @@ export default class Youtube extends Component {
       <div className="youtube-aligner">
         <iframe
           className="youtube"
-          src={`https://www.youtube.com/embed/${id}`}
+          src={`https://www.youtube.com/embed/${id}?autoplay=1`}
           frameBorder="0"
           allowFullScreen
         />
