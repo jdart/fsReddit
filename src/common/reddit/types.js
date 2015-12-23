@@ -26,6 +26,7 @@ export const Oauth = Record({
 export const User = Record({
   authenticated: false,
   oauth: new Oauth,
+  details: new Map,
 });
 
 export const Query = Record({

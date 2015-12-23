@@ -114,6 +114,7 @@ export function redditFetchEntries(api, url, after) {
 }
 
 export function redditFetchSubreddits(api) {
+
   return asyncRedditAction(
     api,
     C.REDDIT_FETCH_SUBREDDITS,
@@ -162,7 +163,13 @@ export function redditLogin() {
 export function redditLoginValidate(oauth) {
   return asyncAction(
     C.REDDIT_LOGIN_VALIDATE,
-    authenticatedApi(oauth).then(api => { return { oauth, api }; })
+    authenticatedApi(oauth)
+      .then(api => {
+        return api('/api/v1/me').get()
+          .then(me => {
+            return { oauth, api, me };
+          });
+      })
   );
 }
 
