@@ -175,9 +175,11 @@ export default class Imgur extends Component {
 
   onload() {
     const image = this.getImage(0, this.props);
+    const action = this.props.actions.imgurImageCached;
     if (image.get('preloaded'))
       return;
-    this.props.actions.imgurImageCached(image);
+
+    setTimeout(() => action(image));
   }
 
   render() {

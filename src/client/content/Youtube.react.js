@@ -13,12 +13,6 @@ export default class Youtube extends Component {
     url: PropTypes.string,
   }
 
-  parseId(url) {
-    const parts = parseUrl(url);
-    const pathParts = parts.pathname.split('/');
-    return pathParts.pop();
-  }
-
   render() {
     if (!this.props.url)
       return (<div/>);

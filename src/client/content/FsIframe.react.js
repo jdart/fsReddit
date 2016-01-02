@@ -34,8 +34,8 @@ export default class FsIframe extends Component {
     const host = url.parse(this.props.url).host;
     return [
       'github.com',
-      'twitter.com',
       'facebook.com',
+      'msn.com',
     ].some(blocked => hostMatch(blocked, 'http://' + host));
   }
 
@@ -89,12 +89,14 @@ export default class FsIframe extends Component {
     this.startTimer();
     return (
       <div className="fsIframe">
-        <p className="help">
-          Taking a long time? This site ({ host }) might be blocking you.
-        </p>
-        <p className="help">
-          Click the "<i className="fa fa-sign-out"/>" icon on the sidebar to open the original site in a new tab.
-        </p>
+        <div className="help">
+          <p>
+            Taking a long time? This site ({ host }) might be blocking you.
+          </p>
+          <p>
+            Click the "<i className="fa fa-sign-out"/>" icon on the sidebar to open the original site in a new tab.
+          </p>
+        </div>
         <iframe
           src={this.props.url}
           onLoad={this.loaded.bind(this)}
