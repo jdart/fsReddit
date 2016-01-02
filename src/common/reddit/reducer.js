@@ -54,6 +54,7 @@ export default function redditReducer(state = initialState, action) {
         api.auth(access_token);
       return newState
         .mergeIn(['user', 'oauth', 'data'], payload.reddit.user.oauth.data)
+        .mergeIn(['user', 'details'], payload.reddit.user.details)
         .set('api', access_token ? api : null)
         .setIn(['subreddits', 'fetching'], access_token ? null : false)
         .setIn(['user', 'authenticated'], access_token ? true : false);
@@ -75,6 +76,7 @@ export default function redditReducer(state = initialState, action) {
         .set('api', api)
         .setIn(['user', 'oauth', 'fetching'], false)
         .setIn(['user', 'authenticated'], true)
+        .mergeIn(['user', 'details'], payload.me)
         .mergeIn(['user', 'oauth', 'data'], oauth)
         .setIn(['subreddits', 'fetching'], null)
         .setIn(['subreddits', 'list'], new List);

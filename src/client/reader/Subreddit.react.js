@@ -26,6 +26,7 @@ export default class Subreddit extends Component {
     this.url = this.generateUrl(props);
     this.query = this.url ? props.reddit.queries.get(this.url) : null;
     this.entries = this.query ? this.query.get('entries') : null;
+    this.api = props.reddit.get('api');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,14 +41,14 @@ export default class Subreddit extends Component {
 
   fetchInitial() {
     this.props.actions.redditFetchEntries(
-      this.props.reddit.api,
+      this.api,
       this.url
     );
   }
 
   fetchMore() {
     this.props.actions.redditFetchEntries(
-      this.props.reddit.api,
+      this.api,
       this.url,
       this.query.get('after')
     );

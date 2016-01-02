@@ -43,6 +43,18 @@ export default class Subreddits extends Component {
     return props.reddit.subreddits.get('fetching') === null;
   }
 
+  renderUpvoted() {
+    if (!this.props.reddit.user.get('authenticated'))
+      return;
+    return (
+      <li key="upvoted">
+        <Link to={`/upvoted`}>
+          Upvoted
+        </Link>
+      </li>
+    );
+  }
+
   render() {
     const {actions} = this.props;
     if (this.empty(this.props) || this.props.reddit.subreddits.get('fetching'))
@@ -59,6 +71,7 @@ export default class Subreddits extends Component {
             Frontpage
           </Link>
         </li>
+        {this.renderUpvoted()}
         {this.props.reddit.subreddits.list.valueSeq().map((subreddit) => (
           <li key={subreddit}>
             <Link to={`/r/${subreddit}`}>

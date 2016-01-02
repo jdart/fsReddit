@@ -4,6 +4,7 @@ import React from 'react';
 import Home from './home/Home.react';
 import Subreddit from './reader/Subreddit.react';
 import User from './reader/User.react';
+import Upvoted from './reader/Upvoted.react';
 import Oauth from './auth/Oauth.react';
 import Single from './reader/Single.react';
 import {IndexRoute, Route} from 'react-router';
@@ -38,6 +39,7 @@ export default function createRoutes(getState) {
       <Route onEnter={log} component={Subreddit} path="r/:name/:sort" />
       <Route onEnter={log} component={Single} path="c/:id" />
       <Route onEnter={log} component={User} path="u/:name" />
+      <Route onEnter={log} component={Upvoted} path="upvoted" />
       <Route onEnter={log} component={NotFound} path="*" />
     </Route>
   );

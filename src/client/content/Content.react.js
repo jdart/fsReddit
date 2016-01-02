@@ -9,6 +9,7 @@ import Reddit from './reddit/Reddit.react';
 import Gfycat from './Gfycat.react';
 import Instagram from './Instagram.react';
 import Youtube from './Youtube.react';
+import Twitter from './Twitter.react';
 import Streamable from './Streamable.react';
 import Readability from './Readability.react';
 import {hostMatch, urlParse} from '../utils';
@@ -26,6 +27,8 @@ export default class Content extends Component {
     const host = urlParse(url).host;
     if (hostMatch('reddit.com', url) || this.props.comments)
       return (<Reddit {...this.props} url={url} entry={entry} />);
+    else if (hostMatch('twitter.com', url))
+      return (<Twitter {...this.props} entry={entry} url={url} />);
     else if (hostMatch('imgur.com', url))
       return (<Imgur {...this.props} entry={entry} url={url} />);
     else if (url.match(/\.(jpg|jpeg|png|gif)$/))
