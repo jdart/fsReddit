@@ -9,10 +9,7 @@ import basename from 'basename';
 
 const maxAge = 60 * 60 * 24 * 30;
 
-function imgurRobustFetcher(id, album, created) {
-  if (album)
-    return imgurFetchType('album', id);
-
+function imgurRobustFetcher(id, created) {
   // yikes
   return imgurFetchType('image', id)
   .then(response => {
@@ -56,11 +53,10 @@ function imageLoader(image, current, index) {
 export function imgurFetch(entry) {
   const {pathname} = url.parse(entry.get('url'));
   const id = basename(pathname);
-  const album = pathname.match(/^\/a\//) || pathname.match(/^\/gallery\//);
   return {
     type: Object.keys(promiseConsts(C.IMGUR_FETCH)),
     payload: {
-      promise: imgurRobustFetcher(id, album, entry.get('created_utc'))
+      promise: imgurRobustFetcher(id, entry.get('created_utc'))
         .then(response => response.json ? response.json() : response)
         .then(response => set(response, 'reqid', id)),
       data: { reqid: id }
