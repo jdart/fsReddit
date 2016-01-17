@@ -13,8 +13,8 @@ export default class Content extends Component {
     comments: PropTypes.bool,
   }
 
-  renderContent(entry) {
-    const ContentComponent = contentMatcher(entry, this.props);
+  renderContent(entry, props) {
+    const ContentComponent = contentMatcher(entry, props);
     if (!ContentComponent)
       return;
     return (
@@ -29,7 +29,7 @@ export default class Content extends Component {
   render() {
     return (
       <div className="reader-content">
-        {this.renderContent(this.props.entry)}
+        {this.renderContent(this.props.entry, this.props)}
       </div>
     );
   }
