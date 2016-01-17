@@ -104,9 +104,21 @@ export default class Subreddit extends Component {
     );
   }
 
-  readerOrLoader() {
+  renderFailed() {
+    return (
+      <div className="query-failed">
+        <p>Failed to get entries, try refreshing the page.</p>
+      </div>
+    );
+  }
+
+  renderContent() {
+    if (this.query && this.query.get('failed'))
+      return this.renderFailed();
+
     if (!this.entries)
       return (<Loader />);
+
     return (
       <Reader
         {...this.props}
@@ -118,7 +130,7 @@ export default class Subreddit extends Component {
   render() {
     return (
       <DocumentTitle title={this.url}>
-        {this.readerOrLoader()}
+        {this.renderContent()}
       </DocumentTitle>
     );
   }

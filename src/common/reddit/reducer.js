@@ -119,6 +119,11 @@ export default function redditReducer(state = initialState, action) {
       const key = payload.url;
       const data = payload.data;
 
+      if (payload.error)
+        return state
+          .setIn(['queries', key, 'fetching'], false)
+          .setIn(['queries', key, 'failed'], true);
+
       return state.updateIn(['queries', key], query =>
         query
           .merge({

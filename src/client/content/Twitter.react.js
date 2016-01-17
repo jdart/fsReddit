@@ -18,6 +18,10 @@ export default class Twitter extends Component {
   }
 
   componentWillMount() {
+    if (!this.executedIds)
+      this.executedIds = {};
+    if (window.twttr)
+      return;
     var g = document.createElement('script');
     var s = document.getElementsByTagName('script')[0];
     g.src = 'http://platform.twitter.com/widgets.js';
@@ -33,13 +37,16 @@ export default class Twitter extends Component {
   }
 
   execWidget() {
+    const id = this.parseId(this.props.url);
     if (!window.twttr)
       return setTimeout(this.execWidget.bind(this), 500);
+    if (this.executedIds[id])
+      return;
 
+    this.executedIds[id] = true;
     window.twttr.widgets.createTweet(
       this.parseId(this.props.url),
-      this.refs.tweet,
-      { theme: 'dark' }
+      this.refs.tweet
     );
   }
 
