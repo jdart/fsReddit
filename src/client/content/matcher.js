@@ -14,6 +14,8 @@ import url from 'url';
 
 const matchers = [{
   test: (entryUrl, props) => !!props.comments,
+  component: Reddit,
+}, {
   host: 'reddit.com',
   component: Reddit,
 }, {
@@ -45,7 +47,6 @@ const matchers = [{
 
 export default function(entry, props) {
   const entryUrl = entry.get('url');
-
   const matches = matchers
     .filter(({host}) =>
       !host || [].concat(host).some(host => hostMatch(host, entryUrl))
