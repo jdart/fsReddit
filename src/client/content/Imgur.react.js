@@ -41,23 +41,24 @@ export default class Imgur extends Component {
     this.request = this.imgId(props.url);
     this.query = props.imgur.queries.get(this.request);
 
-    if (this.fetchApiData(props))
+    // need data from imgur
+    if (this.fetchData(props))
       return;
 
+    // mark reddit entry as preloaded
     if (props.preloading)
       return this.preload(props);
 
+    // enqueue more images to preload, or preload images in queue
     if (!this.enqueueImages(props))
       this.runQueue(props);
 
-    if (
-      !props.preloading
-      && this.query
-      && this.query.get('fetching') === false
-    ) this.setNav(props);
+    // set nav when fetching is done
+    if (this.query.get('fetching') === false)
+      this.setNav(props);
   }
 
-  fetchApiData(props) {
+  fetchData(props) {
     const {entry, actions} = props;
     if (this.query)
       return false;
