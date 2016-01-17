@@ -7,17 +7,26 @@ import createEngine from 'redux-storage/engines/localStorage';
 import createRoutes from './createRoutes';
 import {Provider} from 'react-redux';
 import storage from 'redux-storage';
+import ga from 'react-ga';
 
 const app = document.getElementById('app');
 const engine = createEngine('fs-reddit');
-
 const initialState = window.__INITIAL_STATE__;
 const store = configureStore({engine, initialState});
 const routes = createRoutes(store.getState);
 
+if (typeof window !== 'undefined')
+  ga.initialize('UA-70268033-1');
+
+function logPageView(nextState) {
+  if (typeof window === 'undefined' || !nextState || !nextState.location)
+    return;
+  ga.pageview(nextState.location.pathname);
+}
+
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={createBrowserHistory()}>
+    <Router onUpdate={logPageView} history={createBrowserHistory()}>
       {routes}
     </Router>
   </Provider>,

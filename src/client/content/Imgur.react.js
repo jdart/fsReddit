@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import FsImg from './FsImg.react';
-import {imgPreload, urlParse} from '../utils';
+import {urlParse} from '../utils';
 import Loader from '../ui/Loader.react';
 import css from './Gfycat.styl';
 import basename from 'basename';
@@ -153,8 +153,7 @@ export default class Imgur extends Component {
   }
 
   imgId(url) {
-    const {pathname} = urlParse(url);
-    return basename(pathname);
+    return basename(urlParse(url).pathname);
   }
 
   renderGifv(url) {
