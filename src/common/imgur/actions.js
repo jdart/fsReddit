@@ -17,7 +17,7 @@ function imgurRobustFetcher(id, album, created) {
   return imgurFetchType('image', id)
   .then(response => {
     if (response.status !== 200)
-      return imgurFetchType('gallery', id);
+      return imgurFetchType('album', id);
 
     return response.json()
     .then(imageResponse => {
@@ -31,7 +31,6 @@ function imgurRobustFetcher(id, album, created) {
         if (galleryResponse.status !== 200)
           return imageResponse;
 
-        console.log(galleryDiff, imageDiff)
         const galleryDiff = Math.abs(created - galleryResponse.data.datetime);
         return galleryDiff < imageDiff ? galleryResponse : imageResponse;
       });
@@ -57,10 +56,11 @@ function imageLoader(image, current, index) {
 export function imgurFetch(entry) {
   const {pathname} = url.parse(entry.get('url'));
   const id = basename(pathname);
+  const album = pathname.match(/^\/a\//) || pathname.match(/^\/gallery\//);
   return {
     type: Object.keys(promiseConsts(C.IMGUR_FETCH)),
     payload: {
-      promise: imgurRobustFetcher(id, pathname.match(/^\/a\//), entry.get('created_utc'))
+      promise: imgurRobustFetcher(id, album, entry.get('created_utc'))
         .then(response => response.json ? response.json() : response)
         .then(response => set(response, 'reqid', id)),
       data: { reqid: id }
