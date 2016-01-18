@@ -25,7 +25,7 @@ function imgurRobustFetcher(id, album, created) {
       if (imageDiff <= maxAge)
         return imageResponse;
 
-      return imgurFetchType('gallery', id)
+      return imgurFetchType('album', id)
       .then(response => response.json())
       .then(galleryResponse => {
         if (galleryResponse.status !== 200)
@@ -56,7 +56,7 @@ function imageLoader(image, current, index) {
 export function imgurFetch(entry) {
   const {pathname} = url.parse(entry.get('url'));
   const id = basename(pathname);
-  const album = pathname.match(/^\/a\//) || pathname.match(/^\/gallery\//);
+  const album = pathname.match(/^\/a\//);
   return {
     type: Object.keys(promiseConsts(C.IMGUR_FETCH)),
     payload: {

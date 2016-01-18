@@ -40,8 +40,8 @@ export function asyncUnauthRedditAction(type, action, url, options = {}, payload
 }
 
 export function invalidate(state) {
-  return state.setIn(['user', 'oauth', 'data'], {})
-    .setIn(['user', 'authenticated'], false);
+  return state.setIn(['oauth', 'data'], {})
+    .setIn(['authenticated'], false);
 }
 
 export function invalidateIf401(state, status) {

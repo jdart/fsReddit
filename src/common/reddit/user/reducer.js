@@ -81,7 +81,7 @@ export default function redditUserReducer(state = initialState, action) {
 
     case C.REDDIT_USER_FETCH_SUBREDDITS_SUCCESS: {
       let extras = ['all'];
-      if (state.user.get('authenticated'))
+      if (state.get('authenticated'))
         extras.push('friends');
       return state.updateIn(['subreddits', 'list'], list => new List([
         ...extras,
