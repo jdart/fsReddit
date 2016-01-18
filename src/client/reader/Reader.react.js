@@ -50,7 +50,7 @@ export default class Reader extends Component {
         <Nav
           {...this.props}
           entries={this.props.entries}
-          api={this.props.reddit.get('api')}
+          api={this.props.redditUser.get('api')}
         />
         <Content
           {...this.props}

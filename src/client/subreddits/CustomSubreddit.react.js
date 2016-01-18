@@ -16,7 +16,6 @@ export default class CustomSubreddit extends Component {
   }
 
   render() {
-    const store = this.props.reddit;
     return (
       <form className="custom-subreddit" onSubmit={this.go.bind(this)}>
         <input placeholder="Other subreddit" name="name" type="text" />

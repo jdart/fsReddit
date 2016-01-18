@@ -24,9 +24,9 @@ export default class Subreddit extends Component {
 
   shortcuts(props) {
     this.url = this.generateUrl(props);
-    this.query = this.url ? props.reddit.queries.get(this.url) : null;
+    this.query = this.url ? props.redditContent.queries.get(this.url) : null;
     this.entries = this.query ? this.query.get('entries') : null;
-    this.api = props.reddit.get('api');
+    this.api = props.redditContent.get('api');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,7 +76,7 @@ export default class Subreddit extends Component {
     const index = this.query.index + offset;
     if (index < 0)
       return null;
-    return this.props.reddit.entries.get(this.entries.get(index));
+    return this.props.redditContent.entries.get(this.entries.get(index));
   }
 
   entryConfig(offset) {

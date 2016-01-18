@@ -134,7 +134,7 @@ export default class Imgur extends Component {
     const index = query.index;
     const req = this.request;
     const id = req + '/' + index;
-    if (props.reddit.navActions.get('id') === id)
+    if (props.redditContent.navActions.get('id') === id)
       return;
 
     const prev = this.getImage(-1, props);

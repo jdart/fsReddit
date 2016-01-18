@@ -25,12 +25,12 @@ export default class Single extends Component {
 
   entry(props) {
     props = props ? props : this.props;
-    return props.reddit.entries.get(props.params.id);
+    return props.redditContent.entries.get(props.params.id);
   }
 
   fetchInitial(props) {
     props.actions.redditFetchComments(
-      props.reddit.api,
+      props.redditUser.api,
       props.params.id
     );
   }

@@ -1,4 +1,5 @@
-import * as redditActions from '../reddit/actions';
+import * as redditContentActions from '../reddit/content/actions';
+import * as redditUserActions from '../reddit/user/actions';
 import * as imgurActions from '../imgur/actions';
 import * as readabilityActions from '../readability/actions';
 import * as gfycatActions from '../gfycat/actions';
@@ -7,7 +8,8 @@ import {Map} from 'immutable';
 import {bindActionCreators} from 'redux';
 
 const actions = [
-  redditActions,
+  redditUserActions,
+  redditContentActions,
   imgurActions,
   readabilityActions,
   gfycatActions,

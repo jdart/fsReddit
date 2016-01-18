@@ -23,29 +23,4 @@ export const Oauth = Record({
   data: new OauthData,
 });
 
-export const User = Record({
-  authenticated: false,
-  oauth: new Oauth,
-  details: new Map,
-});
-
-export const Query = Record({
-  fetching: true,
-  didInvalidate: null,
-  lastUpdated: null,
-  failed: null,
-  entries: new List,
-  index: null,
-  after: null,
-});
-
-export const Comments = Record({
-  fetching: null,
-  children: null
-});
-
-export const Comment = Record({
-  data: new Map,
-  children: new List
-});
 

@@ -12,7 +12,7 @@ export default class LoggedOut extends Component {
   }
 
   loggedOut(props) {
-    return props.reddit.user.authenticated;
+    return props.redditUser.authenticated;
   }
 
   goHome() {

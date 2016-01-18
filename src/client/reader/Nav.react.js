@@ -19,9 +19,9 @@ export default class Nav extends Component {
   }
 
   goVert(direction) {
-    let action = this.props.reddit.navActions.get(direction);
+    let action = this.props.redditContent.navActions.get(direction);
     if (!action)
-      action = this.props.reddit.navActions.get(
+      action = this.props.redditContent.navActions.get(
         direction === 'up' ? 'last' : 'first'
       );
     if (action)
@@ -121,7 +121,7 @@ export default class Nav extends Component {
   }
 
   renderVert() {
-    const {navActions} = this.props.reddit;
+    const {navActions} = this.props.redditContent;
     const up = navActions.get('up');
     const down = navActions.get('down');
     const title = navActions.get('title');
@@ -159,7 +159,7 @@ export default class Nav extends Component {
   }
 
   renderVote(entry) {
-    if (!this.props.reddit.user.get('authenticated'))
+    if (!this.props.redditUser.get('authenticated'))
       return;
     const { redditVote } = this.props.actions;
     const vote = () => redditVote(this.props.api, entry);
@@ -196,7 +196,7 @@ export default class Nav extends Component {
   }
 
   renderFollow(entry) {
-    if (!this.props.reddit.user.get('authenticated'))
+    if (!this.props.redditUser.get('authenticated'))
       return;
 
     const friend = () => this.props.actions.redditFriend(

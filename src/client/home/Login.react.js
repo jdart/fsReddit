@@ -13,7 +13,7 @@ export default class Login extends Component {
 
   render() {
     const login = this.props.actions.redditLogin;
-    if (this.props.reddit.user.get('authenticated'))
+    if (this.props.redditUser.get('authenticated'))
       return (<div />);
     return (
       <div className="login">
