@@ -8,7 +8,7 @@ import Reader from './Reader.react';
 export default class Upvoted extends Subreddit {
 
   generateUrl(props) {
-    const name = props.reddit.user.details.get('name');
+    const name = props.redditUser.details.get('name');
     if (!name)
       return;
     return `/user/${name}/upvoted`;

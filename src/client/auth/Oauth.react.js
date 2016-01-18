@@ -24,11 +24,11 @@ export default class Oauth extends Component {
   runActions() {
     const {reddit, history} = this.props;
     const qs = queryString.parse(window.location.hash);
-    if (!this.props.reddit.get('loaded'))
+    if (!this.props.redditUser.get('loaded'))
       return;
-    if (this.props.reddit.user.oauth.get('fetching') === null) {
+    if (this.props.redditUser.oauth.get('fetching') === null) {
       this.props.actions.redditLoginValidate(qs);
-    } else if (this.props.reddit.user.get('authenticated')) {
+    } else if (this.props.redditUser.get('authenticated')) {
       this.props.actions.redditLoggedIn(history);
     }
   }

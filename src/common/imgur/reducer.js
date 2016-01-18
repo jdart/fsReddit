@@ -1,6 +1,6 @@
 
 import C from './consts';
-import RC from '../reddit/consts';
+import RC from '../reddit/content/consts';
 import includes from 'lodash/collection/includes';
 import set from 'lodash/object/set';
 import union from 'lodash/array/union';

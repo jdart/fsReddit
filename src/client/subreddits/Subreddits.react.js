@@ -24,7 +24,7 @@ export default class Subreddits extends Component {
   }
 
   renderLogin() {
-    if (this.props.reddit.user.get('authenticated'))
+    if (this.props.redditUser.get('authenticated'))
       return;
     return (
       <Login {...this.props} />
@@ -35,16 +35,16 @@ export default class Subreddits extends Component {
     if (!this.empty(props))
       return;
     props.actions.redditFetchSubreddits(
-      props.reddit.get('api')
+      props.redditUser.get('api')
     );
   }
 
   empty(props) {
-    return props.reddit.subreddits.get('fetching') === null;
+    return props.redditUser.subreddits.get('fetching') === null;
   }
 
   renderUpvoted() {
-    if (!this.props.reddit.user.get('authenticated'))
+    if (!this.props.redditUser.get('authenticated'))
       return;
     return (
       <li key="upvoted">
@@ -57,7 +57,7 @@ export default class Subreddits extends Component {
 
   render() {
     const {actions} = this.props;
-    if (this.empty(this.props) || this.props.reddit.subreddits.get('fetching'))
+    if (this.empty(this.props) || this.props.redditUser.subreddits.get('fetching'))
       return (<Loader />);
 
     return (
@@ -72,7 +72,7 @@ export default class Subreddits extends Component {
           </Link>
         </li>
         {this.renderUpvoted()}
-        {this.props.reddit.subreddits.list.valueSeq().map((subreddit) => (
+        {this.props.redditUser.subreddits.list.valueSeq().map((subreddit) => (
           <li key={subreddit}>
             <Link to={`/r/${subreddit}`}>
               {subreddit}
