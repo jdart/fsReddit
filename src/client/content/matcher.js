@@ -13,7 +13,10 @@ import {hostMatch} from '../utils';
 import url from 'url';
 
 const matchers = [{
-  test: (entryUrl, props) => !!props.comments,
+  test: (entryUrl, _) => entryUrl.match(/\.(jpg|jpeg|png|gif)$/),
+  component: FsImg,
+}, {
+  test: (_, props) => !!props.comments,
   component: Reddit,
 }, {
   host: 'reddit.com',
@@ -24,9 +27,6 @@ const matchers = [{
 }, {
   host: 'imgur.com',
   component: Imgur,
-}, {
-  test: (entryUrl, props) => entryUrl.match(/\.(jpg|jpeg|png|gif)$/),
-  component: FsImg,
 }, {
   host: 'streamable.com',
   component: Streamable,

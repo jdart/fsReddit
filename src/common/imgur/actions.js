@@ -6,6 +6,7 @@ import set from 'lodash/object/set';
 import Promise from 'bluebird';
 import url from 'url';
 import basename from 'basename';
+import {parse} from './utils';
 
 const maxAge = 60 * 60 * 24 * 30;
 
@@ -54,16 +55,14 @@ function imageLoader(image, current, index) {
 }
 
 export function imgurFetch(entry) {
-  const {pathname} = url.parse(entry.get('url'));
-  const id = basename(pathname);
-  const album = pathname.match(/^\/a\//);
+  const parts = parse(entry.get('url'));
   return {
     type: Object.keys(promiseConsts(C.IMGUR_FETCH)),
     payload: {
-      promise: imgurRobustFetcher(id, album, entry.get('created_utc'))
+      promise: imgurRobustFetcher(parts.id, parts.type, entry.get('created_utc'))
         .then(response => response.json ? response.json() : response)
-        .then(response => set(response, 'reqid', id)),
-      data: { reqid: id }
+        .then(response => set(response, 'reqid', parts.id)),
+      data: { reqid: parts.id }
     }
   };
 }
