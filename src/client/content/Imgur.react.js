@@ -8,6 +8,7 @@ import Loader from '../ui/Loader.react';
 import css from './Gfycat.styl';
 import basename from 'basename';
 import without from 'lodash/array/without';
+import {parse} from '../../common/imgur/utils';
 
 export default class Imgur extends Component {
 
@@ -154,7 +155,7 @@ export default class Imgur extends Component {
   }
 
   imgId(url) {
-    return basename(urlParse(url).pathname);
+    return parse(url).id;
   }
 
   renderGifv(url) {
