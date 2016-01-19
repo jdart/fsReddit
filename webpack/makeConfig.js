@@ -52,10 +52,10 @@ export default function makeConfig(isDevelopment) {
     module: {
       loaders: [{
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&minetype=application/font-woff"
+        loader: 'url-loader?limit=10000&minetype=application/font-woff'
       }, {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader"
+        loader: 'file-loader'
       }, {
         loader: 'url-loader?limit=100000',
         test: /\.(gif|jpg|png|woff|woff2|eot|ttf|svg)$/

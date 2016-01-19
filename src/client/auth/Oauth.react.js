@@ -2,15 +2,14 @@
 import Component from 'react-pure-render/component';
 import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
-import {Link, History} from 'react-router';
 import queryString from 'query-string';
 
 export default class Oauth extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
-    reddit: PropTypes.object,
     history: PropTypes.object,
+    redditUser: PropTypes.object,
   }
 
   componentDidMount() {

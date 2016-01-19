@@ -1,9 +1,7 @@
 
 import api from '../api';
 import C from './consts';
-import {promiseConsts} from '../../utils';
-import fetch from 'isomorphic-fetch';
-import {asyncAction, asyncRedditAction, asyncUnauthRedditAction} from '../utils';
+import {asyncAction, asyncRedditAction} from '../utils';
 
 export function redditFriend(api, author) {
   return asyncRedditAction(
@@ -64,13 +62,13 @@ export function redditLoginValidate(oauth) {
       .then(api => {
         return api('/api/v1/me').get()
           .then(me => {
-            return { oauth, api, me };
+            return {oauth, api, me};
           });
       })
   );
 }
 
 function authenticatedApi(oauth) {
-  return api.auth(oauth.access_token).then(() => api)
+  return api.auth(oauth.access_token).then(() => api);
 }
 

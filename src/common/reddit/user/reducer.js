@@ -1,7 +1,6 @@
 
-import set from 'lodash/object/set';
 import {Record, List, Map} from 'immutable';
-import {Subreddits, Oauth, OauthData} from './types';
+import {Subreddits, Oauth} from './types';
 import api from '../api';
 import window from '../window';
 import getRandomString from '../../lib/getRandomString';

@@ -1,9 +1,8 @@
 
 import C from './consts';
 import RUC from '../user/consts';
-import set from 'lodash/object/set';
-import {Record, List, Map} from 'immutable';
-import {Query, Comment, Comments} from './types';
+import {Record, Map} from 'immutable';
+import {Query, Comments} from './types';
 import {invalidateIf401} from '../utils';
 
 const InitialState = Record({
@@ -37,7 +36,7 @@ export default function redditReducer(state = initialState, action) {
 
       return state.setIn(
         ['queries', payload.url],
-        new Query({ fetching: true })
+        new Query({fetching: true})
       );
     }
 
@@ -104,7 +103,7 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_CONTENT_NAV_ACTIONS: {
-      const { prev, next, first, last, id, title } = action.payload;
+      const {prev, next, first, last, id, title} = action.payload;
       return state.mergeIn(['navActions'], {
         id,
         up: prev,

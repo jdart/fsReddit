@@ -3,8 +3,6 @@ import bg from 'gulp-bg';
 import eslint from 'gulp-eslint';
 import fs from 'fs';
 import gulp from 'gulp';
-import gutil from 'gulp-util';
-import mocha from 'gulp-mocha';
 import mochaRunCreator from './test/mochaRunCreator';
 import os from 'os';
 import path from 'path';
