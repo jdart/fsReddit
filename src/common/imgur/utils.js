@@ -20,6 +20,6 @@ export function parse(imgurUrl) {
     .reduce((pathname, {re}) => pathname.replace(re, ''), parts.pathname);
   return {
     type: types[0].type,
-    id: id.split('/')[0],
+    id: id.replace(/\W/, '/').split('/')[0],
   };
 }
