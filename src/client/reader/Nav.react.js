@@ -5,7 +5,7 @@ import {Link} from 'react-router';
 import {hostMatch} from '../utils';
 import {Keys} from 'react-keydown';
 import url from 'url';
-import css from './Nav.styl';
+import './Nav.styl';
 
 export default class Nav extends Component {
 

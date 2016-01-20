@@ -1,7 +1,7 @@
 
 import Component from 'react-pure-render/component';
 import React from 'react';
-import css from './Loader.styl';
+import './Loader.styl';
 
 export default class FsIframe extends Component {
 

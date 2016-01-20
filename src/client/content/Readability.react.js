@@ -2,7 +2,7 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import Loader from '../ui/Loader.react';
-import css from './Readability.styl';
+import './Readability.styl';
 
 export default class Readability extends Component {
 

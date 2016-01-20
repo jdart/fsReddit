@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import Loader from '../ui/Loader.react';
-import css from './Subreddits.styl';
+import './Subreddits.styl';
 import Login from '../home/Login.react';
 import CustomSubreddit from './CustomSubreddit.react';
 

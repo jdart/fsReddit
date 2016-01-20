@@ -1,7 +1,7 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import css from './Login.styl';
+import './Login.styl';
 
 export default class Login extends Component {
 

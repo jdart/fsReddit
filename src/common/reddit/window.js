@@ -7,5 +7,5 @@ const dummyWindow = {
   },
 };
 
-export default (typeof window === 'undefined') ? dummyWindow : window; //eslint-disable-line no-undef
+export default (typeof window === 'undefined') ? dummyWindow : window;
 

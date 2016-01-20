@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
 import Subreddits from '../subreddits/Subreddits.react';
-import css from './Home.styl';
+import './Home.styl';
 
 export default class Home extends Component {
 

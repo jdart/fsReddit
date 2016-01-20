@@ -2,7 +2,7 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import url from 'url';
-import css from './Twitter.styl';
+import './Twitter.styl';
 
 export default class Twitter extends Component {
 

@@ -2,7 +2,7 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import url from 'url';
-import css from './FsIframe.styl';
+import './FsIframe.styl';
 import {hostMatch} from '../utils';
 import Reddit from './reddit/Reddit.react';
 import Loader from '../ui/Loader.react';

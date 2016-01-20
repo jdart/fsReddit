@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import Loader from '../ui/Loader.react';
 import url from 'url';
-import css from './Streamable.styl';
+import './Streamable.styl';
 
 export default class Streamable extends Component {
 

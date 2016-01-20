@@ -1,7 +1,7 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import css from './FsImg.styl';
+import './FsImg.styl';
 
 export default class FsImg extends Component {
 

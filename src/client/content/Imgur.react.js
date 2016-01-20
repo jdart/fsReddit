@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import FsImg from './FsImg.react';
 import Loader from '../ui/Loader.react';
-import css from './Gfycat.styl';
+import './Gfycat.styl';
 import without from 'lodash/array/without';
 import {parse} from '../../common/imgur/utils';
 

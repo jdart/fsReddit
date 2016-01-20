@@ -5,7 +5,7 @@ import Content from '../content/Content.react';
 import Nav from './Nav.react';
 import {urlParse, hostMatch} from '../utils';
 import Loader from '../ui/Loader.react';
-import css from './Reader.styl';
+import './Reader.styl';
 
 export default class Reader extends Component {
 

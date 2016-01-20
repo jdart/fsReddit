@@ -45,7 +45,7 @@ function imgurFetchType(type, id) {
 
 function imageLoader(image, current, index) {
   return new Promise((resolve, reject) => {
-    let img = new Image; //eslint-disable-line no-undef
+    let img = new Image;
     img.onload = () => resolve({image, current, index});
     img.onerror = () => reject({image, current, index});
     img.src = image.get('url');

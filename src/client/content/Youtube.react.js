@@ -2,7 +2,7 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import getYouTubeID from 'get-youtube-id';
-import css from './Youtube.styl';
+import './Youtube.styl';
 
 
 export default class Youtube extends Component {
