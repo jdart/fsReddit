@@ -1,7 +1,6 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import url from 'url';
 import css from './Twitter.styl';
 
@@ -22,8 +21,8 @@ export default class Twitter extends Component {
       this.executedIds = {};
     if (window.twttr)
       return;
-    var g = document.createElement('script');
-    var s = document.getElementsByTagName('script')[0];
+    let g = document.createElement('script');
+    let s = document.getElementsByTagName('script')[0];
     g.src = 'http://platform.twitter.com/widgets.js';
     s.parentNode.insertBefore(g, s);
   }

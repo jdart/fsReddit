@@ -1,7 +1,6 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import Loader from '../ui/Loader.react';
 import url from 'url';
 import css from './Streamable.styl';
@@ -9,8 +8,9 @@ import css from './Streamable.styl';
 export default class Streamable extends Component {
 
   static propTypes = {
-    url: PropTypes.string,
+    actions: PropTypes.object,
     streamable: PropTypes.object,
+    url: PropTypes.string,
   }
 
   componentDidMount() {
@@ -69,12 +69,12 @@ export default class Streamable extends Component {
     return (
       <div className="streamable-aligner">
         <video
-          id={`streamable-${id}`}
-          className="streamable"
           autoPlay="true"
+          className="streamable"
+          id={`streamable-${id}`}
           loop="true"
-          src={src}
           preload="auto"
+          src={src}
         />
       </div>
     );

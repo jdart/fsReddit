@@ -97,9 +97,9 @@ export default class FsIframe extends Component {
           </p>
         </div>
         <iframe
-          src={this.props.url}
           onLoad={this.loaded.bind(this)}
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+          src={this.props.url}
         />
         {loaded ? '' : (<Loader />)}
       </div>

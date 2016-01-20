@@ -1,12 +1,9 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import FsImg from './FsImg.react';
-import {urlParse} from '../utils';
 import Loader from '../ui/Loader.react';
 import css from './Gfycat.styl';
-import basename from 'basename';
 import without from 'lodash/array/without';
 import {parse} from '../../common/imgur/utils';
 
@@ -14,12 +11,12 @@ export default class Imgur extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
-    url: PropTypes.string,
     imgur: PropTypes.object,
-    reddit: PropTypes.object
+    redditContent: PropTypes.object,
+    url: PropTypes.string,
   }
 
-  getImage(offset=0, props) {
+  getImage(offset = 0, props) {
     const query = this.query;
     const index = query.index + offset;
     if (index < 0 || index > query.entries.size)
@@ -75,7 +72,7 @@ export default class Imgur extends Component {
       || this.query.get('fetching') !== false
     ) return false;
 
-    actions.redditEntryPreload(entry, { key: this.request });
+    actions.redditEntryPreload(entry, {key: this.request});
   }
 
   enqueueImages(props) {
@@ -141,7 +138,7 @@ export default class Imgur extends Component {
     const prev = this.getImage(-1, props);
     const next = this.getImage(1, props);
     const first = this.getImage(-query.index, props);
-    const last = this.getImage(query.entries.size-1, props);
+    const last = this.getImage(query.entries.size - 1, props);
     const step = props.actions.imgurStep;
 
     props.actions.redditNavActions(
@@ -149,8 +146,8 @@ export default class Imgur extends Component {
       prev ? (() => step(req, index - 1)) : null,
       next ? (() => step(req, index + 1)) : null,
       first ? (() => step(req, 0)) : null,
-      last ? (() => step(req, query.entries.size-1)) : null,
-      (index+1) + '/' + query.entries.size
+      last ? (() => step(req, query.entries.size - 1)) : null,
+      (index + 1) + '/' + query.entries.size
     );
   }
 
@@ -164,10 +161,10 @@ export default class Imgur extends Component {
     return (
       <div className="imgurGifv-aligner">
         <video
-          preload="auto"
           autoPlay="autoplay"
-          loop="loop"
           className="imgurGifv"
+          loop="loop"
+          preload="auto"
           src={`//i.imgur.com/${id}.webm`}
         />
       </div>
@@ -200,8 +197,8 @@ export default class Imgur extends Component {
         {image.get('preloaded') ? '' : (<Loader />)}
         <FsImg
           onload={this.onload.bind(this)}
-          url={url}
           tallMode={images.size === 1}
+          url={url}
         />
       </div>
     );

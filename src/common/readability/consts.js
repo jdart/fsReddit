@@ -1,6 +1,6 @@
 
 
-import { genConsts } from '../utils';
+import {genConsts} from '../utils';
 
 export default genConsts([], [
   'READABILITY_FETCH',

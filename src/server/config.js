@@ -11,8 +11,7 @@ function getAssetHash(filePath) {
   if (!isProduction) return '';
   try {
     return hashFile.sync(filePath);
-  }
-  catch (e) {
+  } catch (e) {
     return '';
   }
 }

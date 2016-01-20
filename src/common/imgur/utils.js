@@ -1,6 +1,5 @@
 
 import url from 'url';
-import basename from 'basename';
 
 const typeMatchers = [{
   type: 'album',

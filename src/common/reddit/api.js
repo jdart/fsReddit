@@ -1,8 +1,9 @@
 
 import Snoocore from 'snoocore';
 
-const key = process.env.REDDIT_KEY ? process.env.REDDIT_KEY : null;
-const host = (typeof window === 'undefined') ? 'localhost:8000' : window.location.host;
+const key = process.env.REDDIT_KEY ? process.env.REDDIT_KEY : null; //eslint-disable-line no-undef
+const host = (typeof window === 'undefined') ? 'localhost:8000' : window.location.host; //eslint-disable-line no-undef
+
 
 export default new Snoocore({
   userAgent: 'redditGallery@1.0.0',

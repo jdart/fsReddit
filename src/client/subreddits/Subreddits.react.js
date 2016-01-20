@@ -10,9 +10,9 @@ import CustomSubreddit from './CustomSubreddit.react';
 export default class Subreddits extends Component {
 
   static propTypes = {
-    reddit: PropTypes.object,
-    history: PropTypes.object,
     actions: PropTypes.object,
+    history: PropTypes.object,
+    redditUser: PropTypes.object,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,7 +56,6 @@ export default class Subreddits extends Component {
   }
 
   render() {
-    const {actions} = this.props;
     if (this.empty(this.props) || this.props.redditUser.subreddits.get('fetching'))
       return (<Loader />);
 

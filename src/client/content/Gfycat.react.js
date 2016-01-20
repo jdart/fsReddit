@@ -1,7 +1,6 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import Loader from '../ui/Loader.react';
 import url from 'url';
 import css from './Gfycat.styl';
@@ -9,8 +8,9 @@ import css from './Gfycat.styl';
 export default class Gfycat extends Component {
 
   static propTypes = {
-    url: PropTypes.string,
+    actions: PropTypes.object,
     gfycat: PropTypes.object,
+    url: PropTypes.string,
   }
 
   componentDidMount() {
@@ -58,13 +58,13 @@ export default class Gfycat extends Component {
     return (
       <div className="gfycat-aligner">
         <video
-          id={`gfycat-${id}`}
-          className="gfycat"
           autoPlay="true"
+          className="gfycat"
+          id={`gfycat-${id}`}
           loop="true"
           poster={`//thumbs.gfycat.com/${id}-poster.jpg`}
-          src={data.webmUrl}
           preload="auto"
+          src={data.webmUrl}
         />
       </div>
     );

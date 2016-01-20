@@ -2,17 +2,17 @@
 import Component from 'react-pure-render/component';
 import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import Reader from './Reader.react';
 import Loader from '../ui/Loader.react';
 
 export default class Single extends Component {
 
   static propTypes = {
-    reddit: PropTypes.object,
     actions: PropTypes.object,
-    params: PropTypes.object,
     history: PropTypes.object,
+    params: PropTypes.object,
+    redditContent: PropTypes.object,
+    redditUser: PropTypes.object,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,10 +44,10 @@ export default class Single extends Component {
   }
 
   entriesConfig() {
-    const dummy = { action: () => false, entry: null };
+    const dummy = {action: () => false, entry: null};
     return {
       prev: dummy,
-      current: { action: () => false, entry: this.entry() },
+      current: {action: () => false, entry: this.entry()},
       next: dummy,
     };
   }
@@ -63,7 +63,7 @@ export default class Single extends Component {
         comments={true}
         entries={this.entriesConfig()}
       />
-    )
+    );
   }
 
   render() {
@@ -73,6 +73,5 @@ export default class Single extends Component {
       </DocumentTitle>
     );
   }
-
 
 }

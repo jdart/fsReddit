@@ -2,7 +2,6 @@
 import Component from 'react-pure-render/component';
 import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import Subreddits from '../subreddits/Subreddits.react';
 import css from './Home.styl';
 
@@ -13,7 +12,7 @@ export default class Home extends Component {
   }
 
   render() {
-    const title = "Fullscreenit";
+    const title = 'Fullscreenit';
     return (
       <DocumentTitle title={title}>
         <div className="home-page">

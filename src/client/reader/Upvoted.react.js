@@ -1,9 +1,5 @@
 
-import Component from 'react-pure-render/component';
 import Subreddit from './Subreddit.react';
-import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
-import Reader from './Reader.react';
 
 export default class Upvoted extends Subreddit {
 

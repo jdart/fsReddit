@@ -31,7 +31,6 @@ describe('imgur utils', () => {
       const parts = parse('http://i.imgur.com/mkzj6Un.jpg?1');
       expect(parts).to.eql({type: false, id: 'mkzj6Un'});
     });
-
     it('handles urls with multiple ids', () => {
       const parts = parse('http://imgur.com/MgJoy6o&OsD1Gdk&7lCYjP2');
       expect(parts).to.eql({type: false, id: 'MgJoy6o'});

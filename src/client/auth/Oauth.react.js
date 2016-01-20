@@ -21,7 +21,7 @@ export default class Oauth extends Component {
   }
 
   runActions() {
-    const {reddit, history} = this.props;
+    const {history} = this.props;
     const qs = queryString.parse(window.location.hash);
     if (!this.props.redditUser.get('loaded'))
       return;
