@@ -6,6 +6,7 @@ import window from '../window';
 import getRandomString from '../../lib/getRandomString';
 import {invalidate, invalidateIf401} from '../utils';
 import C from './consts';
+import RCC from '../content/consts';
 
 const InitialState = Record({
   authenticated: false,
@@ -92,6 +93,11 @@ export default function redditUserReducer(state = initialState, action) {
     case C.REDDIT_USER_FETCH_SUBREDDITS_ERROR: {
       return invalidateIf401(state, action.payload.status)
         .setIn(['subreddits', 'fetching'], false);
+    }
+
+    case RCC.REDDIT_CONTENT_FETCH_COMMENTS_ERROR: {}
+    case RCC.REDDIT_CONTENT_FETCH_ENTRIES_ERROR: {
+      return invalidateIf401(state, action.payload.status);
     }
   }
 

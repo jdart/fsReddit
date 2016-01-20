@@ -12,11 +12,11 @@ import Readability from './Readability.react';
 import {hostMatch} from '../utils';
 
 const matchers = [{
-  test: (entryUrl, _) => entryUrl.match(/\.(jpg|jpeg|png|gif)$/),
-  component: FsImg,
-}, {
   test: (_, props) => !!props.comments,
   component: Reddit,
+}, {
+  test: (entryUrl, _) => entryUrl.match(/\.(jpg|jpeg|png|gif)$/),
+  component: FsImg,
 }, {
   host: 'reddit.com',
   component: Reddit,

@@ -3,7 +3,6 @@ import C from './consts';
 import RUC from '../user/consts';
 import {Record, Map} from 'immutable';
 import {Query, Comments} from './types';
-import {invalidateIf401} from '../utils';
 
 const InitialState = Record({
   entries: new Map,
@@ -77,7 +76,7 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_CONTENT_FETCH_ENTRIES_ERROR: {
-      state = state.update('queries', queries =>
+      return state.update('queries', queries =>
           queries.map(query =>
             query.merge({
               fetching: false,
@@ -85,7 +84,6 @@ export default function redditReducer(state = initialState, action) {
             })
           )
       );
-      return invalidateIf401(state, action.payload.status);
     }
 
     case C.REDDIT_CONTENT_ENTRY_PRELOADED: {
@@ -138,10 +136,6 @@ export default function redditReducer(state = initialState, action) {
           iframeLoadMs,
         })
       );
-    }
-
-    case C.REDDIT_CONTENT_FETCH_COMMENTS_ERROR: {
-      return invalidateIf401(state, action.payload.status);
     }
 
     case RUC.REDDIT_USER_FRIEND_SUCCESS: {
