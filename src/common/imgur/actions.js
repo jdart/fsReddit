@@ -8,9 +8,9 @@ import {parse} from './utils';
 
 const maxAge = 60 * 60 * 24 * 30;
 
-function imgurRobustFetcher(id, album, created) {
-  if (album)
-    return imgurFetchType('album', id);
+function imgurRobustFetcher(id, type, created) {
+  if (type)
+    return imgurFetchType(type, id);
 
   // yikes
   return imgurFetchType('image', id)
