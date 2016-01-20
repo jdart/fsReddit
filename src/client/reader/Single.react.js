@@ -30,7 +30,7 @@ export default class Single extends Component {
 
   fetchInitial(props) {
     props.actions.redditFetchComments(
-      props.redditUser.api,
+      props.redditUser.get('api'),
       props.params.id
     );
   }

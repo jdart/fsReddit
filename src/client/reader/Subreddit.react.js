@@ -12,6 +12,7 @@ export default class Subreddit extends Component {
     history: PropTypes.object,
     params: PropTypes.object,
     redditContent: PropTypes.object,
+    redditUser: PropTypes.object,
   }
 
   generateUrl(props) {
@@ -25,7 +26,7 @@ export default class Subreddit extends Component {
     this.url = this.generateUrl(props);
     this.query = this.url ? props.redditContent.queries.get(this.url) : null;
     this.entries = this.query ? this.query.get('entries') : null;
-    this.api = props.redditContent.get('api');
+    this.api = props.redditUser.get('api');
   }
 
   componentWillReceiveProps(nextProps) {
