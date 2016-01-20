@@ -1,6 +1,6 @@
 
 import C from './consts';
-import {Record, List, Map} from 'immutable';
+import {Record, Map} from 'immutable';
 import {Query} from './types';
 
 const InitialState = Record({
@@ -23,7 +23,6 @@ export default function streamableReducer(state = initialState, action) {
     }
 
     case C.STREAMABLE_FETCH_SUCCESS: {
-      console.log(action.payload)
       const id = action.payload.id;
       return state.mergeIn(
         ['queries', id, 'data'],

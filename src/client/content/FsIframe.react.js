@@ -1,9 +1,8 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import url from 'url';
-import css from './FsIframe.styl';
+import './FsIframe.styl';
 import {hostMatch} from '../utils';
 import Reddit from './reddit/Reddit.react';
 import Loader from '../ui/Loader.react';
@@ -12,8 +11,8 @@ export default class FsIframe extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
-    url: PropTypes.string.isRequired,
     entry: PropTypes.object.isRequired,
+    url: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
@@ -51,9 +50,9 @@ export default class FsIframe extends Component {
       <div className="fsIframeFailed">
         <p>
           <span>Unable to display pages from this domain. </span>
-          <a target="BLANK" href={this.props.url}>{this.props.url}</a>
+          <a href={this.props.url} target="BLANK">{this.props.url}</a>
         </p>
-        <Reddit {...this.props} url={this.props.url} entry={this.props.entry} />
+        <Reddit {...this.props} entry={this.props.entry} url={this.props.url} />
       </div>
     );
   }
@@ -98,9 +97,9 @@ export default class FsIframe extends Component {
           </p>
         </div>
         <iframe
-          src={this.props.url}
           onLoad={this.loaded.bind(this)}
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+          src={this.props.url}
         />
         {loaded ? '' : (<Loader />)}
       </div>

@@ -1,7 +1,6 @@
 import Component from 'react-pure-render/component';
 import DocumentTitle from 'react-document-title';
-import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
+import React from 'react';
 
 export default class NotFound extends Component {
 

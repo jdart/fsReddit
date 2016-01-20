@@ -3,7 +3,7 @@ import express from 'express';
 import url from 'url';
 
 const router = express.Router();
-const token = "710eb251d73ad489a7b85c996ff06c3392861872";
+const token = '710eb251d73ad489a7b85c996ff06c3392861872';
 
 function fetcher(url) {
   return fetch([
@@ -15,8 +15,8 @@ function fetcher(url) {
 
 router.route('/parse')
   .get((req, res, next) => {
-    const url_parts = url.parse(req.url, true);
-    const query = url_parts.query;
+    const urlParts = url.parse(req.url, true);
+    const query = urlParts.query;
     fetcher(query.url)
       .then(response => response.json())
       .then(response => {

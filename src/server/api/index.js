@@ -7,7 +7,7 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/readability', readability)
+app.use('/readability', readability);
 
 app.on('mount', () => {
   console.log('Api is available at %s', app.mountpath);

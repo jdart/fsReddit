@@ -1,5 +1,5 @@
 
-import { genConsts } from '../../utils';
+import {genConsts} from '../../utils';
 
 export default genConsts([
   'REDDIT_CONTENT_QUERY_INDEX',

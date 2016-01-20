@@ -23,7 +23,7 @@ export default class Comment extends Component {
     return (
       <div className="replies">
         {replies.data.children.map(child =>
-          <Comment key={child.data.id} data={child.data} />
+          <Comment data={child.data} key={child.data.id} />
         )}
       </div>
     );

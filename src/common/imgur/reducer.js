@@ -60,7 +60,7 @@ function addToQueue(state, add) {
   );
 }
 
-function flagPreloading(state, keys) {;
+function flagPreloading(state, keys) {
   return state.update('images', images =>
     images.map((image, id) => {
       const oldVal = image.get('preloaded');
@@ -119,7 +119,6 @@ export default function imgurReducer(state = initialState, action) {
       const {reqid, index} = action.payload;
       const keys = state.queries.get(reqid).get('entries');
       const next = keys.slice(index + 1, index + 4);
-      const curr = keys.get(index);
       return addToQueue(state, next.toJS())
       .setIn(
         ['queries', action.payload.reqid, 'index'],

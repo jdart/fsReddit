@@ -1,11 +1,9 @@
 
 import fetch from 'isomorphic-fetch';
 import C from './consts';
-import { promiseConsts } from '../utils';
+import {promiseConsts} from '../utils';
 import set from 'lodash/object/set';
 import Promise from 'bluebird';
-import url from 'url';
-import basename from 'basename';
 import {parse} from './utils';
 
 const maxAge = 60 * 60 * 24 * 30;
@@ -40,9 +38,9 @@ function imgurRobustFetcher(id, album, created) {
 }
 
 function imgurFetchType(type, id) {
-  return fetch(`https://api.imgur.com/3/${type}/${id}`, { headers: {
+  return fetch(`https://api.imgur.com/3/${type}/${id}`, {headers: {
     Authorization: 'Client-ID bc4cacfc141d1b0'
-  } });
+  }});
 }
 
 function imageLoader(image, current, index) {
@@ -62,7 +60,7 @@ export function imgurFetch(entry) {
       promise: imgurRobustFetcher(parts.id, parts.type, entry.get('created_utc'))
         .then(response => response.json ? response.json() : response)
         .then(response => set(response, 'reqid', parts.id)),
-      data: { reqid: parts.id }
+      data: {reqid: parts.id}
     }
   };
 }
@@ -70,7 +68,7 @@ export function imgurFetch(entry) {
 export function imgurStep(id, index) {
   return {
     type: C.IMGUR_STEP,
-    payload: { reqid: id, index }
+    payload: {reqid: id, index}
   };
 }
 
@@ -79,7 +77,7 @@ export function imgurCacheImage(image, current, index) {
     type: Object.keys(promiseConsts(C.IMGUR_CACHE_IMAGE)),
     payload: {
       promise: imageLoader(image, current, index),
-      data: { image }
+      data: {image}
     },
   };
 }
@@ -87,14 +85,14 @@ export function imgurCacheImage(image, current, index) {
 export function imgurEnqueue(query, images) {
   return {
     type: C.IMGUR_ENQUEUE,
-    payload: { images }
+    payload: {images}
   };
 }
 
 export function imgurImageCached(image) {
   return {
     type: C.IMGUR_IMAGE_CACHED,
-    payload: { image },
+    payload: {image},
   };
 }
 

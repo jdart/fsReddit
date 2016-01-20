@@ -1,23 +1,20 @@
 
 import Component from 'react-pure-render/component';
-import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
-import Subreddit from './Subreddit.react';
-import {Link} from 'react-router';
 import Content from '../content/Content.react';
 import Nav from './Nav.react';
 import {urlParse, hostMatch} from '../utils';
 import Loader from '../ui/Loader.react';
-import css from './Reader.styl';
+import './Reader.styl';
 
 export default class Reader extends Component {
 
   static propTypes = {
-    reddit: PropTypes.object,
     actions: PropTypes.object,
+    comments: PropTypes.bool,
     entries: PropTypes.object,
     history: PropTypes.object,
-    comments: PropTypes.bool,
+    redditUser: PropTypes.object,
   }
 
   image(entry) {
@@ -34,7 +31,7 @@ export default class Reader extends Component {
 
     return (
       <div className="reader-preloader">
-        <Content {...this.props} preloading={true} entry={entry} />
+        <Content {...this.props} entry={entry} preloading={true} />
       </div>
     );
   }
@@ -49,14 +46,14 @@ export default class Reader extends Component {
       <div className="reader">
         <Nav
           {...this.props}
-          entries={this.props.entries}
           api={this.props.redditUser.get('api')}
+          entries={this.props.entries}
         />
         <Content
           {...this.props}
+          comments={this.props.comments}
           entry={current.entry}
           preloading={false}
-          comments={this.props.comments}
         />
         {this.preRender(next.entry)}
       </div>

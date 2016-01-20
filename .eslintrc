@@ -1,4 +1,8 @@
 {
+  "env": {
+    "browser": true,
+    "node": true,
+  },
   "globals": {
     "describe"   : false,
     "it"         : false,
@@ -11,8 +15,7 @@
   "parser": "babel-eslint",
   "rules": {
     "array-bracket-spacing": 2,
-    "brace-style": [2, "stroustrup", {"allowSingleLine": true}],
-    "camelcase": 2,
+    "brace-style": [2, "1tbs", {"allowSingleLine": true}],
     "comma-dangle": 0,
     "comma-spacing": [2, {"before": false, "after": true}],
     "comma-style": [2, "last"],
@@ -104,7 +107,7 @@
     "no-path-concat": 2,
     // React
     // Not needed. "react/display-name": 2,
-    "react/jsx-boolean-value": 2,
+    // "react/jsx-boolean-value": 2,
     "react/jsx-no-undef": 2,
     "react/jsx-sort-props": 2,
     "react/jsx-sort-prop-types": 2,

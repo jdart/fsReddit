@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import Comments from './Comments.react';
-import css from './Reddit.styl';
+import './Reddit.styl';
 
 export default class Reddit extends Component {
 

@@ -1,14 +1,12 @@
 
 import Component from 'react-pure-render/component';
-import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
-import {Link, History} from 'react-router';
 
 export default class LoggedOut extends Component {
 
   static propTypes = {
-    reddit: PropTypes.object,
     history: PropTypes.object,
+    reddit: PropTypes.object,
   }
 
   loggedOut(props) {

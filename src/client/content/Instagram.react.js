@@ -1,10 +1,8 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
-import Loader from '../ui/Loader.react';
 import url from 'url';
-import css from './Instagram.styl';
+import './Instagram.styl';
 
 export default class Instagram extends Component {
 

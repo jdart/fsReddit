@@ -10,7 +10,6 @@ import Twitter from './Twitter.react';
 import Streamable from './Streamable.react';
 import Readability from './Readability.react';
 import {hostMatch} from '../utils';
-import url from 'url';
 
 const matchers = [{
   test: (entryUrl, _) => entryUrl.match(/\.(jpg|jpeg|png|gif)$/),

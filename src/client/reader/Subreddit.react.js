@@ -2,17 +2,16 @@
 import Component from 'react-pure-render/component';
 import DocumentTitle from 'react-document-title';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import Reader from './Reader.react';
 import Loader from '../ui/Loader.react';
 
 export default class Subreddit extends Component {
 
   static propTypes = {
-    reddit: PropTypes.object,
     actions: PropTypes.object,
-    params: PropTypes.object,
     history: PropTypes.object,
+    params: PropTypes.object,
+    redditContent: PropTypes.object,
   }
 
   generateUrl(props) {
@@ -58,7 +57,7 @@ export default class Subreddit extends Component {
     return this.entries
       && this.entries.size > 2
       && this.query.get('after') !== false
-      && (this.query.get('index')-1) === (this.entries.size-2)
+      && (this.query.get('index') - 1) === (this.entries.size - 2)
       && !this.query.get('fetching');
   }
 
@@ -72,7 +71,7 @@ export default class Subreddit extends Component {
       this.fetchMore();
   }
 
-  getEntry(offset=0) {
+  getEntry(offset = 0) {
     const index = this.query.index + offset;
     if (index < 0)
       return null;
@@ -82,7 +81,7 @@ export default class Subreddit extends Component {
   entryConfig(offset) {
     const entry = this.getEntry(offset);
     if (!entry)
-      return { action: () => false, entry: null };
+      return {action: () => false, entry: null};
     return {
       action: () => this.goTo(offset),
       entry: entry
@@ -124,7 +123,7 @@ export default class Subreddit extends Component {
         {...this.props}
         entries={this.entriesConfig()}
       />
-    )
+    );
   }
 
   render() {

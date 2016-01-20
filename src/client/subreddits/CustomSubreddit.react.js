@@ -1,12 +1,10 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 
 export default class CustomSubreddit extends Component {
 
   static propTypes = {
-    reddit: PropTypes.object,
     history: PropTypes.object,
   }
 
@@ -18,7 +16,7 @@ export default class CustomSubreddit extends Component {
   render() {
     return (
       <form className="custom-subreddit" onSubmit={this.go.bind(this)}>
-        <input placeholder="Other subreddit" name="name" type="text" />
+        <input name="name" placeholder="Other subreddit" type="text" />
         <button type="submit">Go</button>
       </form>
     );

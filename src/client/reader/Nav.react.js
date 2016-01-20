@@ -5,17 +5,19 @@ import {Link} from 'react-router';
 import {hostMatch} from '../utils';
 import {Keys} from 'react-keydown';
 import url from 'url';
-import css from './Nav.styl';
+import './Nav.styl';
 
 export default class Nav extends Component {
 
   static propTypes = {
-    reddit: PropTypes.object,
     actions: PropTypes.object,
+    api: PropTypes.func,
+    entries: PropTypes.object,
+    entry: PropTypes.object,
     next: PropTypes.object,
     prev: PropTypes.object,
-    entry: PropTypes.object,
-    api: PropTypes.func,
+    redditContent: PropTypes.object,
+    redditUser: PropTypes.object,
   }
 
   goVert(direction) {
@@ -68,7 +70,7 @@ export default class Nav extends Component {
   }
 
   renderHorizLink(icon, config, truncate) {
-    const { entry, action } = config;
+    const {entry, action} = config;
     let className = `direction-${icon}`;
     if (truncate)
       className += ' truncate';
@@ -86,7 +88,7 @@ export default class Nav extends Component {
 
   toggleFullScreen() {
     if (!document.fullscreenElement &&    // alternative standard method
-        !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+        !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {  // current working methods
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
       } else if (document.documentElement.msRequestFullscreen) {
@@ -96,16 +98,14 @@ export default class Nav extends Component {
       } else if (document.documentElement.webkitRequestFullscreen) {
         document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
       }
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
     }
   }
 
@@ -161,12 +161,12 @@ export default class Nav extends Component {
   renderVote(entry) {
     if (!this.props.redditUser.get('authenticated'))
       return;
-    const { redditVote } = this.props.actions;
+    const {redditVote} = this.props.actions;
     const vote = () => redditVote(this.props.api, entry);
     const icon = entry.get('likes') ? 'arrow-circle-up' : 'arrow-circle-o-up';
     const title = entry.get('likes') ? 'Unvote' : 'Upvote';
     return (
-      <a onClick={vote} href="#">
+      <a href="#" onClick={vote}>
         <i className={`fa fa-${icon}`} />
         <span>{title}</span>
       </a>
@@ -217,7 +217,7 @@ export default class Nav extends Component {
   }
 
   render() {
-    const { current, prev, next } = this.props.entries;
+    const {current, prev, next} = this.props.entries;
     const horizLink = this.renderHorizLink.bind(this);
 
     return (
@@ -245,7 +245,7 @@ export default class Nav extends Component {
         </div>
         <div className="icon-title">
           <Link to="/"><i className="fa fa-home"/>Home</Link>
-          <a onClick={this.toggleFullScreen} href="#">
+          <a href="#" onClick={this.toggleFullScreen}>
             <i className="fa fa-expand" /><span>Fullscreen</span>
           </a>
         </div>

@@ -1,12 +1,13 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
-import css from './FsImg.styl'
+import './FsImg.styl';
 
 export default class FsImg extends Component {
 
   static propTypes = {
+    onload: PropTypes.func,
+    tallMode: PropTypes.bool,
     url: PropTypes.string,
   }
 
@@ -34,9 +35,9 @@ export default class FsImg extends Component {
     return (
       <div className={className}>
         <img
-          style={style}
-          src={this.props.url}
           onLoad={this.onload.bind(this)}
+          src={this.props.url}
+          style={style}
         />
       </div>
     );

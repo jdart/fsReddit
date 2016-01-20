@@ -1,16 +1,14 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
-import {hostMatch, urlParse} from '../utils';
 import contentMatcher from './matcher';
 
 export default class Content extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    entry: PropTypes.object.isRequired,
     comments: PropTypes.bool,
+    entry: PropTypes.object.isRequired,
   }
 
   renderContent(entry, props) {

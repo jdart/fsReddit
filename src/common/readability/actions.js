@@ -1,7 +1,7 @@
 
 import fetch from 'isomorphic-fetch';
 import C from './consts';
-import { promiseConsts } from '../utils';
+import {promiseConsts} from '../utils';
 import set from 'lodash/object/set';
 
 function fetcher(url) {
@@ -19,7 +19,7 @@ export function readabilityFetch(url) {
       promise: fetcher(url)
         .then(response => response.json())
         .then(response => set(response, 'url', url)),
-      data: { url }
+      data: {url}
     }
   };
 }

@@ -26,7 +26,7 @@ function logPageView(nextState) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router onUpdate={logPageView} history={createBrowserHistory()}>
+    <Router history={createBrowserHistory()} onUpdate={logPageView}>
       {routes}
     </Router>
   </Provider>,

@@ -1,10 +1,8 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
-import url from 'url';
 import getYouTubeID from 'get-youtube-id';
-import css from './Youtube.styl';
+import './Youtube.styl';
 
 
 export default class Youtube extends Component {
@@ -20,10 +18,10 @@ export default class Youtube extends Component {
     return (
       <div className="youtube-aligner">
         <iframe
-          className="youtube"
-          src={`https://www.youtube.com/embed/${id}?autoplay=1`}
-          frameBorder="0"
           allowFullScreen
+          className="youtube"
+          frameBorder="0"
+          src={`https://www.youtube.com/embed/${id}?autoplay=1`}
         />
       </div>
     );

@@ -1,11 +1,6 @@
 
-import api from '../api';
 import C from './consts';
-import { promiseConsts } from '../utils';
-import fetch from 'isomorphic-fetch';
-import queryString from 'query-string';
-import merge from 'lodash/object/merge';
-import {asyncAction, asyncRedditAction, asyncUnauthRedditAction} from '../utils';
+import {asyncRedditAction} from '../utils';
 
 export function redditEntryPreload(entry, extra) {
   return {
@@ -25,7 +20,7 @@ export function redditNavActions(id, prev, next, first, last, title) {
       last,
       title
     }
-  }
+  };
 }
 
 export function redditFetchComments(api, id) {

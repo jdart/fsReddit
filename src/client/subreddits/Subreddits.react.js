@@ -3,16 +3,16 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import Loader from '../ui/Loader.react';
-import css from './Subreddits.styl';
+import './Subreddits.styl';
 import Login from '../home/Login.react';
 import CustomSubreddit from './CustomSubreddit.react';
 
 export default class Subreddits extends Component {
 
   static propTypes = {
-    reddit: PropTypes.object,
-    history: PropTypes.object,
     actions: PropTypes.object,
+    history: PropTypes.object,
+    redditUser: PropTypes.object,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,7 +56,6 @@ export default class Subreddits extends Component {
   }
 
   render() {
-    const {actions} = this.props;
     if (this.empty(this.props) || this.props.redditUser.subreddits.get('fetching'))
       return (<Loader />);
 

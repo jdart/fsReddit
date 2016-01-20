@@ -31,8 +31,8 @@ export default function configureStore({engine, initialState}) {
   }
 
   const loggerEnabled =
-    process.env.NODE_ENV !== 'production' && // eslint-disable-line no-undef
-    process.env.IS_BROWSER; // eslint-disable-line no-undef
+    process.env.NODE_ENV !== 'production' &&
+    process.env.IS_BROWSER;
 
   if (loggerEnabled) {
     const logger = createLogger({
@@ -47,10 +47,10 @@ export default function configureStore({engine, initialState}) {
   const store = createStoreWithMiddleware(createStore)(appReducer, initialState);
 
   // Enable hot reload where available.
-  if (module.hot) { // eslint-disable-line no-undef
+  if (module.hot) {
     // Enable Webpack hot module replacement for reducers.
-    module.hot.accept('./app/reducer', () => { // eslint-disable-line no-undef
-      const nextAppReducer = require('./app/reducer'); // eslint-disable-line no-undef
+    module.hot.accept('./app/reducer', () => {
+      const nextAppReducer = require('./app/reducer');
       store.replaceReducer(nextAppReducer);
     });
   }

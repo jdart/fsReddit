@@ -1,7 +1,6 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import Comment from './Comment.react';
 import Loader from '../../ui/Loader.react';
 
@@ -9,8 +8,8 @@ export default class Comments extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
-    reddit: PropTypes.object,
     entry: PropTypes.object,
+    redditUser: PropTypes.object,
   }
 
   componentDidMount() {
@@ -46,7 +45,7 @@ export default class Comments extends Component {
     return (
       <div className="reddit-comments">
         {comments.get('children').map(child =>
-          <Comment key={child.data.id} data={child.data} />
+          <Comment data={child.data} key={child.data.id} />
         )}
       </div>
     );
