@@ -35,7 +35,7 @@ export default class Oauth extends Component {
   render() {
     return (
       <DocumentTitle title="Authenticate">
-        <div>
+        <div className="validating-page-content">
           <h2>Validating user...</h2>
         </div>
       </DocumentTitle>
