@@ -28,7 +28,7 @@ export default class Comments extends Component {
     if (fetching !== null)
       return;
     this.props.actions.redditFetchComments(
-      this.props.redditUser.api,
+      this.props.redditUser.get('api'),
       this.props.entry.get('id')
     );
   }
