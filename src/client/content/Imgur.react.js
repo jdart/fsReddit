@@ -18,11 +18,11 @@ export default class Imgur extends Component {
 
   getImage(offset = 0, props) {
     const query = this.query;
-    const index = query.index + offset;
-    if (index < 0 || index > query.entries.size)
+    const index = query.get('index') + offset;
+    if (index < 0 || index > query.get('entries').size)
       return null;
-    return props.imgur.images.get(
-      query.entries.get(index)
+    return props.imgur.get('images').get(
+      query.get('entries').get(index)
     );
   }
 
@@ -37,7 +37,7 @@ export default class Imgur extends Component {
 
   propsChanged(props) {
     this.request = this.imgId(props.url);
-    this.query = props.imgur.queries.get(this.request);
+    this.query = props.imgur.get('queries').get(this.request);
 
     // need data from imgur
     if (this.fetchData(props))
@@ -46,6 +46,11 @@ export default class Imgur extends Component {
     // mark reddit entry as preloaded
     if (props.preloading)
       return this.preload(props);
+
+    if (
+      this.query.get('failed')
+      || this.query.get('fetching')
+    ) return;
 
     // enqueue more images to preload, or preload images in queue
     if (!this.enqueueImages(props))
@@ -77,7 +82,7 @@ export default class Imgur extends Component {
 
   enqueueImages(props) {
     const {actions} = props;
-    const queue = props.imgur.preloadQueue;
+    const queue = props.imgur.get('preloadQueue');
     const next = [
       this.getImage(1, props),
       this.getImage(2, props),
@@ -99,7 +104,7 @@ export default class Imgur extends Component {
   }
 
   runQueue(props) {
-    const queue = props.imgur.preloadQueue;
+    const queue = props.imgur.get('preloadQueue');
     if (
       !queue.get('images').size
       || queue.get('working')
@@ -183,6 +188,9 @@ export default class Imgur extends Component {
   render() {
     if (!this.query || this.query.get('fetching') !== false)
       return (<Loader />);
+
+    if (this.query.get('failed'))
+      return (<div className="failed">Failed to find content on imgur.</div>);
 
     const image = this.getImage(0, this.props);
     const gifv = image.get('gifv');
