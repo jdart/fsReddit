@@ -11,18 +11,22 @@ export default class FsImg extends Component {
     url: PropTypes.string,
   }
 
+  tallKey() {
+    return `tall_${this.props.url}`;
+  }
+
   onload(e) {
     if (this.props.onload)
       this.props.onload(e);
     const img = e.target;
-    const tall = (img.height / img.width) > 2;
-    this.setState({tall});
+    const tall = (img.naturalHeight / img.naturalWidth) > 2;
+    this.setState({[this.tallKey()]: tall});
   }
 
   isTall() {
     if (this.props.tallMode === false)
       return false;
-    return this.state && this.state.tall;
+    return this.state && this.state[this.tallKey()];
   }
 
   render() {
