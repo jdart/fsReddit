@@ -1,9 +1,7 @@
 
 import C from './consts';
 import RC from '../reddit/content/consts';
-import includes from 'lodash/collection/includes';
-import set from 'lodash/object/set';
-import union from 'lodash/array/union';
+import {includes, set, union} from 'lodash';
 import {Record, List, Map} from 'immutable';
 import {Query, Image} from './types';
 

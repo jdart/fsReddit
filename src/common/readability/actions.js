@@ -2,7 +2,7 @@
 import fetch from 'isomorphic-fetch';
 import C from './consts';
 import {promiseConsts} from '../utils';
-import set from 'lodash/object/set';
+import set from 'lodash/set';
 
 function fetcher(url) {
   return fetch([

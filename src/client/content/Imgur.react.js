@@ -4,7 +4,7 @@ import React, {PropTypes} from 'react';
 import FsImg from './FsImg.react';
 import Loader from '../ui/Loader.react';
 import './Gfycat.styl';
-import without from 'lodash/array/without';
+import without from 'lodash/without';
 import {parse} from '../../common/imgur/utils';
 
 export default class Imgur extends Component {
