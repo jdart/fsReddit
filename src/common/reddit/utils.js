@@ -2,7 +2,7 @@
 import fetch from 'isomorphic-fetch';
 import {promiseConsts} from '../utils';
 import queryString from 'query-string';
-import merge from 'lodash/object/merge';
+import merge from 'lodash/merge';
 
 export function asyncAction(type, promise, payload = {}) {
   return {

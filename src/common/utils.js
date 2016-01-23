@@ -1,7 +1,5 @@
 
-import isArray from 'lodash/lang/isArray';
-import merge from 'lodash/object/merge';
-import set from 'lodash/object/set';
+import {isArray, merge, set} from 'lodash';
 
 export function arrayToKeyValuePairs(array) {
   return array.reduce((hash, next) => set(hash, next, next), {});

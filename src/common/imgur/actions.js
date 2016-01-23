@@ -2,37 +2,49 @@
 import fetch from 'isomorphic-fetch';
 import C from './consts';
 import {promiseConsts} from '../utils';
-import set from 'lodash/object/set';
+import {set, without, concat, remove, clone, sortBy, filter} from 'lodash';
 import Promise from 'bluebird';
 import {parse} from './utils';
 
-const maxAge = 60 * 60 * 24 * 30;
+const maxAge = 60 * 60 * 24 * 30; //month
+const imgurTypes = ['image', 'album', 'gallery'];
 
 function imgurRobustFetcher(id, type, created) {
-  if (type)
-    return imgurFetchType(type, id);
+  const typeOrder = remove(concat([type], without(imgurTypes, type)));
+  const typeTemplate = {response: null, age: null, key: null};
+  const types = typeOrder.map((type) => set(clone(typeTemplate), 'key', type));
+  return imgurFind(types, 0, id, created);
+}
 
-  // yikes
-  return imgurFetchType('image', id)
+function chooseBest(types) {
+  const failure = {status: 404};
+  types = filter(
+    remove(sortBy(types, 'age'), 'response'),
+    (type) => type.age <= maxAge * 6
+  );
+  if (types.length)
+    return types[0].response;
+  return failure;
+}
+
+function imgurFind(types, index, id, created) {
+  const type = types[index];
+  const nextIndex = index + 1;
+  const last = types.length <= nextIndex;
+  const next = () => last
+    ? chooseBest(types)
+    : imgurFind(types, nextIndex, id, created);
+  return imgurFetchType(type.key, id)
   .then(response => {
     if (response.status !== 200)
-      return imgurFetchType('album', id);
-
+      return next();
     return response.json()
-    .then(imageResponse => {
-      const imageDiff = Math.abs(created - imageResponse.data.datetime);
-      if (imageDiff <= maxAge)
-        return imageResponse;
-
-      return imgurFetchType('album', id)
-      .then(response => response.json())
-      .then(galleryResponse => {
-        if (galleryResponse.status !== 200)
-          return imageResponse;
-
-        const galleryDiff = Math.abs(created - galleryResponse.data.datetime);
-        return galleryDiff < imageDiff ? galleryResponse : imageResponse;
-      });
+    .then(jsonResponse => {
+      type.age = Math.abs(created - jsonResponse.data.datetime);
+      type.response = jsonResponse;
+      if (type.age <= maxAge)
+        return type.response;
+      return next();
     });
   });
 }
