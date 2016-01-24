@@ -1,5 +1,6 @@
 
 import Imgur from '../Imgur.react';
+import FsImg from '../FsImg.react';
 import Loader from '../../ui/Loader.react';
 import {Map, List} from 'immutable';
 
@@ -12,10 +13,11 @@ import {
 
 describe('Imgur component', () => {
   let actions;
-  let imgur;
-  let redditContent;
+  let imgur = Map({queries: Map({})});
+  let redditContent = Map({navActions: Map({id: null})});
+  let preloading = false;
   let url;
-  let entry;
+  let entry = Map({});
   let sandbox;
 
   function renderComponent() {
@@ -28,20 +30,23 @@ describe('Imgur component', () => {
     return {
       actions,
       imgur,
+      entry,
       redditContent,
       url,
+      preloading,
     };
   };
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
-    url = 'http://imgur.com/a/ekVnf';
-    entry = {};
-    imgur = Map({queries: Map({})});
     actions = {
       imgurFetch: sandbox.stub().resolves({}),
       redditNavActions: sandbox.stub().resolves({}),
+      imgurQueueAdd: sandbox.stub().resolves({}),
+      imgurQueueRun: sandbox.stub().resolves({}),
+      redditEntryPreload: sandbox.stub().resolves({}),
     };
+    url = 'http://imgur.com/a/ekVnf';
   });
 
   afterEach(() => {
@@ -73,11 +78,11 @@ describe('Imgur component', () => {
 
   describe('when fetching data', () => {
     beforeEach(() => {
-      imgur = Map({
-        queries: Map({
-          ekVnf: Map({failed: null, fetching: true})
-        }),
-        images: Map({})
+      imgur = imgur.merge({
+        queries: {
+          ekVnf: {failed: null, fetching: true}
+        },
+        images: {}
       });
       component = renderComponent();
     });
@@ -92,11 +97,11 @@ describe('Imgur component', () => {
 
   describe('after imgur failed request', () => {
     beforeEach(() => {
-      imgur = Map({
-        queries: Map({
-          'ekVnf': Map({failed: true, fetching: false})
-        }),
-        images: Map({ })
+      imgur = imgur.merge({
+        queries: {
+          ekVnf: {failed: true, fetching: false}
+        },
+        images: {}
       });
       component = renderComponent();
     });
@@ -109,128 +114,195 @@ describe('Imgur component', () => {
     });
   });
 
-  describe('after imgur request succeeds, and image not preloaded', () => {
-    beforeEach(() => {
-      redditContent = {
-        navActions: Map({id: 'ekVnf'}),
-      };
-      imgur = Map({
-        queries: Map({
-          'ekVnf': Map({
-            failed: false,
-            fetching: false,
-            entries: List(['abc']),
-            index: 0,
-          })
-        }),
-        images: Map({
-          abc: Map({preloaded: false, id: 'abc'})
-        }),
-        preloadQueue: Map({images: List([])}),
-      });
-      component = renderComponent();
-    });
-    it('shows a loader', () => {
-      let loader = TestUtils.findRenderedComponentWithType(
-        component,
-        Loader
-      );
-      expect(loader).to.exist;
-    });
-    it('draws div.imgur', function() {
-      const div = TestUtils.findRenderedDOMComponentWithClass(
-        component,
-        'imgur'
-      );
-      expect(div).to.exist;
-    });
-  });
+  describe('after imgur request succeeds', () => {
 
-  describe('after imgur request succeeds, and image preloaded', () => {
-    beforeEach(() => {
-      redditContent = {
-        navActions: Map({id: 'ekVnf'}),
-      };
-      imgur = Map({
-        queries: Map({
-          'ekVnf': Map({
-            failed: false,
-            fetching: false,
-            entries: List(['abc']),
-            index: 0,
-          })
-        }),
-        images: Map({
-          abc: Map({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'})
-        }),
-        preloadQueue: Map({images: List([])}),
+    describe('and first image not preloaded', () => {
+      beforeEach(() => {
+        redditContent = redditContent.merge({
+          navActions: {id: 'ekVnf'},
+        });
+        imgur = imgur.merge({
+          queries: {
+            ekVnf: {
+              failed: false,
+              fetching: false,
+              entries: ['abc'],
+              index: 0,
+            },
+          },
+          images: {
+            abc: {preloaded: false, id: 'abc'}
+          },
+          preloadQueue: {images: []},
+        });
+        component = renderComponent();
       });
-      component = renderComponent();
-    });
-    it('does not show a loader', () => {
-      let loader;
-      try {
-        loader = TestUtils.findRenderedComponentWithType(
+      it('shows a loader', () => {
+        let loader = TestUtils.findRenderedComponentWithType(
           component,
           Loader
         );
-      } catch(e) {}
-      expect(loader).not.to.exist;
+        expect(loader).to.exist;
+      });
+      it('draws div.imgur', function() {
+        const div = TestUtils.findRenderedDOMComponentWithClass(
+          component,
+          'imgur'
+        );
+        expect(div).to.exist;
+      });
+    });
+
+    describe('and first image preloaded', () => {
+      beforeEach(() => {
+        redditContent = redditContent.merge({
+          navActions: {id: 'ekVnf'},
+        });
+        imgur = imgur.merge({
+          queries: {
+            ekVnf: {
+              failed: false,
+              fetching: false,
+              entries: ['abc'],
+              index: 0,
+            }
+          },
+          images: {
+            abc: {preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'}
+          },
+          preloadQueue: {images: []},
+        });
+        component = renderComponent();
+      });
+      it('does not show a loader', () => {
+        let loader;
+        try {
+          loader = TestUtils.findRenderedComponentWithType(
+            component,
+            Loader
+          );
+        } catch(e) {}
+        expect(loader).not.to.exist;
+      });
+      it('draws an image', () => {
+        let img = TestUtils.findRenderedComponentWithType(
+          component,
+          FsImg
+        );
+        expect(img.props.url).to.equal('http://a.com/a.jpg');
+      });
+    });
+
+    describe('and next image not preloaded, and next image not in preload queue', () => {
+      beforeEach(() => {
+        redditContent = redditContent.merge({
+          navActions: {id: 'ekVnf'},
+        });
+        imgur = imgur.merge({
+          queries: {
+            ekVnf: {
+              failed: false,
+              fetching: false,
+              entries: ['abc', 'bcd', 'cde', 'def'],
+              index: 0,
+            }
+          },
+          images: {
+            abc: {preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'},
+            bcd: {preloaded: null, id: 'bcd', url: 'http://a.com/b.jpg'},
+            cde: {preloaded: null, id: 'cde', url: 'http://a.com/c.jpg'},
+            def: {preloaded: null, id: 'def', url: 'http://a.com/d.jpg'},
+          },
+          preloadQueue: {images: []},
+        });
+        component = renderComponent();
+      });
+      it('enqueues next 2 images to be preloaded', () => {
+        expect(actions.imgurQueueAdd).to.have.been.calledWith(['bcd', 'cde']);
+      });
+    });
+
+    describe('and next image not preloaded, and next image in preload queue', () => {
+      beforeEach(() => {
+        redditContent = redditContent.merge({
+          navActions: {id: 'ekVnf'},
+        });
+        imgur = imgur.merge({
+          queries: {
+            ekVnf: {
+              failed: false,
+              fetching: false,
+              entries: ['abc', 'bcd'],
+              index: 0,
+            }
+          },
+          images: {
+            abc: {preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'},
+            bcd: {preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'}
+          },
+          preloadQueue: {images: ['bcd']},
+        });
+        component = renderComponent();
+      });
+      it('executes preload of first item in queue', () => {
+        expect(actions.imgurQueueRun).to.have.been.calledWith(Map({
+          preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'
+        }));
+      });
     });
   });
-  //it('uses children as handle content', () => {
-    //const handle = TestUtils.findRenderedDOMComponentWithClass(
-      //component,
-      //handleClass
-    //);
-    //expect(handle).to.exist;
-  //});
 
-  //it('has a translated title', () => {
-    //const label = TestUtils.findRenderedDOMComponentWithClass(
-      //component,
-      //'title'
-    //);
-    //expect(label.textContent).to.eql(msg.a);
-  //});
+  describe('when in preloading mode', () => {
+    beforeEach(() => {
+      redditContent = redditContent.merge({
+        navActions: {id: 'ekVnf'},
+      });
+      imgur = imgur.merge({
+        queries: {
+          ekVnf: {
+            failed: false,
+            fetching: null,
+            entries: ['abc', 'bcv'],
+            index: 0,
+          }
+        },
+        images: {
+          abc: {preloaded: null, id: 'abc', url: 'http://a.com/a.jpg'},
+          bcd: {preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'}
+        },
+        preloadQueue: {images: []},
+      });
+      preloading = true;
+      entry = entry.merge({preloaded: null});
+    });
+    describe('and imgur api request not complete', () => {
+      beforeEach(() => {
+        imgur = imgur.setIn(['queries', 'ekVnf', 'fetching'], true);
+        component = renderComponent();
+      });
+      it ('doesnt notify that entry is preloaded', () => {
+        expect(actions.redditEntryPreload).not.to.have.been.called;
+      });
+    });
+    describe('and imgur api request complete', () => {
+      beforeEach(() => {
+        imgur = imgur.setIn(['queries', 'ekVnf', 'fetching'], false);
+        component = renderComponent();
+      });
+      it ('notify that entry is preloaded', () => {
+        expect(actions.redditEntryPreload).to.have.been.calledWith(entry, {key: 'ekVnf'});
+      });
+    });
+    describe('and entry already preloaded', () => {
+      beforeEach(() => {
+        imgur = imgur.setIn(['queries', 'ekVnf', 'fetching'], false);
+        entry = entry.set('preloaded', true);
+        component = renderComponent();
+      });
+      it('doesnt notify again', () => {
+        expect(actions.redditEntryPreload).not.to.have.been.called;
+      });
+    });
+  });
 
-  //it('has a translated subtitle', () => {
-    //const label = TestUtils.findRenderedDOMComponentWithClass(
-      //component,
-      //'subtitle'
-    //);
-    //expect(label.textContent).to.eql(msg.b);
-  //});
-
-  //describe('className', () => {
-    //describe('set', () => {
-      //beforeEach(() => {
-        //className = 'clazz';
-        //component = renderComponent();
-      //});
-
-      //it('uses the given class name', () => {
-        //const root = TestUtils.findRenderedDOMComponentWithClass(
-          //component,
-          //className
-        //);
-        //expect(root).to.exist;
-      //});
-    //});
-
-    //describe('default', () => {
-      //beforeEach(() => {
-        //className = null;
-        //component = renderComponent();
-      //});
-
-      //it('uses the default class name', () => {
-        //const root = TestUtils.findRenderedDOMComponentWithClass(
-          //component,
-          //'selector-slider'
-        //);
-        //expect(root).to.exist;
-      //});
-    //});
-  //});
 });

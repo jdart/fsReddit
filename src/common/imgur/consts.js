@@ -3,11 +3,11 @@
 import {genConsts} from '../utils';
 
 export default genConsts([
-  'IMGUR_ENQUEUE',
+  'IMGUR_QUEUE_ADD',
   'IMGUR_STEP',
   'IMGUR_IMAGE_CACHED',
 ], [
   'IMGUR_FETCH',
-  'IMGUR_CACHE_IMAGE',
+  'IMGUR_QUEUE_RUN',
 ]);
 

@@ -84,9 +84,9 @@ export function imgurStep(id, index) {
   };
 }
 
-export function imgurCacheImage(image, current, index) {
+export function imgurQueueRun(image, current, index) {
   return {
-    type: Object.keys(promiseConsts(C.IMGUR_CACHE_IMAGE)),
+    type: Object.keys(promiseConsts(C.IMGUR_QUEUE_RUN)),
     payload: {
       promise: imageLoader(image, current, index),
       data: {image}
@@ -94,9 +94,9 @@ export function imgurCacheImage(image, current, index) {
   };
 }
 
-export function imgurEnqueue(query, images) {
+export function imgurQueueAdd(images) {
   return {
-    type: C.IMGUR_ENQUEUE,
+    type: C.IMGUR_QUEUE_ADD,
     payload: {images}
   };
 }

@@ -2,6 +2,8 @@ require('babel/register')({
   stage: 0
 });
 
+require('ignore-styles');
+
 let jsdom = require('jsdom');
 
 // Setup the simplest document possible
