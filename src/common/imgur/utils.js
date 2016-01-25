@@ -1,5 +1,6 @@
 
 import url from 'url';
+import {debounce} from 'lodash';
 
 const typeMatchers = [{
   type: 'album',
@@ -22,3 +23,16 @@ export function parse(imgurUrl) {
     id: id.replace(/\W/, '/').split('/')[0],
   };
 }
+
+function nextInQueue(imgur, action) {
+  const queue = imgur.get('preloadQueue');
+
+  if (!queue.get('images').size || queue.get('working'))
+    return;
+
+  const key = queue.get('images').first();
+  action(imgur.getIn(['images', key]));
+}
+
+export const runQueue = debounce(nextInQueue, 50, {leading: true});
+

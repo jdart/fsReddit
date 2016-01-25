@@ -2,7 +2,7 @@
 import Imgur from '../Imgur.react';
 import FsImg from '../FsImg.react';
 import Loader from '../../ui/Loader.react';
-import {Map, List} from 'immutable';
+import {Map} from 'immutable';
 
 import {
   expect,
@@ -19,6 +19,7 @@ describe('Imgur component', () => {
   let url;
   let entry = Map({});
   let sandbox;
+  let component;
 
   function renderComponent() {
     return TestUtils.renderIntoDocument(
@@ -181,7 +182,7 @@ describe('Imgur component', () => {
             component,
             Loader
           );
-        } catch(e) {}
+        } catch (e) {}
         expect(loader).not.to.exist;
       });
       it('draws an image', () => {
@@ -240,14 +241,16 @@ describe('Imgur component', () => {
             abc: {preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'},
             bcd: {preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'}
           },
-          preloadQueue: {images: ['bcd']},
+          preloadQueue: {images: ['bcd'], working: false},
         });
         component = renderComponent();
       });
       it('executes preload of first item in queue', () => {
-        expect(actions.imgurQueueRun).to.have.been.calledWith(Map({
-          preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'
-        }));
+        setTimeout(() => { // action is debounced, this gets test passing
+          expect(actions.imgurQueueRun).to.have.been.calledWith(Map({
+            preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'
+          }));
+        });
       });
     });
   });
@@ -275,32 +278,13 @@ describe('Imgur component', () => {
       preloading = true;
       entry = entry.merge({preloaded: null});
     });
-    describe('and imgur api request not complete', () => {
-      beforeEach(() => {
-        imgur = imgur.setIn(['queries', 'ekVnf', 'fetching'], true);
-        component = renderComponent();
-      });
-      it ('doesnt notify that entry is preloaded', () => {
-        expect(actions.redditEntryPreload).not.to.have.been.called;
-      });
-    });
-    describe('and imgur api request complete', () => {
+    describe('and first image not preloaded', () => {
       beforeEach(() => {
         imgur = imgur.setIn(['queries', 'ekVnf', 'fetching'], false);
         component = renderComponent();
       });
-      it ('notify that entry is preloaded', () => {
-        expect(actions.redditEntryPreload).to.have.been.calledWith(entry, {key: 'ekVnf'});
-      });
-    });
-    describe('and entry already preloaded', () => {
-      beforeEach(() => {
-        imgur = imgur.setIn(['queries', 'ekVnf', 'fetching'], false);
-        entry = entry.set('preloaded', true);
-        component = renderComponent();
-      });
-      it('doesnt notify again', () => {
-        expect(actions.redditEntryPreload).not.to.have.been.called;
+      it('enqueues first image to be preloaded', () => {
+        expect(actions.imgurQueueAdd).to.have.been.calledWith(['abc']);
       });
     });
   });

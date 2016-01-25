@@ -11,7 +11,7 @@ const devtools = process.env.CONTINUOUS_INTEGRATION
   // cheap-module-eval-source-map, because we want original source, but we don't
   // care about columns, which makes this devtool faster than eval-source-map.
   // http://webpack.github.io/docs/configuration.html#devtool
-  : 'cheap-module-eval-source-map';
+  : 'cheap-module-source-map';
 
 const loaders = {
   'css': '',
