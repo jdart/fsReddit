@@ -7,8 +7,8 @@
   "description": "The best dev stack and starter kit for React universal web apps.",
   "private": true,
   "scripts": {
-    "postinstall": "gulp build --production",
-    "test": "gulp test"
+    "postinstall": "node_modules/.bin/gulp build --production",
+    "test": "node_modules/.bin/gulp test"
   },
   "engines": {
     "node": "4.2.x"
