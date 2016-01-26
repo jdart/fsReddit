@@ -2,6 +2,7 @@ import chai, {assert, expect} from 'chai';
 import React from 'react';
 import TestUtils from 'react-addons-test-utils';
 import sinon from 'sinon';
+import sinonAsPromised from 'sinon-as-promised';
 import sinonChai from 'sinon-chai';
 
 chai.should();

@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React from 'react';
 import './Loader.styl';
 
-export default class FsIframe extends Component {
+export default class Loader extends Component {
 
   render() {
     return (

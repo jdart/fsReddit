@@ -86,13 +86,6 @@ export default function redditReducer(state = initialState, action) {
       );
     }
 
-    case C.REDDIT_CONTENT_ENTRY_PRELOADED: {
-      return state.setIn(
-        ['entries', action.payload.entry.get('id'), 'preloaded'],
-        true
-      );
-    }
-
     case C.REDDIT_CONTENT_QUERY_INDEX: {
       return state.setIn(
         ['queries', action.payload.url, 'index'],

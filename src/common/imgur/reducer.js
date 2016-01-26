@@ -1,6 +1,5 @@
 
 import C from './consts';
-import RC from '../reddit/content/consts';
 import {includes, set, union} from 'lodash';
 import {Record, List, Map} from 'immutable';
 import {Query, Image} from './types';
@@ -14,7 +13,7 @@ const InitialState = Record({
   }),
 });
 
-const initialState = new InitialState;
+export const initialState = new InitialState;
 const revive = () => initialState;
 
 function imagesArrayToKVP(data) {
@@ -51,7 +50,7 @@ function responseToImageArray(response) {
 function addToQueue(state, add) {
   const prevQueue = state.preloadQueue.get('images').toJS();
   const newQueue = union(prevQueue, add)
-    .filter(key => !state.images.get(key).get('preloaded'));
+    .filter(key => !state.getIn(['images', key, 'preloaded']));
   return flagPreloading(
     state.setIn(['preloadQueue', 'images'], new List(newQueue)),
     newQueue
@@ -109,7 +108,7 @@ export default function imgurReducer(state = initialState, action) {
       );
     }
 
-    case C.IMGUR_ENQUEUE: {
+    case C.IMGUR_QUEUE_ADD: {
       return addToQueue(state, action.payload.images);
     }
 
@@ -124,7 +123,7 @@ export default function imgurReducer(state = initialState, action) {
       );
     }
 
-    case C.IMGUR_CACHE_IMAGE_PENDING: {
+    case C.IMGUR_QUEUE_RUN_PENDING: {
       const id = action.payload.image.get('id');
       return state
       .setIn(['images', id, 'preloaded'], false)
@@ -137,20 +136,12 @@ export default function imgurReducer(state = initialState, action) {
       );
     }
 
-    case C.IMGUR_CACHE_IMAGE_ERROR: {}
-    case C.IMGUR_CACHE_IMAGE_SUCCESS: {
+    case C.IMGUR_QUEUE_RUN_ERROR: {}
+    case C.IMGUR_QUEUE_RUN_SUCCESS: {
       const id = action.payload.image.get('id');
 
       return state.setIn(['preloadQueue', 'working'], false)
         .setIn(['images', id, 'preloaded'], true);
-    }
-
-    case RC.REDDIT_ENTRY_PRELOADED: {
-      const {key} = action.payload.extra;
-      const next = state.queries.get(key)
-        .get('entries')
-        .slice(0, 1).toJS();
-      return addToQueue(state, next);
     }
   }
 

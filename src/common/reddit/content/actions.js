@@ -2,13 +2,6 @@
 import C from './consts';
 import {asyncRedditAction} from '../utils';
 
-export function redditEntryPreload(entry, extra) {
-  return {
-    type: C.REDDIT_CONTENT_ENTRY_PRELOADED,
-    payload: {entry, extra}
-  };
-}
-
 export function redditNavActions(id, prev, next, first, last, title) {
   return {
     type: C.REDDIT_CONTENT_NAV_ACTIONS,

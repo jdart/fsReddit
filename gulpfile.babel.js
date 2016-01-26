@@ -54,7 +54,7 @@ gulp.task('mocha-file', () => {
 // Continuous test running
 gulp.task('mocha-watch', () => {
   gulp.watch(
-    ['src/browser/**', 'src/common/**', 'src/server/**'],
+    ['src/client/**', 'src/common/**', 'src/server/**'],
     mochaRunCreator('log')
   );
 });
