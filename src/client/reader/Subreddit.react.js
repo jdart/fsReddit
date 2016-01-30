@@ -54,21 +54,13 @@ export default class Subreddit extends Component {
     );
   }
 
-  needMore() {
-    return this.entries
-      && this.entries.size > 2
-      && this.query.get('after') !== false
-      && (this.query.get('index') - 1) === (this.entries.size - 2)
-      && !this.query.get('fetching');
-  }
-
   fetch() {
     if (typeof window === 'undefined')
       return;
 
     if (!this.query)
       this.fetchInitial();
-    else if (this.needMore())
+    else if (this.query.needsMore)
       this.fetchMore();
   }
 

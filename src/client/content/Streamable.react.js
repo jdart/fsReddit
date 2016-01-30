@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import Loader from '../ui/Loader.react';
 import url from 'url';
-import './Streamable.styl';
+import Video from './Video.react';
 
 export default class Streamable extends Component {
 
@@ -63,20 +63,10 @@ export default class Streamable extends Component {
 
   render() {
     const src = this.getSrc();
-    const id = this.getId();
     if (!src)
       return (<Loader />);
     return (
-      <div className="streamable-aligner">
-        <video
-          autoPlay="true"
-          className="streamable"
-          id={`streamable-${id}`}
-          loop="true"
-          preload="auto"
-          src={src}
-        />
-      </div>
+      <Video url={src} />
     );
   }
 

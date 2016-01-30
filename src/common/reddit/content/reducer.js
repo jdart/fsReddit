@@ -2,21 +2,18 @@
 import C from './consts';
 import RUC from '../user/consts';
 import {Record, Map} from 'immutable';
-import {Query, Comments} from './types';
+import {Query, Entry, NavActions} from './types';
+import {
+  setQueryNeedsMore,
+  appendQueryEntriesFromResponse,
+  addNewEntriesFromResponse,
+} from '../utils';
+import {concat} from 'lodash';
 
 const InitialState = Record({
-  entries: new Map,
-  queries: new Map,
-  navActions: new Map({
-    id: null,
-    prev: null,
-    next: null,
-    first: null,
-    last: null,
-    up: null,
-    down: null,
-    title: null,
-  }),
+  entries: Map(),
+  queries: Map(),
+  navActions: NavActions(),
 });
 
 const initialState = new InitialState();
@@ -27,51 +24,42 @@ export default function redditReducer(state = initialState, action) {
   switch (action.type) {
 
     case C.REDDIT_CONTENT_FETCH_ENTRIES_PENDING: {
-      if (payload.after)
-        return state.setIn(
-          ['queries', payload.url, 'fetching'],
-          true
-        );
+      const queryPath = ['queries', payload.url];
+      const fetchingPath = concat(queryPath, 'fetching');
 
-      return state.setIn(
-        ['queries', payload.url],
-        new Query({fetching: true})
-      );
+      if (!payload.after)
+        state = state.setIn(queryPath, new Query({fetching: true}));
+
+      return state
+        .setIn(fetchingPath, true)
+        .updateIn(queryPath, setQueryNeedsMore);
     }
 
     case C.REDDIT_CONTENT_FETCH_ENTRIES_SUCCESS: {
       const key = payload.url;
       const data = payload.data;
+      const queryPath = ['queries', key];
 
       if (payload.error)
         return state
-          .setIn(['queries', key, 'fetching'], false)
-          .setIn(['queries', key, 'failed'], true);
+          .setIn(concat(queryPath, 'fetching'), false)
+          .setIn(concat(queryPath, 'failed'), true);
 
-      return state.updateIn(['queries', key], query =>
+      return state.updateIn(queryPath, query =>
         query
           .merge({
             fetching: false,
             failed: false,
-            index: payload.after ? query.get('index') : 0,
+            index: payload.after ? query.index : 0,
             after: data.after === null ? false : data.after,
+            needsMore: false,
           })
-          .update('entries', entries => entries.concat(
-            data.children
-              .filter(entry => !entry.data.stickied)
-              .map(entry => entry.data.id)
-          ))
+          .update('entries', entries =>
+            appendQueryEntriesFromResponse(entries, data.children)
+          )
       )
       .update('entries', entries =>
-        data.children.reduce((entries, child) =>
-          entries.set(child.data.id, new Map(child.data)
-            .merge({
-              comments: new Comments,
-              preloaded: false,
-              iframeLoadMs: null,
-            })),
-          entries
-        )
+        addNewEntriesFromResponse(entries, data.children)
       );
     }
 
@@ -87,10 +75,10 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_CONTENT_QUERY_INDEX: {
-      return state.setIn(
-        ['queries', action.payload.url, 'index'],
-        action.payload.index
-      );
+      const {index} = action.payload;
+      const queryPath = ['queries', action.payload.url];
+      return state.setIn(concat(queryPath, 'index'), index)
+        .updateIn(queryPath, setQueryNeedsMore);
     }
 
     case C.REDDIT_CONTENT_NAV_ACTIONS: {
@@ -116,26 +104,24 @@ export default function redditReducer(state = initialState, action) {
       const commentData = action.payload[0];
       const entryData = action.payload[1];
       const entry = state.entries.get(action.payload.id);
-      const iframeLoadMs = entry ? entry.get('iframeLoadMs') : null;
-
-      return state.setIn(
-        ['entries', action.payload.id],
-        new Map(commentData.data.children[0].data).merge({
-          comments: new Comments({
-            children: entryData.data.children,
-            fetching: false,
-          }),
+      const iframeLoadMs = entry ? entry.iframeLoadMs : null;
+      const entryPath = ['entries', action.payload.id];
+      const commentsPath = concat(entryPath, 'comments');
+      return state
+        .setIn(entryPath, Entry(commentData.data.children[0].data))
+        .mergeIn(entryPath, {
           preloaded: true,
           iframeLoadMs,
         })
-      );
+        .setIn(concat(commentsPath, 'children'), entryData.data.children)
+        .setIn(concat(commentsPath, 'fetching'), false);
     }
 
     case RUC.REDDIT_USER_FRIEND_SUCCESS: {
       const {author} = action.payload;
       return state.update('entries', entries =>
         entries.map(entry =>
-          entry.get('author') === author
+          entry.author === author
           ? entry.set('author_followed', true)
           : entry
         )
@@ -144,14 +130,14 @@ export default function redditReducer(state = initialState, action) {
 
     case RUC.REDDIT_USER_VOTE_SUCCESS: {
       return state.setIn(
-        ['entries', action.payload.entry.get('id'), 'likes'],
+        ['entries', action.payload.entry.id, 'likes'],
         action.payload.dir
       );
     }
 
     case C.REDDIT_CONTENT_IFRAME_LOADED: {
       return state.setIn(
-        ['entries', action.payload.entry.get('id'), 'iframeLoadMs'],
+        ['entries', action.payload.entry.id, 'iframeLoadMs'],
         action.payload.time
       );
     }

@@ -9,6 +9,7 @@ import Youtube from './Youtube.react';
 import Twitter from './Twitter.react';
 import Streamable from './Streamable.react';
 import Readability from './Readability.react';
+import Gifv from './Gifv.react';
 import {hostMatch} from '../utils';
 
 const matchers = [{
@@ -17,6 +18,10 @@ const matchers = [{
 }, {
   test: (entryUrl, _) => entryUrl.match(/\.(jpg|jpeg|png|gif)$/),
   component: FsImg,
+}, {
+  host: 'imgur.com',
+  test: (entryUrl, _) => entryUrl.match(/\.gifv$/),
+  component: Gifv,
 }, {
   host: 'reddit.com',
   component: Reddit,

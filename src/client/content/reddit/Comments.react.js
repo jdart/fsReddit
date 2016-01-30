@@ -20,21 +20,21 @@ export default class Comments extends Component {
   }
 
   comments() {
-    return this.props.entry.get('comments');
+    return this.props.entry.comments;
   }
 
   fetch() {
-    const fetching = this.comments().get('fetching');
+    const fetching = this.comments().fetching;
     if (fetching !== null)
       return;
     this.props.actions.redditFetchComments(
       this.props.redditUser.get('api'),
-      this.props.entry.get('id')
+      this.props.entry.id
     );
   }
 
   ready() {
-    const fetching = this.comments().get('fetching');
+    const fetching = this.comments().fetching;
     return !fetching && fetching !== null;
   }
 
@@ -44,7 +44,7 @@ export default class Comments extends Component {
       return (<Loader />);
     return (
       <div className="reddit-comments">
-        {comments.get('children').map(child =>
+        {comments.children.map(child =>
           <Comment data={child.data} key={child.data.id} />
         )}
       </div>

@@ -3,6 +3,7 @@ import Imgur from '../Imgur.react';
 import FsImg from '../FsImg.react';
 import Loader from '../../ui/Loader.react';
 import {Map} from 'immutable';
+import {NavActions} from '../../../common/reddit/content/types';
 
 import {
   expect,
@@ -14,7 +15,7 @@ import {
 describe('Imgur component', () => {
   let actions;
   let imgur = Map({queries: Map({})});
-  let redditContent = Map({navActions: Map({id: null})});
+  let redditContent = Map({navActions: NavActions({id: null})});
   let preloading = false;
   let url;
   let entry = Map({});

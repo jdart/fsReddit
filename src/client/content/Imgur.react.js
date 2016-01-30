@@ -3,9 +3,9 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import FsImg from './FsImg.react';
 import Loader from '../ui/Loader.react';
-import './Gfycat.styl';
 import without from 'lodash/without';
 import {parse, runQueue} from '../../common/imgur/utils';
+import Video from './Video.react';
 
 export default class Imgur extends Component {
 
@@ -133,15 +133,7 @@ export default class Imgur extends Component {
     const id = this.imgId(url);
     this.onload();
     return (
-      <div className="imgurGifv-aligner">
-        <video
-          autoPlay="autoplay"
-          className="imgurGifv"
-          loop="loop"
-          preload="auto"
-          src={`//i.imgur.com/${id}.webm`}
-        />
-      </div>
+      <Video url={`//i.imgur.com/${id}.webm`} />
     );
   }
 

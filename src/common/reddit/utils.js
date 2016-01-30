@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch';
 import {promiseConsts} from '../utils';
 import queryString from 'query-string';
 import merge from 'lodash/merge';
+import {Entry, Comments} from './content/types';
 
 export function asyncAction(type, promise, payload = {}) {
   return {
@@ -48,4 +49,34 @@ export function invalidateIf401(state, status) {
   if (status !== 401 && status !== 0)
     return state;
   return invalidate(state);
+}
+
+export function setQueryNeedsMore(query) {
+  const {entries} = query;
+  const needsMore = entries
+    && entries.size > 2
+    && query.after !== false
+    && query.index === (entries.size - 2)
+    && !query.fetching;
+  return query.set('needsMore', needsMore);
+}
+
+export function appendQueryEntriesFromResponse(entries, children) {
+  return entries.concat(
+    children
+      .filter(entry => !entry.data.stickied)
+      .map(entry => entry.data.id)
+  );
+}
+
+export function addNewEntriesFromResponse(entries, children) {
+  return children.reduce((entries, child) =>
+    entries.set(child.data.id, Entry(child.data)
+      .merge({
+        comments: new Comments,
+        preloaded: false,
+        iframeLoadMs: null,
+      })),
+    entries
+  );
 }
