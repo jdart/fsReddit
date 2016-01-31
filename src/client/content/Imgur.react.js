@@ -99,7 +99,7 @@ export default class Imgur extends Component {
   }
 
   componentWillUnmount() {
-    this.props.actions.redditNavActions('none', null, null);
+    this.props.actions.readerSecondaryNav('none', null, null);
   }
 
   setNav(props) {

@@ -24,10 +24,6 @@ export function readerQuery(id) {
   };
 }
 
-export function readerReader() {
-  return readerNav(0);
-}
-
 export function readerNav(offset) {
   return ({dispatch, getState}) => {
     const state = getState();

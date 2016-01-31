@@ -4,6 +4,7 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import {hostMatch} from '../utils';
 import {Keys} from 'react-keydown';
+import SecondaryNav from './SecondaryNav.react';
 import url from 'url';
 import './Nav.styl';
 
@@ -12,39 +13,19 @@ export default class Nav extends Component {
   static propTypes = {
     actions: PropTypes.object,
     api: PropTypes.func,
-    entries: PropTypes.object,
     reader: PropTypes.object,
-    redditContent: PropTypes.object,
     redditUser: PropTypes.object,
-  }
-
-  goVert(direction) {
-    const {secondaryNav} = this.props.reader;
-    const {last, first} = secondaryNav;
-    let action = secondaryNav[direction];
-    if (!action)
-      action = direction === 'up' ? last : first;
-    if (action)
-      action();
-  }
-
-  goEntryIndex(offset) {
-    this.props.actions.readerNav(offset);
   }
 
   keyboardHandler(event) {
     const key = event.which;
-    const {RIGHT, LEFT, UP, DOWN, d, a, w, s} = Keys;
+    const {RIGHT, LEFT, d, a} = Keys;
     const contains = (matches, toMatch) => matches.indexOf(toMatch) > -1;
     const {readerNav} = this.props.actions;
     if (contains([RIGHT, d], key))
       readerNav(1);
     else if (contains([LEFT, a], key))
       readerNav(-1);
-    else if (contains([UP, w], key))
-      this.goVert('up');
-    else if (contains([DOWN, s], key))
-      this.goVert('down');
   }
 
   componentWillUnmount() {
@@ -73,7 +54,7 @@ export default class Nav extends Component {
       <p>
         <a className={className} href="#" onClick={action}>
           <i className={`fa fa-arrow-${icon}`} />
-          {entry.get('title')}
+          {entry.title}
         </a>
       </p>
     );
@@ -102,42 +83,10 @@ export default class Nav extends Component {
     }
   }
 
-  renderVertLink(icon, action, title) {
-    if (!action)
-      return;
-    return (
-      <a className={`direction-${icon}`} href="#" onClick={action}>
-        <i className={`fa fa-arrow-${icon}`} />
-        { title ? (<span>{title}</span>) : '' }
-      </a>
-    );
-  }
-
-  renderVert() {
-    const {secondaryNav} = this.props.reader;
-    const {up, down, title} = secondaryNav;
-    const vertLink = this.renderVertLink.bind(this);
-    if (!up && !down)
-      return (<div/>);
-    if (up)
-      return (
-        <div className="nav-vert icon-title">
-          {vertLink('up', up, title)}
-          {vertLink('down', down)}
-        </div>
-      );
-    return (
-      <div className="nav-vert icon-title">
-        {vertLink('up', up)}
-        {vertLink('down', down, title)}
-      </div>
-    );
-  }
-
   isRedditDotCom() {
     return hostMatch(
       'reddit.com',
-      this.props.reader.current.entry.get('url')
+      this.props.reader.current.entry.url
     );
   }
 
@@ -145,17 +94,17 @@ export default class Nav extends Component {
     if (this.isRedditDotCom())
       return;
     return (
-      <h2>{entry.get('title')}</h2>
+      <h2>{entry.title}</h2>
     );
   }
 
   renderVote(entry) {
-    if (!this.props.redditUser.get('authenticated'))
+    if (!this.props.redditUser.authenticated)
       return;
     const {redditVote} = this.props.actions;
     const vote = () => redditVote(this.props.api, entry);
-    const icon = entry.get('likes') ? 'arrow-circle-up' : 'arrow-circle-o-up';
-    const title = entry.get('likes') ? 'Unvote' : 'Upvote';
+    const icon = entry.likes ? 'arrow-circle-up' : 'arrow-circle-o-up';
+    const title = entry.likes ? 'Unvote' : 'Upvote';
     return (
       <a href="#" onClick={vote}>
         <i className={`fa fa-${icon}`} />
@@ -168,7 +117,7 @@ export default class Nav extends Component {
     if (this.isRedditDotCom())
       return;
     return (
-      <Link to={`/c/${entry.get('id')}`}>
+      <Link to={`/c/${entry.id}`}>
         <i className="fa fa-commenting" />
         Comments
       </Link>
@@ -179,27 +128,27 @@ export default class Nav extends Component {
     if (this.isRedditDotCom())
       return;
     return (
-      <a href={entry.get('url')} target="_blank">
+      <a href={entry.url} target="_blank">
         <i className="fa fa-sign-out" />
-        {url.parse(entry.get('url')).host}
+        {url.parse(entry.url).host}
       </a>
     );
   }
 
   renderFollow(entry) {
-    if (!this.props.redditUser.get('authenticated'))
+    if (!this.props.redditUser.authenticated)
       return;
 
     const friend = () => this.props.actions.redditFriend(
       this.props.api,
-      entry.get('author')
+      entry.author
     );
 
     return (
       <a href="#" onClick={friend}>
         <i className="fa fa-eye" />
         <span>
-          Follow{entry.get('author_followed')
+          Follow{entry.author_followed
           ? (<span>ed<i className="fa fa-check"/></span>)
           : ''}
         </span>
@@ -215,14 +164,14 @@ export default class Nav extends Component {
       <div className="reader-nav">
         {this.renderTitle.bind(this)(current.entry)}
         <div className="icon-title">
-          <Link to={`/r/${current.entry.get('subreddit')}`}>
+          <Link to={`/r/${current.entry.subreddit}`}>
             <i className="fa fa-reddit" />
-            {current.entry.get('subreddit')}
+            {current.entry.subreddit}
           </Link>
           <div className="author">
-            <Link to={`/u/${current.entry.get('author')}`}>
+            <Link to={`/u/${current.entry.author}`}>
               <i className="fa fa-user" />
-              {current.entry.get('author')}
+              {current.entry.author}
             </Link>
             {this.renderFollow.bind(this)(current.entry)}
           </div>
@@ -240,7 +189,7 @@ export default class Nav extends Component {
             <i className="fa fa-expand" /><span>Fullscreen</span>
           </a>
         </div>
-        {this.renderVert()}
+        <SecondaryNav {...this.props} />
       </div>
     );
   }
