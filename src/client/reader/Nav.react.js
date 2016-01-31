@@ -4,7 +4,6 @@ import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import {hostMatch} from '../utils';
 import {Keys} from 'react-keydown';
-import SecondaryNav from './SecondaryNav.react';
 import url from 'url';
 import './Nav.styl';
 
@@ -13,8 +12,10 @@ export default class Nav extends Component {
   static propTypes = {
     actions: PropTypes.object,
     api: PropTypes.func,
+    entry: PropTypes.object,
     reader: PropTypes.object,
     redditUser: PropTypes.object,
+    secondaryNavComponent: PropTypes.func,
   }
 
   keyboardHandler(event) {
@@ -43,7 +44,7 @@ export default class Nav extends Component {
     );
   }
 
-  renderHorizLink(icon, offset, entry, truncate) {
+  renderLink(icon, offset, entry, truncate) {
     let className = `direction-${icon}`;
     const action = () => this.props.actions.readerNav(offset);
     if (truncate)
@@ -156,9 +157,21 @@ export default class Nav extends Component {
     );
   }
 
+  renderSecondaryNav() {
+    const NavComponent = this.props.secondaryNavComponent;
+    if (!NavComponent)
+      return;
+    return (
+      <NavComponent
+        {...this.props}
+        url={this.props.entry.url}
+      />
+    );
+  }
+
   render() {
     const {current, previous, next} = this.props.reader;
-    const horizLink = this.renderHorizLink.bind(this);
+    const renderLink = this.renderLink.bind(this);
 
     return (
       <div className="reader-nav">
@@ -180,8 +193,8 @@ export default class Nav extends Component {
           {this.renderOpenInTab.bind(this)(current.entry)}
         </div>
         <div className="icon-title nav-horiz">
-          {horizLink('right', 1, next.entry)}
-          {horizLink('left', -1, previous.entry, true)}
+          {renderLink('right', 1, next.entry)}
+          {renderLink('left', -1, previous.entry, true)}
         </div>
         <div className="icon-title">
           <Link to="/"><i className="fa fa-home"/>Home</Link>
@@ -189,7 +202,7 @@ export default class Nav extends Component {
             <i className="fa fa-expand" /><span>Fullscreen</span>
           </a>
         </div>
-        <SecondaryNav {...this.props} />
+        {this.renderSecondaryNav()}
       </div>
     );
   }

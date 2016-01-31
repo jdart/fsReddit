@@ -1,8 +1,8 @@
 
 import C from './consts';
-import {includes, set, union} from 'lodash';
 import {Record, List, Map} from 'immutable';
-import {Query, Image} from './types';
+import {Query} from './types';
+import {imagesArrayToKVP, responseToImageArray, addToQueue} from './utils';
 
 const InitialState = Record({
   images: new Map,
@@ -15,58 +15,6 @@ const InitialState = Record({
 
 export const initialState = new InitialState;
 const revive = () => initialState;
-
-function imagesArrayToKVP(data) {
-  return data.reduce(
-    (output, image) => set(output, image.id, new Image({
-      id: image.id,
-      url: image.link,
-      gifv: image.gifv,
-      title: image.title,
-      description: image.description,
-      width: image.width,
-      height: image.height,
-    })),
-    {}
-  );
-}
-
-function responseToImageArray(response) {
-  if (response.status !== 200)
-    return [{
-      id: '404',
-      link: 'http://s.imgur.com/images/404/giraffeweyes.png',
-      title: null,
-      description: null,
-      height: null,
-      width: null,
-    }];
-
-  if (response.data.images)
-    return response.data.images;
-  return [response.data];
-}
-
-function addToQueue(state, add) {
-  const prevQueue = state.preloadQueue.get('images').toJS();
-  const newQueue = union(prevQueue, add)
-    .filter(key => !state.getIn(['images', key, 'preloaded']));
-  return flagPreloading(
-    state.setIn(['preloadQueue', 'images'], new List(newQueue)),
-    newQueue
-  );
-}
-
-function flagPreloading(state, keys) {
-  return state.update('images', images =>
-    images.map((image, id) => {
-      const oldVal = image.get('preloaded');
-      if (oldVal || !includes(keys, id))
-        return image;
-      return image.set('preloaded', false);
-    })
-  );
-}
 
 export default function imgurReducer(state = initialState, action) {
   if (!(state instanceof InitialState)) return revive();
@@ -143,6 +91,7 @@ export default function imgurReducer(state = initialState, action) {
       return state.setIn(['preloadQueue', 'working'], false)
         .setIn(['images', id, 'preloaded'], true);
     }
+
   }
 
   return state;

@@ -5,6 +5,10 @@ import Content from '../content/Content.react';
 import Nav from './Nav.react';
 import {urlParse, hostMatch} from '../utils';
 import './Reader.styl';
+import {
+  componentMatcher,
+  navComponentMatcher,
+} from '../content/matcher';
 
 export default class Reader extends Component {
 
@@ -32,7 +36,12 @@ export default class Reader extends Component {
 
     return (
       <div className="reader-preloader">
-        <Content {...this.props} entry={entry} preloading={true} />
+        <Content
+          {...this.props}
+          contentComponent={componentMatcher(entry, this.props)}
+          entry={entry}
+          preloading={true}
+        />
       </div>
     );
   }
@@ -45,10 +54,13 @@ export default class Reader extends Component {
         <Nav
           {...this.props}
           api={this.props.redditUser.get('api')}
+          entry={current.entry}
+          secondaryNavComponent={navComponentMatcher(current.entry, this.props)}
         />
         <Content
           {...this.props}
           comments={this.props.comments}
+          contentComponent={componentMatcher(current.entry, this.props)}
           entry={current.entry}
           preloading={false}
         />

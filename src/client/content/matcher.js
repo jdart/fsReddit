@@ -11,6 +11,7 @@ import Streamable from './Streamable.react';
 import Readability from './Readability.react';
 import Gifv from './Gifv.react';
 import {hostMatch} from '../utils';
+import ImgurNav from './ImgurNav.react';
 
 const matchers = [{
   test: (_, props) => !!props.comments,
@@ -31,6 +32,7 @@ const matchers = [{
 }, {
   host: 'imgur.com',
   component: Imgur,
+  navComponent: ImgurNav,
 }, {
   host: 'streamable.com',
   component: Streamable,
@@ -49,8 +51,8 @@ const matchers = [{
   component: Readability,
 }];
 
-export default function(entry, props) {
-  const entryUrl = entry.get('url');
+function configMatcher(entry, props) {
+  const entryUrl = entry.url;
   const matches = matchers
     .filter(({host}) =>
       !host || [].concat(host).some(host => hostMatch(host, entryUrl))
@@ -58,6 +60,17 @@ export default function(entry, props) {
     .filter(({test}) => !test || test(entryUrl, props));
 
   return matches.length
-    ? matches[0].component
+    ? matches[0]
     : false;
 }
+
+export function componentMatcher(entry, props) {
+  const config = configMatcher(entry, props);
+  return config ? config.component : false;
+}
+
+export function navComponentMatcher(entry, props) {
+  const config = configMatcher(entry, props);
+  return config ? config.navComponent : false;
+}
+

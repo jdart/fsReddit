@@ -10,14 +10,6 @@ const InitialState = Record({
   previous: new Frame(),
   current: new Frame(),
   next: new Frame(),
-  secondaryNav: Record({
-    id: null,
-    prev: null,
-    next: null,
-    first: null,
-    last: null,
-    title: null,
-  }),
 });
 
 const initialState = new InitialState;
@@ -45,18 +37,6 @@ export default function readerReducer(state = initialState, action) {
         .setIn(['previous', 'entry'], previous)
         .setIn(['current', 'entry'], current)
         .setIn(['next', 'entry'], next);
-    }
-
-    case C.READER_SECONDARY_NAV: {
-      const {prev, next, first, last, id, title} = action.payload;
-      return state.mergeIn(['secondaryNav'], {
-        id,
-        up: prev,
-        down: next,
-        first,
-        last,
-        title,
-      });
     }
 
   }
