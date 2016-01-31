@@ -13,44 +13,37 @@ export default class Nav extends Component {
     actions: PropTypes.object,
     api: PropTypes.func,
     entries: PropTypes.object,
-    entry: PropTypes.object,
-    next: PropTypes.object,
-    prev: PropTypes.object,
+    reader: PropTypes.object,
     redditContent: PropTypes.object,
     redditUser: PropTypes.object,
   }
 
   goVert(direction) {
-    let action = this.props.redditContent.navActions.get(direction);
+    const {secondaryNav} = this.props.reader;
+    const {last, first} = secondaryNav;
+    let action = secondaryNav[direction];
     if (!action)
-      action = this.props.redditContent.navActions.get(
-        direction === 'up' ? 'last' : 'first'
-      );
+      action = direction === 'up' ? last : first;
     if (action)
       action();
   }
 
-  entry(key) {
-    return this.props.entries[key];
-  }
-
-  goNext() {
-    this.entry('next').action();
-  }
-
-  goPrev() {
-    this.entry('prev').action();
+  goEntryIndex(offset) {
+    this.props.actions.readerNav(offset);
   }
 
   keyboardHandler(event) {
     const key = event.which;
-    if (key === Keys.RIGHT)
-      this.goNext();
-    else if (key === Keys.LEFT)
-      this.goPrev();
-    else if (key === Keys.UP)
+    const {RIGHT, LEFT, UP, DOWN, d, a, w, s} = Keys;
+    const contains = (matches, toMatch) => matches.indexOf(toMatch) > -1;
+    const {readerNav} = this.props.actions;
+    if (contains([RIGHT, d], key))
+      readerNav(1);
+    else if (contains([LEFT, a], key))
+      readerNav(-1);
+    else if (contains([UP, w], key))
       this.goVert('up');
-    else if (key === Keys.DOWN)
+    else if (contains([DOWN, s], key))
       this.goVert('down');
   }
 
@@ -69,9 +62,9 @@ export default class Nav extends Component {
     );
   }
 
-  renderHorizLink(icon, config, truncate) {
-    const {entry, action} = config;
+  renderHorizLink(icon, offset, entry, truncate) {
     let className = `direction-${icon}`;
+    const action = () => this.props.actions.readerNav(offset);
     if (truncate)
       className += ' truncate';
     if (!entry)
@@ -121,10 +114,8 @@ export default class Nav extends Component {
   }
 
   renderVert() {
-    const {navActions} = this.props.redditContent;
-    const up = navActions.get('up');
-    const down = navActions.get('down');
-    const title = navActions.get('title');
+    const {secondaryNav} = this.props.reader;
+    const {up, down, title} = secondaryNav;
     const vertLink = this.renderVertLink.bind(this);
     if (!up && !down)
       return (<div/>);
@@ -146,7 +137,7 @@ export default class Nav extends Component {
   isRedditDotCom() {
     return hostMatch(
       'reddit.com',
-      this.props.entries.current.entry.get('url')
+      this.props.reader.current.entry.get('url')
     );
   }
 
@@ -217,7 +208,7 @@ export default class Nav extends Component {
   }
 
   render() {
-    const {current, prev, next} = this.props.entries;
+    const {current, previous, next} = this.props.reader;
     const horizLink = this.renderHorizLink.bind(this);
 
     return (
@@ -240,8 +231,8 @@ export default class Nav extends Component {
           {this.renderOpenInTab.bind(this)(current.entry)}
         </div>
         <div className="icon-title nav-horiz">
-          {horizLink('right', next)}
-          {horizLink('left', prev, true)}
+          {horizLink('right', 1, next.entry)}
+          {horizLink('left', -1, previous.entry, true)}
         </div>
         <div className="icon-title">
           <Link to="/"><i className="fa fa-home"/>Home</Link>

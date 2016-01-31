@@ -43,26 +43,13 @@ export default class Single extends Component {
       this.fetchInitial(props);
   }
 
-  entriesConfig() {
-    const dummy = {action: () => false, entry: null};
-    return {
-      prev: dummy,
-      current: {action: () => false, entry: this.entry()},
-      next: dummy,
-    };
-  }
-
   readerOrLoader() {
     const entry = this.entry();
     const comments = entry ? entry.get('comments') : false;
     if (!entry || comments.get('fetching') !== false)
       return (<Loader />);
     return (
-      <Reader
-        {...this.props}
-        comments={true}
-        entries={this.entriesConfig()}
-      />
+      <Reader {...this.props} comments={true} />
     );
   }
 

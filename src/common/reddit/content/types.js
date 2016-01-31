@@ -1,17 +1,6 @@
 
 import {Record, List, Map} from 'immutable';
 
-export const NavActions = Record({
-  id: null,
-  prev: null,
-  next: null,
-  first: null,
-  last: null,
-  up: null,
-  down: null,
-  title: null,
-});
-
 export const Query = Record({
   fetching: true,
   didInvalidate: null,

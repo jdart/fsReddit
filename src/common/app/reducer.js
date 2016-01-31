@@ -10,6 +10,7 @@ import imgur from '../imgur/reducer';
 import readability from '../readability/reducer';
 import gfycat from '../gfycat/reducer';
 import streamable from '../streamable/reducer';
+import reader from '../reader/reducer';
 
 const appReducer = combineReducers({
   device,
@@ -19,6 +20,7 @@ const appReducer = combineReducers({
   readability,
   gfycat,
   streamable,
+  reader,
 });
 
 export default appReducer;

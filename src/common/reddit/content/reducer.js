@@ -2,7 +2,9 @@
 import C from './consts';
 import RUC from '../user/consts';
 import {Record, Map} from 'immutable';
-import {Query, Entry, NavActions} from './types';
+import {Query, Entry} from './types';
+import {min} from 'lodash';
+import {now} from '../../utils';
 import {
   setQueryNeedsMore,
   appendQueryEntriesFromResponse,
@@ -13,12 +15,11 @@ import {concat} from 'lodash';
 const InitialState = Record({
   entries: Map(),
   queries: Map(),
-  navActions: NavActions(),
 });
 
 const initialState = new InitialState();
 
-export default function redditReducer(state = initialState, action) {
+export default function redditContentReducer(state = initialState, action) {
   const {payload} = action;
 
   switch (action.type) {
@@ -28,7 +29,7 @@ export default function redditReducer(state = initialState, action) {
       const fetchingPath = concat(queryPath, 'fetching');
 
       if (!payload.after)
-        state = state.setIn(queryPath, new Query({fetching: true}));
+        state = state.setIn(queryPath, new Query());
 
       return state
         .setIn(fetchingPath, true)
@@ -39,6 +40,7 @@ export default function redditReducer(state = initialState, action) {
       const key = payload.url;
       const data = payload.data;
       const queryPath = ['queries', key];
+      state = state.setIn(concat(queryPath, 'lastUpdated'), now());
 
       if (payload.error)
         return state
@@ -75,22 +77,14 @@ export default function redditReducer(state = initialState, action) {
     }
 
     case C.REDDIT_CONTENT_QUERY_INDEX: {
-      const {index} = action.payload;
-      const queryPath = ['queries', action.payload.url];
-      return state.setIn(concat(queryPath, 'index'), index)
+      const {offset, url} = action.payload;
+      const queryPath = ['queries', url];
+      const indexPath = concat(queryPath, 'index');
+      const currIndex = state.getIn(indexPath);
+      const maxIndex = state.getIn(queryPath).entries.size;
+      const nextIndex = min([currIndex + offset, maxIndex]);
+      return state.setIn(concat(queryPath, 'index'), nextIndex)
         .updateIn(queryPath, setQueryNeedsMore);
-    }
-
-    case C.REDDIT_CONTENT_NAV_ACTIONS: {
-      const {prev, next, first, last, id, title} = action.payload;
-      return state.mergeIn(['navActions'], {
-        id,
-        up: prev,
-        down: next,
-        first,
-        last,
-        title,
-      });
     }
 
     case C.REDDIT_CONTENT_FETCH_COMMENTS_PENDING: {

@@ -4,7 +4,6 @@ import React, {PropTypes} from 'react';
 import Content from '../content/Content.react';
 import Nav from './Nav.react';
 import {urlParse, hostMatch} from '../utils';
-import Loader from '../ui/Loader.react';
 import './Reader.styl';
 
 export default class Reader extends Component {
@@ -14,6 +13,8 @@ export default class Reader extends Component {
     comments: PropTypes.bool,
     entries: PropTypes.object,
     history: PropTypes.object,
+    query: PropTypes.object,
+    reader: PropTypes.object,
     redditUser: PropTypes.object,
   }
 
@@ -37,17 +38,13 @@ export default class Reader extends Component {
   }
 
   render() {
-    const {current, next} = this.props.entries;
-
-    if (!current.entry)
-      return (<Loader />);
+    const {current, next} = this.props.reader;
 
     return (
       <div className="reader">
         <Nav
           {...this.props}
           api={this.props.redditUser.get('api')}
-          entries={this.props.entries}
         />
         <Content
           {...this.props}

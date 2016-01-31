@@ -1,10 +1,22 @@
 
-import Subreddit from './Subreddit.react';
+import Component from 'react-pure-render/component';
+import React, {PropTypes} from 'react';
+import ReaderFetcher from './ReaderFetcher.react';
 
-export default class User extends Subreddit {
+export default class User extends Component {
+
+  static propTypes = {
+    params: PropTypes.object,
+  }
 
   generateUrl(props) {
     return '/user/' + props.params.name + '/submitted';
+  }
+
+  render() {
+    return (
+      <ReaderFetcher url={this.generateUrl()} {...this.props} />
+    );
   }
 
 }

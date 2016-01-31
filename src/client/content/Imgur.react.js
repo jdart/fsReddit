@@ -13,6 +13,7 @@ export default class Imgur extends Component {
     actions: PropTypes.object,
     imgur: PropTypes.object,
     preloading: PropTypes.bool,
+    reader: PropTypes.object,
     redditContent: PropTypes.object,
     url: PropTypes.string,
   }
@@ -106,7 +107,7 @@ export default class Imgur extends Component {
     const index = query.index;
     const req = this.request;
     const id = req + '/' + index;
-    if (props.redditContent.getIn(['navActions', 'id']) === id)
+    if (props.reader.secondaryNav.id === id)
       return;
 
     const prev = this.getImage(-1, props);
@@ -115,7 +116,7 @@ export default class Imgur extends Component {
     const last = this.getImage(query.entries.size - 1, props);
     const step = props.actions.imgurStep;
 
-    props.actions.redditNavActions(
+    props.actions.readerSecondaryNav(
       id,
       prev ? (() => step(req, index - 1)) : null,
       next ? (() => step(req, index + 1)) : null,
