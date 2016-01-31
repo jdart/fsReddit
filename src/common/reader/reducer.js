@@ -24,12 +24,6 @@ export default function readerReducer(state = initialState, action) {
       return state.set('query', id);
     }
 
-    case C.READER_FRAME: {
-      return state;
-      //const {id, position} = action.payload;
-      //return state.set([position, 'id'], id);
-    }
-
     case C.READER_NAV: {
       const {previous, current, next} = action.payload;
       return state
