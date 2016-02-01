@@ -73,6 +73,7 @@ export default class Imgur extends Component {
       .filter(image => !image.get('gifv'))
       .map(image => image.get('id'));
 
+
     const add = without(nextImageIds, ...queue.get('images').toJS());
 
     if (add.length) {

@@ -12,7 +12,7 @@ import {
 } from '../utils';
 import {concat} from 'lodash';
 
-const InitialState = Record({
+export const InitialState = Record({
   entries: Map(),
   queries: Map(),
 });
