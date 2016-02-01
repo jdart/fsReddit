@@ -12,9 +12,10 @@ import Readability from './Readability.react';
 import Gifv from './Gifv.react';
 import {hostMatch} from '../utils';
 import ImgurNav from './ImgurNav.react';
+import C from '../../common/reddit/content/consts';
 
 const matchers = [{
-  test: (_, props) => !!props.comments,
+  test: (_, entry) => entry.viewMode === C.REDDIT_CONTENT_VIEW_MODE_COMMENTS,
   component: Reddit,
 }, {
   test: (entryUrl, _) => entryUrl.match(/\.(jpg|jpeg|png|gif)$/),
@@ -51,13 +52,13 @@ const matchers = [{
   component: Readability,
 }];
 
-function configMatcher(entry, props) {
+function configMatcher(entry) {
   const entryUrl = entry.url;
   const matches = matchers
     .filter(({host}) =>
       !host || [].concat(host).some(host => hostMatch(host, entryUrl))
     )
-    .filter(({test}) => !test || test(entryUrl, props));
+    .filter(({test}) => !test || test(entryUrl, entry));
 
   return matches.length
     ? matches[0]

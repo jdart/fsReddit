@@ -8,7 +8,7 @@ export default class Comments extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
-    entry: PropTypes.object,
+    entry: PropTypes.object.isRequired,
     redditUser: PropTypes.object,
   }
 

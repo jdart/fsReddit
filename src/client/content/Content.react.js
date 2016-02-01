@@ -5,8 +5,6 @@ import React, {PropTypes} from 'react';
 export default class Content extends Component {
 
   static propTypes = {
-    actions: PropTypes.object.isRequired,
-    comments: PropTypes.bool,
     contentComponent: PropTypes.func.isRequired,
     entry: PropTypes.object.isRequired,
   }

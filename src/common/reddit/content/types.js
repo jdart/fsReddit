@@ -1,5 +1,6 @@
 
 import {Record, List, Map} from 'immutable';
+import C from './consts';
 
 export const Query = Record({
   fetching: true,
@@ -23,6 +24,7 @@ export const Comment = Record({
 });
 
 export const Entry = Record({
+  viewMode: C.REDDIT_CONTENT_VIEW_MODE_CONTENT,
   comments: Comments(),
   preloaded: null,
   iframeLoadMs: null,

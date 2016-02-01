@@ -2,6 +2,12 @@
 import C from './consts';
 import {asyncRedditAction} from '../utils';
 
+export function redditContentViewMode(id, mode) {
+  return {
+    type: C.REDDIT_CONTENT_VIEW_MODE,
+    payload: {id, mode},
+  };
+}
 export function redditFetchComments(api, id) {
   return asyncRedditAction(
     api,

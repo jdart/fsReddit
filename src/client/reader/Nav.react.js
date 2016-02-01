@@ -5,6 +5,7 @@ import {Link} from 'react-router';
 import {hostMatch} from '../utils';
 import {Keys} from 'react-keydown';
 import url from 'url';
+import C from '../../common/reddit/content/consts';
 import './Nav.styl';
 
 export default class Nav extends Component {
@@ -14,19 +15,22 @@ export default class Nav extends Component {
     api: PropTypes.func,
     entry: PropTypes.object,
     reader: PropTypes.object,
+    redditContent: PropTypes.object.isRequired,
     redditUser: PropTypes.object,
     secondaryNavComponent: PropTypes.func,
   }
 
   keyboardHandler(event) {
     const key = event.which;
-    const {RIGHT, LEFT, d, a} = Keys;
+    const {RIGHT, LEFT, d, a, c} = Keys;
     const contains = (matches, toMatch) => matches.indexOf(toMatch) > -1;
     const {readerNav} = this.props.actions;
     if (contains([RIGHT, d], key))
       readerNav(1);
     else if (contains([LEFT, a], key))
       readerNav(-1);
+    else if (c === key)
+      this.toggleCommentMode();
   }
 
   componentWillUnmount() {
@@ -87,8 +91,13 @@ export default class Nav extends Component {
   isRedditDotCom() {
     return hostMatch(
       'reddit.com',
-      this.props.reader.current.entry.url
+      this.entryByKey('current').url
     );
+  }
+
+  entryByKey(key) {
+    const id = this.props.reader[key];
+    return this.props.redditContent.entries.get(id);
   }
 
   renderTitle(entry) {
@@ -114,14 +123,29 @@ export default class Nav extends Component {
     );
   }
 
+  commentMode() {
+    return this.props.entry.viewMode === C.REDDIT_CONTENT_VIEW_MODE_COMMENTS;
+  }
+
+  toggleCommentMode(e) {
+    const {redditContentViewMode} = this.props.actions;
+    const {entry} = this.props;
+    const nextMode = this.commentMode()
+      ? C.REDDIT_CONTENT_VIEW_MODE_CONTENT
+      : C.REDDIT_CONTENT_VIEW_MODE_COMMENTS;
+    if (e)
+      e.preventDefault();
+    redditContentViewMode(entry.id, nextMode);
+  }
+
   renderCommentLink(entry) {
     if (this.isRedditDotCom())
       return;
     return (
-      <Link to={`/c/${entry.id}`}>
+      <a href="#" onClick={this.toggleCommentMode.bind(this)}>
         <i className="fa fa-commenting" />
-        Comments
-      </Link>
+        {this.commentMode() ? 'Content' : 'Comments'}
+      </a>
     );
   }
 
@@ -170,31 +194,33 @@ export default class Nav extends Component {
   }
 
   render() {
-    const {current, previous, next} = this.props.reader;
+    const current = this.props.entry;
+    const next = this.entryByKey('next');
+    const previous = this.entryByKey('previous');
     const renderLink = this.renderLink.bind(this);
 
     return (
       <div className="reader-nav">
-        {this.renderTitle.bind(this)(current.entry)}
+        {this.renderTitle.bind(this)(current)}
         <div className="icon-title">
-          <Link to={`/r/${current.entry.subreddit}`}>
+          <Link to={`/r/${current.subreddit}`}>
             <i className="fa fa-reddit" />
-            {current.entry.subreddit}
+            {current.subreddit}
           </Link>
           <div className="author">
-            <Link to={`/u/${current.entry.author}`}>
+            <Link to={`/u/${current.author}`}>
               <i className="fa fa-user" />
-              {current.entry.author}
+              {current.author}
             </Link>
-            {this.renderFollow.bind(this)(current.entry)}
+            {this.renderFollow.bind(this)(current)}
           </div>
-          {this.renderVote.bind(this)(current.entry)}
-          {this.renderCommentLink.bind(this)(current.entry)}
-          {this.renderOpenInTab.bind(this)(current.entry)}
+          {this.renderVote.bind(this)(current)}
+          {this.renderCommentLink.bind(this)(current)}
+          {this.renderOpenInTab.bind(this)(current)}
         </div>
         <div className="icon-title nav-horiz">
-          {renderLink('right', 1, next.entry)}
-          {renderLink('left', -1, previous.entry, true)}
+          {renderLink('right', 1, next)}
+          {renderLink('left', -1, previous, true)}
         </div>
         <div className="icon-title">
           <Link to="/"><i className="fa fa-home"/>Home</Link>

@@ -85,5 +85,9 @@ export function entryAtOffset(query, entries, offset = 0) {
   const index = query.index + offset;
   if (index < 0)
     return null;
-  return entries.get(query.entries.get(index));
+  const entry = entries.get(query.entries.get(index));
+  if (entry)
+    return entry.id;
+  return null;
 }
+

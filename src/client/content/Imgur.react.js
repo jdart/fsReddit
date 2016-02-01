@@ -13,8 +13,6 @@ export default class Imgur extends Component {
     actions: PropTypes.object,
     imgur: PropTypes.object,
     preloading: PropTypes.bool,
-    reader: PropTypes.object,
-    redditContent: PropTypes.object,
     url: PropTypes.string,
   }
 

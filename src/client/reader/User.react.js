@@ -9,8 +9,8 @@ export default class User extends Component {
     params: PropTypes.object,
   }
 
-  generateUrl(props) {
-    return '/user/' + props.params.name + '/submitted';
+  generateUrl() {
+    return '/user/' + this.props.params.name + '/submitted';
   }
 
   render() {

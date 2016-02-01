@@ -10,7 +10,6 @@ export default class ImgurNav extends Component {
   static propTypes = {
     actions: PropTypes.object,
     imgur: PropTypes.object,
-    reader: PropTypes.object,
     url: PropTypes.string,
   }
 

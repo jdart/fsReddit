@@ -2,8 +2,8 @@
 import C from './consts';
 import RUC from '../user/consts';
 import {Record, Map} from 'immutable';
-import {Query, Entry} from './types';
-import {min} from 'lodash';
+import {Query} from './types';
+import {min, max} from 'lodash';
 import {now} from '../../utils';
 import {
   setQueryNeedsMore,
@@ -23,6 +23,11 @@ export default function redditContentReducer(state = initialState, action) {
   const {payload} = action;
 
   switch (action.type) {
+
+    case C.REDDIT_CONTENT_VIEW_MODE: {
+      const {id, mode} = action.payload;
+      return state.setIn(['entries', id, 'viewMode'], mode);
+    }
 
     case C.REDDIT_CONTENT_FETCH_ENTRIES_PENDING: {
       const queryPath = ['queries', payload.url];
@@ -82,7 +87,7 @@ export default function redditContentReducer(state = initialState, action) {
       const indexPath = concat(queryPath, 'index');
       const currIndex = state.getIn(indexPath);
       const maxIndex = state.getIn(queryPath).entries.size;
-      const nextIndex = min([currIndex + offset, maxIndex]);
+      const nextIndex = max([0, min([currIndex + offset, maxIndex])]);
       return state.setIn(concat(queryPath, 'index'), nextIndex)
         .updateIn(queryPath, setQueryNeedsMore);
     }
@@ -95,18 +100,10 @@ export default function redditContentReducer(state = initialState, action) {
     }
 
     case C.REDDIT_CONTENT_FETCH_COMMENTS_SUCCESS: {
-      const commentData = action.payload[0];
       const entryData = action.payload[1];
-      const entry = state.entries.get(action.payload.id);
-      const iframeLoadMs = entry ? entry.iframeLoadMs : null;
       const entryPath = ['entries', action.payload.id];
       const commentsPath = concat(entryPath, 'comments');
       return state
-        .setIn(entryPath, Entry(commentData.data.children[0].data))
-        .mergeIn(entryPath, {
-          preloaded: true,
-          iframeLoadMs,
-        })
         .setIn(concat(commentsPath, 'children'), entryData.data.children)
         .setIn(concat(commentsPath, 'fetching'), false);
     }

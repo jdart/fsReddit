@@ -9,8 +9,6 @@ export default class ReaderFetcher extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
-    comments: PropTypes.bool,
-    history: PropTypes.object,
     reader: PropTypes.object,
     redditContent: PropTypes.object,
     redditUser: PropTypes.object,

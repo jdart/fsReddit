@@ -1,15 +1,14 @@
 
 import C from './consts';
 import {Record} from 'immutable';
-import {Frame} from './types';
 import {now} from '../utils';
 
 const InitialState = Record({
   query: null,
   queryTimestamp: null,
-  previous: new Frame(),
-  current: new Frame(),
-  next: new Frame(),
+  previous: null,
+  current: null,
+  next: null,
 });
 
 const initialState = new InitialState;
@@ -28,11 +27,10 @@ export default function readerReducer(state = initialState, action) {
       const {previous, current, next} = action.payload;
       return state
         .set('queryTimestamp', now())
-        .setIn(['previous', 'entry'], previous)
-        .setIn(['current', 'entry'], current)
-        .setIn(['next', 'entry'], next);
+        .set('previous', previous)
+        .set('current', current)
+        .set('next', next);
     }
-
   }
 
   return state;
