@@ -65,13 +65,13 @@ function configMatcher(entry) {
     : false;
 }
 
-export function componentMatcher(entry, props) {
-  const config = configMatcher(entry, props);
+export function componentMatcher(entry) {
+  const config = configMatcher(entry);
   return config ? config.component : false;
 }
 
-export function navComponentMatcher(entry, props) {
-  const config = configMatcher(entry, props);
+export function navComponentMatcher(entry) {
+  const config = configMatcher(entry);
   return config ? config.navComponent : false;
 }
 

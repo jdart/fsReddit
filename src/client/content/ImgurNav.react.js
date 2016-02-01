@@ -33,7 +33,7 @@ export default class ImgurNav extends Component {
     const nextIndex = index + offset;
     const id = parse(this.props.url).id;
     const step = this.props.actions.imgurStep;
-    const action = (index) => step(id, index);
+    const action = index => step(id, index);
 
     if (nextIndex === size)
       action(0);
