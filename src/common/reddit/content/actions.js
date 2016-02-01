@@ -2,20 +2,12 @@
 import C from './consts';
 import {asyncRedditAction} from '../utils';
 
-export function redditNavActions(id, prev, next, first, last, title) {
+export function redditContentViewMode(id, mode) {
   return {
-    type: C.REDDIT_CONTENT_NAV_ACTIONS,
-    payload: {
-      id,
-      prev,
-      next,
-      first,
-      last,
-      title
-    }
+    type: C.REDDIT_CONTENT_VIEW_MODE,
+    payload: {id, mode},
   };
 }
-
 export function redditFetchComments(api, id) {
   return asyncRedditAction(
     api,
@@ -42,12 +34,12 @@ export function redditFetchEntries(api, url, after) {
   return redditFetchListing(C.REDDIT_CONTENT_FETCH_ENTRIES, api, url, after);
 }
 
-export function redditQueryIndex(url, index) {
+export function redditQueryIndex(url, offset) {
   return {
     type: C.REDDIT_CONTENT_QUERY_INDEX,
     payload: {
       url,
-      index
+      offset
     }
   };
 }

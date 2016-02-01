@@ -3,7 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import Loader from '../ui/Loader.react';
 import url from 'url';
-import './Gfycat.styl';
+import Video from './Video.react';
 
 export default class Gfycat extends Component {
 
@@ -56,17 +56,10 @@ export default class Gfycat extends Component {
     if (!data)
       return (<Loader />);
     return (
-      <div className="gfycat-aligner">
-        <video
-          autoPlay="true"
-          className="gfycat"
-          id={`gfycat-${id}`}
-          loop="true"
-          poster={`//thumbs.gfycat.com/${id}-poster.jpg`}
-          preload="auto"
-          src={data.webmUrl}
-        />
-      </div>
+      <Video
+        poster={`//thumbs.gfycat.com/${id}-poster.jpg`}
+        url={data.webmUrl}
+      />
     );
   }
 

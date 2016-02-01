@@ -1,7 +1,14 @@
 
-import Subreddit from './Subreddit.react';
+import Component from 'react-pure-render/component';
+import React, {PropTypes} from 'react';
+import ReaderFetcher from './ReaderFetcher.react';
 
-export default class Upvoted extends Subreddit {
+export default class Upvoted extends Component {
+
+  static propTypes = {
+    params: PropTypes.object,
+    redditUser: PropTypes.object,
+  }
 
   generateUrl(props) {
     const name = props.redditUser.details.get('name');
@@ -10,10 +17,10 @@ export default class Upvoted extends Subreddit {
     return `/user/${name}/upvoted`;
   }
 
-  fetch() {
-    if (!this.url || !this.api)
-      return;
-    super.fetch();
+  render() {
+    return (
+      <ReaderFetcher url={this.generateUrl()} {...this.props} />
+    );
   }
 
 }

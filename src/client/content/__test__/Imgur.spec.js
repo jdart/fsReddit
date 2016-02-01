@@ -14,12 +14,12 @@ import {
 describe('Imgur component', () => {
   let actions;
   let imgur = Map({queries: Map({})});
-  let redditContent = Map({navActions: Map({id: null})});
   let preloading = false;
   let url;
   let entry = Map({});
   let sandbox;
   let component;
+  let clock;
 
   function renderComponent() {
     return TestUtils.renderIntoDocument(
@@ -32,7 +32,6 @@ describe('Imgur component', () => {
       actions,
       imgur,
       entry,
-      redditContent,
       url,
       preloading,
     };
@@ -48,10 +47,12 @@ describe('Imgur component', () => {
       redditEntryPreload: sandbox.stub().resolves({}),
     };
     url = 'http://imgur.com/a/ekVnf';
+    clock = sinon.useFakeTimers();
   });
 
   afterEach(() => {
     sandbox.restore();
+    clock.restore();
   });
 
   describe('initially', () => {
@@ -119,9 +120,6 @@ describe('Imgur component', () => {
 
     describe('and first image not preloaded', () => {
       beforeEach(() => {
-        redditContent = redditContent.merge({
-          navActions: {id: 'ekVnf'},
-        });
         imgur = imgur.merge({
           queries: {
             ekVnf: {
@@ -156,9 +154,6 @@ describe('Imgur component', () => {
 
     describe('and first image preloaded', () => {
       beforeEach(() => {
-        redditContent = redditContent.merge({
-          navActions: {id: 'ekVnf'},
-        });
         imgur = imgur.merge({
           queries: {
             ekVnf: {
@@ -196,9 +191,6 @@ describe('Imgur component', () => {
 
     describe('and next image not preloaded, and next image not in preload queue', () => {
       beforeEach(() => {
-        redditContent = redditContent.merge({
-          navActions: {id: 'ekVnf'},
-        });
         imgur = imgur.merge({
           queries: {
             ekVnf: {
@@ -225,9 +217,6 @@ describe('Imgur component', () => {
 
     describe('and next image not preloaded, and next image in preload queue', () => {
       beforeEach(() => {
-        redditContent = redditContent.merge({
-          navActions: {id: 'ekVnf'},
-        });
         imgur = imgur.merge({
           queries: {
             ekVnf: {
@@ -243,23 +232,20 @@ describe('Imgur component', () => {
           },
           preloadQueue: {images: ['bcd'], working: false},
         });
-        component = renderComponent();
       });
       it('executes preload of first item in queue', () => {
-        setTimeout(() => { // action is debounced, this gets test passing
+        component = renderComponent();
+        setTimeout(() =>
           expect(actions.imgurQueueRun).to.have.been.calledWith(Map({
             preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'
-          }));
-        });
+          }))
+        );
       });
     });
   });
 
   describe('when in preloading mode', () => {
     beforeEach(() => {
-      redditContent = redditContent.merge({
-        navActions: {id: 'ekVnf'},
-      });
       imgur = imgur.merge({
         queries: {
           ekVnf: {
@@ -284,7 +270,9 @@ describe('Imgur component', () => {
         component = renderComponent();
       });
       it('enqueues first image to be preloaded', () => {
-        expect(actions.imgurQueueAdd).to.have.been.calledWith(['abc']);
+        setTimeout(() =>
+          expect(actions.imgurQueueAdd).to.have.been.calledWith(['abc'])
+        );
       });
     });
   });

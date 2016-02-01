@@ -15,8 +15,18 @@ export default class FsIframe extends Component {
     url: PropTypes.string.isRequired,
   }
 
+  scrollToTop() {
+    window.scrollTo(0, 0);
+  }
+
   componentWillMount() {
     this.timers = {};
+    this.scrollToTop();
+  }
+
+  componentWillUpdate(nextProps) {
+    if (this.props.url !== nextProps.url)
+      this.scrollToTop();
   }
 
   startTimer() {

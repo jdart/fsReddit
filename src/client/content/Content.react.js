@@ -1,25 +1,23 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import contentMatcher from './matcher';
 
 export default class Content extends Component {
 
   static propTypes = {
-    actions: PropTypes.object.isRequired,
-    comments: PropTypes.bool,
+    contentComponent: PropTypes.func.isRequired,
     entry: PropTypes.object.isRequired,
   }
 
   renderContent(entry, props) {
-    const ContentComponent = contentMatcher(entry, props);
+    const ContentComponent = this.props.contentComponent;
     if (!ContentComponent)
       return;
     return (
       <ContentComponent
         {...this.props}
         entry={entry}
-        url={entry.get('url')}
+        url={entry.url}
       />
     );
   }

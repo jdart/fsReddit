@@ -4,16 +4,18 @@ import React, {PropTypes} from 'react';
 import Content from '../content/Content.react';
 import Nav from './Nav.react';
 import {urlParse, hostMatch} from '../utils';
-import Loader from '../ui/Loader.react';
 import './Reader.styl';
+import {
+  componentMatcher,
+  navComponentMatcher,
+} from '../content/matcher';
 
 export default class Reader extends Component {
 
   static propTypes = {
-    actions: PropTypes.object,
     comments: PropTypes.bool,
-    entries: PropTypes.object,
-    history: PropTypes.object,
+    reader: PropTypes.object,
+    redditContent: PropTypes.object,
     redditUser: PropTypes.object,
   }
 
@@ -31,31 +33,41 @@ export default class Reader extends Component {
 
     return (
       <div className="reader-preloader">
-        <Content {...this.props} entry={entry} preloading={true} />
+        <Content
+          {...this.props}
+          contentComponent={componentMatcher(entry)}
+          entry={entry}
+          preloading={true}
+        />
       </div>
     );
   }
 
-  render() {
-    const {current, next} = this.props.entries;
+  entryByKey(key) {
+    const id = this.props.reader[key];
+    return this.props.redditContent.entries.get(id);
+  }
 
-    if (!current.entry)
-      return (<Loader />);
+  render() {
+    const current = this.entryByKey('current');
+    const next = this.entryByKey('next');
 
     return (
       <div className="reader">
         <Nav
           {...this.props}
           api={this.props.redditUser.get('api')}
-          entries={this.props.entries}
+          entry={current}
+          secondaryNavComponent={navComponentMatcher(current)}
         />
         <Content
           {...this.props}
           comments={this.props.comments}
-          entry={current.entry}
+          contentComponent={componentMatcher(current)}
+          entry={current}
           preloading={false}
         />
-        {this.preRender(next.entry)}
+        {this.preRender(next)}
       </div>
     );
   }
