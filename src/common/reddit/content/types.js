@@ -46,6 +46,7 @@ export const Entry = Record({
   clicked: null,
   report_reasons: null,
   author: null,
+  author_followed: null,
   media: null,
   score: null,
   approved_by: null,
