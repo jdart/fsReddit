@@ -10,8 +10,8 @@ export default class Upvoted extends Component {
     redditUser: PropTypes.object,
   }
 
-  generateUrl(props) {
-    const name = props.redditUser.details.get('name');
+  generateUrl() {
+    const name = this.props.redditUser.details.get('name');
     if (!name)
       return;
     return `/user/${name}/upvoted`;
