@@ -6,6 +6,7 @@ import './FsImg.styl';
 export default class FsImg extends Component {
 
   static propTypes = {
+    caption: PropTypes.string,
     onload: PropTypes.func,
     tallMode: PropTypes.bool,
     url: PropTypes.string,
@@ -33,11 +34,19 @@ export default class FsImg extends Component {
     if (!this.props.url)
       return (<div/>);
 
+    const {caption} = this.props;
     const tall = this.isTall();
     const style = tall ? {} : {maxHeight: '100%'};
     const className = 'fs-img ' + (tall ? 'fs-img-tall' : '');
     return (
       <div className={className}>
+        {caption
+          ? (
+            <div className="caption">
+              <div><span>{caption}</span></div>
+            </div>
+          )
+          : ''}
         <img
           onLoad={this.onload.bind(this)}
           src={this.props.url}

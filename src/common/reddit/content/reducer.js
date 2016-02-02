@@ -86,7 +86,7 @@ export default function redditContentReducer(state = initialState, action) {
       const queryPath = ['queries', url];
       const indexPath = concat(queryPath, 'index');
       const currIndex = state.getIn(indexPath);
-      const maxIndex = state.getIn(queryPath).entries.size;
+      const maxIndex = state.getIn(queryPath).entries.size - 1;
       const nextIndex = max([0, min([currIndex + offset, maxIndex])]);
       return state.setIn(concat(queryPath, 'index'), nextIndex)
         .updateIn(queryPath, setQueryNeedsMore);

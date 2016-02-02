@@ -3,6 +3,7 @@ import Imgur from '../Imgur.react';
 import FsImg from '../FsImg.react';
 import Loader from '../../ui/Loader.react';
 import {Map} from 'immutable';
+import {Image} from '../../../common/imgur/types';
 
 import {
   expect,
@@ -16,10 +17,9 @@ describe('Imgur component', () => {
   let imgur = Map({queries: Map({})});
   let preloading = false;
   let url;
-  let entry = Map({});
+  let entry = Image();
   let sandbox;
   let component;
-  let clock;
 
   function renderComponent() {
     return TestUtils.renderIntoDocument(
@@ -47,12 +47,10 @@ describe('Imgur component', () => {
       redditEntryPreload: sandbox.stub().resolves({}),
     };
     url = 'http://imgur.com/a/ekVnf';
-    clock = sinon.useFakeTimers();
   });
 
   afterEach(() => {
     sandbox.restore();
-    clock.restore();
   });
 
   describe('initially', () => {
@@ -130,7 +128,7 @@ describe('Imgur component', () => {
             },
           },
           images: {
-            abc: {preloaded: false, id: 'abc'}
+            abc: Image({preloaded: false, id: 'abc'})
           },
           preloadQueue: {images: []},
         });
@@ -164,7 +162,7 @@ describe('Imgur component', () => {
             }
           },
           images: {
-            abc: {preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'}
+            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'})
           },
           preloadQueue: {images: []},
         });
@@ -201,10 +199,10 @@ describe('Imgur component', () => {
             }
           },
           images: {
-            abc: {preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'},
-            bcd: {preloaded: null, id: 'bcd', url: 'http://a.com/b.jpg'},
-            cde: {preloaded: null, id: 'cde', url: 'http://a.com/c.jpg'},
-            def: {preloaded: null, id: 'def', url: 'http://a.com/d.jpg'},
+            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'}),
+            bcd: Image({preloaded: null, id: 'bcd', url: 'http://a.com/b.jpg'}),
+            cde: Image({preloaded: null, id: 'cde', url: 'http://a.com/c.jpg'}),
+            def: Image({preloaded: null, id: 'def', url: 'http://a.com/d.jpg'}),
           },
           preloadQueue: {images: []},
         });
@@ -227,19 +225,19 @@ describe('Imgur component', () => {
             }
           },
           images: {
-            abc: {preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'},
-            bcd: {preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'}
+            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'}),
+            bcd: Image({preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'})
           },
           preloadQueue: {images: ['bcd'], working: false},
         });
+        component = renderComponent();
       });
       it('executes preload of first item in queue', () => {
-        component = renderComponent();
-        setTimeout(() =>
-          expect(actions.imgurQueueRun).to.have.been.calledWith(Map({
+        setTimeout(() => { // action is debounced, this gets test passing
+          expect(actions.imgurQueueRun).to.have.been.calledWith(Image({
             preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'
-          }))
-        );
+          }));
+        });
       });
     });
   });
@@ -256,8 +254,8 @@ describe('Imgur component', () => {
           }
         },
         images: {
-          abc: {preloaded: null, id: 'abc', url: 'http://a.com/a.jpg'},
-          bcd: {preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'}
+          abc: Image({preloaded: null, id: 'abc', url: 'http://a.com/a.jpg'}),
+          bcd: Image({preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'})
         },
         preloadQueue: {images: []},
       });
@@ -270,9 +268,7 @@ describe('Imgur component', () => {
         component = renderComponent();
       });
       it('enqueues first image to be preloaded', () => {
-        setTimeout(() =>
-          expect(actions.imgurQueueAdd).to.have.been.calledWith(['abc'])
-        );
+        expect(actions.imgurQueueAdd).to.have.been.calledWith(['abc']);
       });
     });
   });
