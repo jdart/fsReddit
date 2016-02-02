@@ -124,9 +124,11 @@ export default class Imgur extends Component {
       return (<div className="failed">Failed to find content on imgur.</div>);
 
     const image = this.getImage(0, this.props);
-    const gifv = image.get('gifv');
-    const url = image.get('url');
-    const images = this.query.get('entries');
+    const {gifv, url, title, description} = image;
+    const caption = [title, description]
+      .filter(s => !!s)
+      .join(' - ');
+    const images = this.query.entries;
 
     if (gifv)
       return this.renderGifv(gifv);
@@ -135,9 +137,9 @@ export default class Imgur extends Component {
       <div className="imgur">
         {image.get('preloaded') ? '' : (<Loader />)}
         <FsImg
+          {...{caption, url}}
           onload={this.onload.bind(this)}
           tallMode={images.size === 1}
-          url={url}
         />
       </div>
     );

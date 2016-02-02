@@ -1,6 +1,6 @@
 
 import url from 'url';
-import {debounce, set, union, includes} from 'lodash';
+import {get, debounce, set, union, includes} from 'lodash';
 import {Image} from './types';
 import {List} from 'immutable';
 
@@ -54,7 +54,8 @@ export function imagesArrayToKVP(data) {
 }
 
 export function responseToImageArray(response) {
-  if (response.status !== 200)
+  const images = get(response, 'data.images');
+  if (response.status !== 200 || get(images, 'length') === 0)
     return [{
       id: '404',
       link: 'http://s.imgur.com/images/404/giraffeweyes.png',
@@ -64,9 +65,7 @@ export function responseToImageArray(response) {
       width: null,
     }];
 
-  if (response.data.images)
-    return response.data.images;
-  return [response.data];
+  return images ? images : [response.data];
 }
 
 export function addToQueue(state, add) {
