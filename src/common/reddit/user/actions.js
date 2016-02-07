@@ -3,7 +3,7 @@ import api from '../api';
 import C from './consts';
 import {asyncAction, asyncRedditAction} from '../utils';
 
-export function redditFriend(api, author) {
+export function friend(api, author) {
   return asyncRedditAction(
     api,
     C.REDDIT_USER_FRIEND,
@@ -14,7 +14,7 @@ export function redditFriend(api, author) {
   );
 }
 
-export function redditVote(api, entry, errorFn) {
+export function vote(api, entry, errorFn) {
   const dir = entry.get('likes') ? 0 : 1;
   const data = {entry, dir};
   const action = asyncRedditAction(
@@ -36,7 +36,7 @@ export function redditVote(api, entry, errorFn) {
   return action;
 }
 
-export function redditFetchSubreddits(api) {
+export function fetchSubreddits(api) {
   return asyncRedditAction(
     api,
     C.REDDIT_USER_FETCH_SUBREDDITS,
@@ -46,7 +46,7 @@ export function redditFetchSubreddits(api) {
   );
 }
 
-export function redditLoggedIn(history) {
+export function loggedIn(history) {
   history.pushState(null, '/');
   return {
     type: C.REDDIT_USER_LOGGED_IN,
@@ -54,14 +54,14 @@ export function redditLoggedIn(history) {
   };
 }
 
-export function redditLogin() {
+export function login() {
   return {
     type: C.REDDIT_USER_LOGIN,
     payload: {}
   };
 }
 
-export function redditLoginValidate(oauth) {
+export function loginValidate(oauth) {
   return asyncAction(
     C.REDDIT_USER_LOGIN_VALIDATE,
     authenticatedApi(oauth)

@@ -27,8 +27,8 @@ export default class Comments extends Component {
     const fetching = this.comments().fetching;
     if (fetching !== null)
       return;
-    this.props.actions.redditFetchComments(
-      this.props.redditUser.get('api'),
+    this.props.actions.redditContent.fetchComments(
+      this.props.redditUser.api,
       this.props.entry.id
     );
   }

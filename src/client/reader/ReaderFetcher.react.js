@@ -37,13 +37,13 @@ export default class ReaderFetcher extends Component {
       return;
 
     if (this.props.url !== props.url || mounting)
-      this.props.actions.readerQuery(props.url);
+      this.props.actions.reader.query(props.url);
     else if (!this.query)
       this.fetchInitial(props);
     else if (this.query.needsMore)
       this.fetchMore(props);
     else if (this.navStale(props))
-      props.actions.readerNav(0);
+      props.actions.reader.nav(0);
   }
 
   navStale(props) {
@@ -57,11 +57,11 @@ export default class ReaderFetcher extends Component {
   }
 
   fetchInitial(props) {
-    props.actions.redditFetchEntries(this.api, props.url);
+    props.actions.redditContent.fetchEntries(this.api, props.url);
   }
 
   fetchMore(props) {
-    props.actions.redditFetchEntries(
+    props.actions.redditContent.fetchEntries(
       this.api,
       props.url,
       this.query.after

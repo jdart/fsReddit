@@ -71,7 +71,7 @@ export default class FsIframe extends Component {
     if (this.props.entry.get('iframeLoadMs') !== null)
       return;
 
-    this.props.actions.redditIframeLoaded(
+    this.props.actions.redditContent.iframeLoaded(
       this.props.entry,
       Date.now() - this.timers[this.props.url]
     );
@@ -83,7 +83,7 @@ export default class FsIframe extends Component {
   }
 
   forceFail() {
-    this.props.actions.redditIframeLoaded(
+    this.props.actions.redditContent.iframeLoaded(
       this.props.entry,
       1
     );

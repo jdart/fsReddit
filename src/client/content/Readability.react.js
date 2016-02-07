@@ -36,7 +36,7 @@ export default class Readability extends Component {
   fetch() {
     const query = this.getQuery();
     if (!query || query.get('fetching') === null)
-      this.props.actions.readabilityFetch(this.props.url);
+      this.props.actions.readability.fetch(this.props.url);
   }
 
   render() {

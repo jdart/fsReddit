@@ -49,7 +49,7 @@ export default class Imgur extends Component {
 
     // enqueue more images to preload, or preload images in queue
     if (!this.enqueueImages(props))
-      runQueue(props.imgur, props.actions.imgurQueueRun);
+      runQueue(props.imgur, props.actions.imgur.queueRun);
   }
 
   fetchData(props) {
@@ -57,7 +57,7 @@ export default class Imgur extends Component {
     if (this.query)
       return false;
 
-    actions.imgurFetch(entry);
+    actions.imgur.fetch(entry);
     return true;
   }
 
@@ -69,15 +69,15 @@ export default class Imgur extends Component {
     const nextImageIds = nextIndexes
       .map((index) => this.getImageByIndex(index, props))
       .filter(image => image)
-      .filter(image => image.get('preloaded') === null)
-      .filter(image => !image.get('gifv'))
-      .map(image => image.get('id'));
+      .filter(image => image.preloaded === null)
+      .filter(image => !image.gifv)
+      .map(image => image.id);
 
 
     const add = without(nextImageIds, ...queue.get('images').toJS());
 
     if (add.length) {
-      actions.imgurQueueAdd(add);
+      actions.imgur.queueAdd(add);
       return true;
     }
 
@@ -106,11 +106,11 @@ export default class Imgur extends Component {
 
   onload() {
     const image = this.getImage(0, this.props);
-    const {imgurImageCached} = this.props.actions;
-    if (image.get('preloaded'))
+    const {imageCached} = this.props.actions.imgur;
+    if (image.preloaded)
       return;
 
-    setTimeout(() => imgurImageCached(image));
+    setTimeout(() => imageCached(image));
   }
 
   render() {
@@ -135,7 +135,7 @@ export default class Imgur extends Component {
 
     return (
       <div className="imgur">
-        {image.get('preloaded') ? '' : (<Loader />)}
+        {image.preloaded ? '' : (<Loader />)}
         <FsImg
           {...{caption, url}}
           onload={this.onload.bind(this)}

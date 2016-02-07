@@ -1,15 +1,15 @@
 
-import fetch from 'isomorphic-fetch';
+import {default as isomorphicFetch} from 'isomorphic-fetch';
 import C from './consts';
 import {promiseConsts} from '../utils';
 import set from 'lodash/set';
 
 
 function fetcher(id) {
-  return fetch('https://api.streamable.com/videos/' + id);
+  return isomorphicFetch('https://api.streamable.com/videos/' + id);
 }
 
-export function streamableFetch(id) {
+export function fetch(id) {
   return {
     type: Object.keys(promiseConsts(C.STREAMABLE_FETCH)),
     payload: {

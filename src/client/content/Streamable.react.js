@@ -41,7 +41,7 @@ export default class Streamable extends Component {
   fetch() {
     const query = this.getQuery();
     if (!query || query.get('fetching') === null)
-      this.props.actions.streamableFetch(this.getId());
+      this.props.actions.streamable.fetch(this.getId());
   }
 
   parseId(input) {

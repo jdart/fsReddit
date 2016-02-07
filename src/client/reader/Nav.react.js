@@ -24,11 +24,11 @@ export default class Nav extends Component {
     const key = event.which;
     const {RIGHT, LEFT, d, a, c} = Keys;
     const contains = (matches, toMatch) => matches.indexOf(toMatch) > -1;
-    const {readerNav} = this.props.actions;
+    const {nav} = this.props.actions.reader;
     if (contains([RIGHT, d], key))
-      readerNav(1);
+      nav(1);
     else if (contains([LEFT, a], key))
-      readerNav(-1);
+      nav(-1);
     else if (c === key)
       this.toggleCommentMode();
   }
@@ -50,7 +50,7 @@ export default class Nav extends Component {
 
   renderLink(icon, offset, entry, truncate) {
     let className = `direction-${icon}`;
-    const action = () => this.props.actions.readerNav(offset);
+    const action = () => this.props.actions.reader.nav(offset);
     if (truncate)
       className += ' truncate';
     if (!entry)
@@ -117,8 +117,8 @@ export default class Nav extends Component {
   renderVote(entry) {
     if (!this.props.redditUser.authenticated)
       return;
-    const {redditVote} = this.props.actions;
-    const vote = () => redditVote(
+    const {vote} = this.props.actions.redditUser;
+    const onClickVote = () => vote(
       this.props.api,
       entry,
       this.notifyFailedVote()
@@ -126,7 +126,7 @@ export default class Nav extends Component {
     const icon = entry.likes ? 'arrow-circle-up' : 'arrow-circle-o-up';
     const title = entry.likes ? 'Unvote' : 'Upvote';
     return (
-      <a href="#" onClick={vote}>
+      <a href="#" onClick={onClickVote}>
         <i className={`fa fa-${icon}`} />
         <span>{title}</span>
       </a>
@@ -138,14 +138,14 @@ export default class Nav extends Component {
   }
 
   toggleCommentMode(e) {
-    const {redditContentViewMode} = this.props.actions;
+    const {contentViewMode} = this.props.actions.redditContent;
     const {entry} = this.props;
     const nextMode = this.commentMode()
       ? C.REDDIT_CONTENT_VIEW_MODE_CONTENT
       : C.REDDIT_CONTENT_VIEW_MODE_COMMENTS;
     if (e)
       e.preventDefault();
-    redditContentViewMode(entry.id, nextMode);
+    contentViewMode(entry.id, nextMode);
   }
 
   renderCommentLink(entry) {
@@ -174,7 +174,7 @@ export default class Nav extends Component {
     if (!this.props.redditUser.authenticated)
       return;
 
-    const friend = () => this.props.actions.redditFriend(
+    const friend = () => this.props.actions.redditUser.friend(
       this.props.api,
       entry.author
     );

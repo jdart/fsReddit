@@ -35,13 +35,13 @@ export default class Gfycat extends Component {
     const query = this.getQuery();
     if (!query)
       return;
-    return query.get('data');
+    return query.data;
   }
 
   fetch() {
     const query = this.getQuery();
-    if (!query || query.get('fetching') === null)
-      this.props.actions.gfycatFetch(this.getId());
+    if (!query || query.fetching === null)
+      this.props.actions.gfycat.fetch(this.getId());
   }
 
   parseId(input) {

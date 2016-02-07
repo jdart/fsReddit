@@ -2,13 +2,13 @@
 import C from './consts';
 import {asyncRedditAction} from '../utils';
 
-export function redditContentViewMode(id, mode) {
+export function contentViewMode(id, mode) {
   return {
     type: C.REDDIT_CONTENT_VIEW_MODE,
     payload: {id, mode},
   };
 }
-export function redditFetchComments(api, id) {
+export function fetchComments(api, id) {
   return asyncRedditAction(
     api,
     C.REDDIT_CONTENT_FETCH_COMMENTS,
@@ -19,7 +19,7 @@ export function redditFetchComments(api, id) {
   );
 }
 
-export function redditFetchListing(type, api, url, after) {
+function fetchListing(type, api, url, after) {
   return asyncRedditAction(
     api,
     type,
@@ -30,11 +30,11 @@ export function redditFetchListing(type, api, url, after) {
   );
 }
 
-export function redditFetchEntries(api, url, after) {
-  return redditFetchListing(C.REDDIT_CONTENT_FETCH_ENTRIES, api, url, after);
+export function fetchEntries(api, url, after) {
+  return fetchListing(C.REDDIT_CONTENT_FETCH_ENTRIES, api, url, after);
 }
 
-export function redditQueryIndex(url, offset) {
+export function queryIndex(url, offset) {
   return {
     type: C.REDDIT_CONTENT_QUERY_INDEX,
     payload: {
@@ -44,7 +44,7 @@ export function redditQueryIndex(url, offset) {
   };
 }
 
-export function redditIframeLoaded(entry, time) {
+export function iframeLoaded(entry, time) {
   return {
     type: C.REDDIT_CONTENT_IFRAME_LOADED,
     payload: {
