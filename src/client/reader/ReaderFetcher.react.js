@@ -71,7 +71,10 @@ export default class ReaderFetcher extends Component {
   renderFailed() {
     return (
       <div className="query-failed">
-        <p>Failed to get entries, try refreshing the page.</p>
+        <p>
+          Failed to get entries, your session likely expired.
+          Go back <a href="/"><i className="fa fa-home"/>home</a>.
+        </p>
       </div>
     );
   }

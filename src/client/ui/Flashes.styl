@@ -1,0 +1,21 @@
+
+flash-width=400px
+
+.flashes
+  position fixed
+  bottom 1em
+  width flash-width
+  left 50%
+  margin-left (flash-width/2) * -1
+  text-align center
+  .flash
+    display inline-block
+    background-color #f0ad4e
+    color white
+    border-radius 0.3em
+    padding 0.3em 0.6em
+    &.error
+      background-color #d9534f
+    &.success
+      background-color #5cb85c
+

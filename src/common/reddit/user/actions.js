@@ -14,22 +14,29 @@ export function redditFriend(api, author) {
   );
 }
 
-export function redditVote(api, entry) {
+export function redditVote(api, entry, errorFn) {
   const dir = entry.get('likes') ? 0 : 1;
   const data = {entry, dir};
-
-  return asyncRedditAction(
+  const action = asyncRedditAction(
     api,
     C.REDDIT_USER_VOTE,
     'post',
     '/api/vote',
-    {dir, id: 't3_' + entry.get('id')},
+    {dir, id: 't3_' + entry.id},
     data
   );
+  if (!errorFn)
+    return action;
+  const {payload} = action;
+  payload.promise = payload.promise
+    .catch(error => {
+      errorFn();
+      return Promise.reject(error);
+    });
+  return action;
 }
 
 export function redditFetchSubreddits(api) {
-
   return asyncRedditAction(
     api,
     C.REDDIT_USER_FETCH_SUBREDDITS,
@@ -40,11 +47,10 @@ export function redditFetchSubreddits(api) {
 }
 
 export function redditLoggedIn(history) {
+  history.pushState(null, '/');
   return {
     type: C.REDDIT_USER_LOGGED_IN,
-    payload: {
-      history
-    }
+    payload: {},
   };
 }
 

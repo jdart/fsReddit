@@ -47,7 +47,7 @@ export default function redditContentReducer(state = initialState, action) {
       const queryPath = ['queries', key];
       state = state.setIn(concat(queryPath, 'lastUpdated'), now());
 
-      if (payload.error)
+      if (payload.error || !data)
         return state
           .setIn(concat(queryPath, 'fetching'), false)
           .setIn(concat(queryPath, 'failed'), true);

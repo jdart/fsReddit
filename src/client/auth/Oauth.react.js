@@ -29,6 +29,10 @@ export default class Oauth extends Component {
       this.props.actions.redditLoginValidate(qs);
     } else if (this.props.redditUser.get('authenticated')) {
       this.props.actions.redditLoggedIn(history);
+      this.props.actions.flash.enqueue(
+        'Successfully logged in!<br>Your session will expire in 1 hour.',
+        'success'
+      );
     }
   }
 

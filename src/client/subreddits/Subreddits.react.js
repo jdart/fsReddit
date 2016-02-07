@@ -40,7 +40,7 @@ export default class Subreddits extends Component {
   }
 
   empty(props) {
-    return props.redditUser.subreddits.get('fetching') === null;
+    return props.redditUser.subreddits.fetching === null;
   }
 
   renderUpvoted() {
@@ -56,8 +56,16 @@ export default class Subreddits extends Component {
   }
 
   render() {
-    if (this.empty(this.props) || this.props.redditUser.subreddits.get('fetching'))
+    const {redditUser: {subreddits}} = this.props;
+    if (this.empty(this.props) || subreddits.fetching)
       return (<Loader />);
+
+    if (subreddits.failed)
+      return (
+        <ul className="home-subreddits error">
+          <li>Failed to get subreddits, try refreshing the page.</li>
+        </ul>
+      );
 
     return (
       <ul className="home-subreddits">
