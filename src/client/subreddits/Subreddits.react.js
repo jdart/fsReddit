@@ -34,7 +34,7 @@ export default class Subreddits extends Component {
   fetch(props) {
     if (!this.empty(props))
       return;
-    props.actions.redditFetchSubreddits(
+    props.actions.redditUser.fetchSubreddits(
       props.redditUser.get('api')
     );
   }

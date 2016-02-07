@@ -32,7 +32,7 @@ export default class ImgurNav extends Component {
 
     const nextIndex = index + offset;
     const id = parse(this.props.url).id;
-    const step = this.props.actions.imgurStep;
+    const {step} = this.props.actions.imgur;
     const action = index => step(id, index);
 
     if (nextIndex === size)
@@ -74,7 +74,7 @@ export default class ImgurNav extends Component {
     const skip = nextIndex < 0 || nextIndex === size;
     if (skip)
       return;
-    const action = this.props.actions.imgurStep;
+    const action = this.props.actions.imgur.step;
     const title = `${index + 1} / ${size}`;
     const step = () => action(offset);
     return (

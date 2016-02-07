@@ -1,15 +1,15 @@
 
-import fetch from 'isomorphic-fetch';
+import {default as isomorphicFetch} from 'isomorphic-fetch';
 import C from './consts';
 import {promiseConsts} from '../utils';
 import set from 'lodash/set';
 
 
 function fetcher(id) {
-  return fetch('http://gfycat.com/cajax/get/' + id);
+  return isomorphicFetch('http://gfycat.com/cajax/get/' + id);
 }
 
-export function gfycatFetch(id) {
+export function fetch(id) {
   return {
     type: Object.keys(promiseConsts(C.GFYCAT_FETCH)),
     payload: {

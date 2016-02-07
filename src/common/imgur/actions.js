@@ -1,5 +1,5 @@
 
-import fetch from 'isomorphic-fetch';
+import {default as isomorphicFetch} from 'isomorphic-fetch';
 import C from './consts';
 import {promiseConsts} from '../utils';
 import {set, without, concat, remove, clone, sortBy, filter} from 'lodash';
@@ -9,11 +9,11 @@ import {parse} from './utils';
 const maxAge = 60 * 60 * 24 * 30; //month
 const imgurTypes = ['image', 'album', 'gallery'];
 
-function imgurRobustFetcher(id, type, created) {
+function robustFetcher(id, type, created) {
   const typeOrder = remove(concat([type], without(imgurTypes, type)));
   const typeTemplate = {response: null, age: null, key: null};
   const types = typeOrder.map((type) => set(clone(typeTemplate), 'key', type));
-  return imgurFind(types, 0, id, created);
+  return apiFind(types, 0, id, created);
 }
 
 function chooseBest(types) {
@@ -27,14 +27,14 @@ function chooseBest(types) {
   return failure;
 }
 
-function imgurFind(types, index, id, created) {
+function apiFind(types, index, id, created) {
   const type = types[index];
   const nextIndex = index + 1;
   const last = types.length <= nextIndex;
   const next = () => last
     ? chooseBest(types)
-    : imgurFind(types, nextIndex, id, created);
-  return imgurFetchType(type.key, id)
+    : apiFind(types, nextIndex, id, created);
+  return fetchType(type.key, id)
   .then(response => {
     if (response.status !== 200)
       return next();
@@ -49,8 +49,8 @@ function imgurFind(types, index, id, created) {
   });
 }
 
-function imgurFetchType(type, id) {
-  return fetch(`https://api.imgur.com/3/${type}/${id}`, {headers: {
+function fetchType(type, id) {
+  return isomorphicFetch(`https://api.imgur.com/3/${type}/${id}`, {headers: {
     Authorization: 'Client-ID bc4cacfc141d1b0'
   }});
 }
@@ -64,12 +64,12 @@ function imageLoader(image, current, index) {
   });
 }
 
-export function imgurFetch(entry) {
+export function fetch(entry) {
   const parts = parse(entry.get('url'));
   return {
     type: Object.keys(promiseConsts(C.IMGUR_FETCH)),
     payload: {
-      promise: imgurRobustFetcher(parts.id, parts.type, entry.get('created_utc'))
+      promise: robustFetcher(parts.id, parts.type, entry.get('created_utc'))
         .then(response => response.json ? response.json() : response)
         .then(response => set(response, 'reqid', parts.id)),
       data: {reqid: parts.id}
@@ -77,14 +77,14 @@ export function imgurFetch(entry) {
   };
 }
 
-export function imgurStep(id, index) {
+export function step(id, index) {
   return {
     type: C.IMGUR_STEP,
     payload: {reqid: id, index}
   };
 }
 
-export function imgurQueueRun(image, current, index) {
+export function queueRun(image, current, index) {
   return {
     type: Object.keys(promiseConsts(C.IMGUR_QUEUE_RUN)),
     payload: {
@@ -94,14 +94,14 @@ export function imgurQueueRun(image, current, index) {
   };
 }
 
-export function imgurQueueAdd(images) {
+export function queueAdd(images) {
   return {
     type: C.IMGUR_QUEUE_ADD,
     payload: {images}
   };
 }
 
-export function imgurImageCached(image) {
+export function imageCached(image) {
   return {
     type: C.IMGUR_IMAGE_CACHED,
     payload: {image},

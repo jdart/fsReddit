@@ -1,19 +1,19 @@
 
 import C from './consts';
-import {redditQueryIndex} from '../reddit/content/actions';
+import {queryIndex} from '../reddit/content/actions';
 import {entryAtOffset} from '../reddit/utils';
 
-export function readerQuery(id) {
+export function query(id) {
   return {
     type: C.READER_QUERY,
     payload: {id},
   };
 }
 
-export function readerNav(offset) {
+export function nav(offset) {
   return ({dispatch, getState}) => {
     const {reader} = getState();
-    dispatch(redditQueryIndex(reader.query, offset));
+    dispatch(queryIndex(reader.query, offset));
 
     const state = getState();
     const {queries, entries} = state.redditContent;

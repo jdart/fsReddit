@@ -1,18 +1,18 @@
 
-import fetch from 'isomorphic-fetch';
+import {default as isomorphicFetch} from 'isomorphic-fetch';
 import C from './consts';
 import {promiseConsts} from '../utils';
 import set from 'lodash/set';
 
 function fetcher(url) {
-  return fetch([
+  return isomorphicFetch([
     '/api/v1/readability/parse',
     '?url=' + encodeURIComponent(url),
   ].join(''), {
   });
 }
 
-export function readabilityFetch(url) {
+export function fetch(url) {
   return {
     type: Object.keys(promiseConsts(C.READABILITY_FETCH)),
     payload: {
