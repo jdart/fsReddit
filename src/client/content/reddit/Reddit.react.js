@@ -3,6 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import {Link} from 'react-router';
 import Comments from './Comments.react';
+import url from 'url';
 import './Reddit.styl';
 
 export default class Reddit extends Component {
@@ -14,18 +15,25 @@ export default class Reddit extends Component {
 
   render() {
     const {entry} = this.props;
+    const {host} = url.parse(entry.url);
+
     return (
       <div className="reddit">
         <hgroup>
-          <h2>{entry.get('title')}</h2>
-          <h4><Link className="reddit-author icon-title" to={`/u/${entry.get('author')}`}>
-            <i className="fa fa-user" />{entry.get('author')}
+          <h2>{entry.title}</h2>
+          <h4><Link className="reddit-author icon-title" to={`/u/${entry.author}`}>
+            <i className="fa fa-user" />{entry.author}
           </Link></h4>
         </hgroup>
-        <div
-          className="reddit-body"
-          dangerouslySetInnerHTML={{__html: entry.get('selftext_html')}}
-        />
+        <div className="reddit-body">
+          {entry.selftext_html
+            ? <div dangerouslySetInnerHTML={{__html: entry.selftext_html}} />
+            : <a href={entry.url} target="_blank">
+                <i className="fa fa-sign-out" />
+                {host}
+              </a>
+          }
+        </div>
         <div className="reddit-comments-root">
           <Comments {...this.props} entry={entry} />
         </div>

@@ -52,7 +52,8 @@ export default class ReaderFetcher extends Component {
     if (this.query.fetching !== false) // Still fetching
       return false;
 
-    return !queryTimestamp
+    return !this.query.entries.contains(props.reader.current)
+      || !queryTimestamp
       || queryTimestamp < this.query.lastUpdated;
   }
 
