@@ -203,6 +203,15 @@ export default class Nav extends Component {
     );
   }
 
+  renderContextTitle() {
+    return (
+      <h3 className="context">
+        <i className="fa fa-location-arrow" />
+        {this.props.reader.query.replace(/^\//, '')}
+      </h3>
+    );
+  }
+
   render() {
     const current = this.props.entry;
     const next = this.entryByKey('next');
@@ -211,6 +220,7 @@ export default class Nav extends Component {
 
     return (
       <div className="reader-nav">
+        {this.renderContextTitle.bind(this)()}
         {this.renderTitle.bind(this)(current)}
         <div className="icon-title">
           <Link to={`/r/${current.subreddit}`}>
