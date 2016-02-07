@@ -83,7 +83,7 @@ function renderPage(store, renderProps, req) {
       bodyHtml={`<div id="app">${appHtml}</div>${scriptHtml}`}
       googleAnalyticsId={config.googleAnalyticsId}
       isProduction={config.isProduction}
-      title={DocumentTitle.rewind()}
+      title={DocumentTitle.rewind() || 'Fullscreenit'}
     />
   );
 }

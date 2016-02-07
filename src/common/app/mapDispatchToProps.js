@@ -5,6 +5,7 @@ import * as readabilityActions from '../readability/actions';
 import * as gfycatActions from '../gfycat/actions';
 import * as streamableActions from '../streamable/actions';
 import * as readerActions from '../reader/actions';
+import * as flashActions from '../flash/actions';
 import {Map} from 'immutable';
 import {bindActionCreators} from 'redux';
 
@@ -24,8 +25,12 @@ export default function mapDispatchToProps(dispatch) {
     .filter(value => typeof value === 'function')
     .toObject();
 
+  let actionsObject = bindActionCreators(creators, dispatch);
+
+  actionsObject.flash = bindActionCreators(flashActions, dispatch);
+
   return {
-    actions: bindActionCreators(creators, dispatch),
-    dispatch
+    actions: actionsObject,
+    dispatch,
   };
 }

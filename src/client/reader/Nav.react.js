@@ -108,11 +108,21 @@ export default class Nav extends Component {
     );
   }
 
+  notifyFailedVote() {
+    const {flash: {enqueue}} = this.props.actions;
+    return () =>
+      enqueue('Failed to vote, post might be too old.', 'error');
+  }
+
   renderVote(entry) {
     if (!this.props.redditUser.authenticated)
       return;
     const {redditVote} = this.props.actions;
-    const vote = () => redditVote(this.props.api, entry);
+    const vote = () => redditVote(
+      this.props.api,
+      entry,
+      this.notifyFailedVote()
+    );
     const icon = entry.likes ? 'arrow-circle-up' : 'arrow-circle-o-up';
     const title = entry.likes ? 'Unvote' : 'Upvote';
     return (

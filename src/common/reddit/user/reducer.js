@@ -66,15 +66,6 @@ export default function redditUserReducer(state = initialState, action) {
       return state.setIn(['oauth', 'fetching'], false);
     }
 
-    case C.REDDIT_USER_LOGGED_IN: {
-      action.payload.history.pushState(null, '/');
-      return state;
-    }
-
-    case C.REDDIT_USER_VOTE_PENDING: {
-      return state;
-    }
-
     case C.REDDIT_USER_FETCH_SUBREDDITS_PENDING: {
       return state.setIn(['subreddits', 'fetching'], true);
     }
@@ -92,9 +83,15 @@ export default function redditUserReducer(state = initialState, action) {
 
     case C.REDDIT_USER_FETCH_SUBREDDITS_ERROR: {
       return invalidateIf401(state, action.payload.status)
-        .setIn(['subreddits', 'fetching'], false);
+        .setIn(['subreddits', 'fetching'], false)
+        .setIn(['subreddits', 'failed'], true);
     }
 
+    case RCC.REDDIT_CONTENT_FETCH_ENTRIES_SUCCESS: {
+      if (payload.error || !payload.data)
+        return invalidate(state);
+      return state;
+    }
     case RCC.REDDIT_CONTENT_FETCH_COMMENTS_ERROR: {}
     case RCC.REDDIT_CONTENT_FETCH_ENTRIES_ERROR: {
       return invalidateIf401(state, action.payload.status);
