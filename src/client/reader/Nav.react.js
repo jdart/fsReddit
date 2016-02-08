@@ -249,6 +249,51 @@ export default class Nav extends Component {
           </a>
         </div>
         {this.renderSecondaryNav()}
+        <div className="bottom-content">
+          <div className="legend">
+            <h4>Keyboard Navigation</h4>
+            <ul>
+              <li><h5>Reddit Posts</h5></li>
+              <li>
+                <div className="key"><i className="fa fa-arrow-right" /></div>
+                {', '}
+                <div className="key">D</div>
+                <span className="title">Next</span>
+              </li>
+              <li>
+                <div className="key"><i className="fa fa-arrow-left" /></div>
+                {', '}
+                <div className="key">A</div>
+                <span className="title">Previous</span>
+              </li>
+              <li>
+                <div className="key">C</div>
+                <span className="title">Comments</span>
+              </li>
+            </ul>
+            <ul>
+              <li><h5>Imgur Galleries</h5></li>
+              <li>
+                <div className="key"><i className="fa fa-arrow-down" /></div>
+                {', '}
+                <div className="key">S</div>
+                <span className="title">Next</span>
+              </li>
+              <li>
+                <div className="key"><i className="fa fa-arrow-up" /></div>
+                {', '}
+                <div className="key">W</div>
+                <span className="title">Previous</span>
+              </li>
+            </ul>
+          </div>
+          <div className="bugs">
+            <a href="https://github.com/jdart/fsReddit/issues/new">
+              <i className="fa fa-bug" />
+              {' '}Report a bug
+            </a>
+          </div>
+        </div>
       </div>
     );
   }
