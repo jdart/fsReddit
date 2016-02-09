@@ -1,6 +1,7 @@
 
 import C from './consts';
 import {asyncRedditAction} from '../utils';
+import {promiseConsts} from '../../utils';
 
 export function contentViewMode(id, mode) {
   return {
@@ -54,3 +55,19 @@ export function iframeLoaded(entry, time) {
   };
 }
 
+export function fetchMimeType(entry) {
+  const promise = new Promise((resolve, reject) => {
+    const img = new Image;
+    img.onload = () => resolve({entry});
+    img.onerror = (e) => reject({entry, e});
+    img.src = entry.url;
+  });
+
+  return {
+    type: Object.keys(promiseConsts(C.REDDIT_CONTENT_FETCH_MIME_TYPE)),
+    payload: {
+      data: {entry},
+      promise,
+    }
+  };
+}

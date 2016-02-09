@@ -20,13 +20,22 @@ export default class FsIframe extends Component {
   }
 
   componentWillMount() {
+    this.mimeTypeActions(this.props);
     this.timers = {};
     this.scrollToTop();
   }
 
   componentWillUpdate(nextProps) {
+    this.mimeTypeActions(nextProps);
     if (this.props.url !== nextProps.url)
       this.scrollToTop();
+  }
+
+  // See if this is really an image without the usual file extensions
+  mimeTypeActions(props) {
+    const {actions, entry} = props;
+    if (entry && entry.mime_type === null)
+      actions.redditContent.fetchMimeType(entry);
   }
 
   startTimer() {

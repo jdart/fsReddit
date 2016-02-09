@@ -82,6 +82,7 @@ export const Entry = Record({
   mod_reports: null,
   visited: null,
   num_reports: null,
-  ups: null
+  ups: null,
+  mime_type: null,
 });
 
