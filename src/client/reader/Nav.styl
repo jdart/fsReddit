@@ -1,17 +1,30 @@
 
 .reader-nav
-  padding 1em
   font-size: 14px
+  .padded
+    padding 0 1em 1em 1em
+  .bg
+    position relative
+    background-color #eee
+    z-index 3
+    padding-bottom 2em
+    background linear-gradient(
+      to bottom,
+      rgba(238,238,238,1) 0%,
+      rgba(238,238,238,1) 95%,
+      rgba(238,238,238,0) 100%
+    )
   h2
     font-size: 16px
     margin-top 0
-  h3
-    text-align right
+  h3.context
     font-weight normal
     margin 0 0 0.6em
     font-size 13px
     font-style italic
     color #888
+    background-color #fff
+    padding 1em
     i
       margin-right 0.3em
       font-size 14px
@@ -27,6 +40,7 @@
   .bottom-content
     position absolute
     bottom 1em
+    z-index 2
   .bugs
     clear left
     i
