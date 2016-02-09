@@ -5,6 +5,7 @@ import Content from '../content/Content.react';
 import Nav from './Nav.react';
 import {urlParse, hostMatch} from '../utils';
 import './Reader.styl';
+import {imageRegex, imageMimeTypeRegex} from '../../common/utils';
 import {
   componentMatcher,
   navComponentMatcher,
@@ -13,6 +14,7 @@ import {
 export default class Reader extends Component {
 
   static propTypes = {
+    actions: PropTypes.object,
     comments: PropTypes.bool,
     reader: PropTypes.object,
     redditContent: PropTypes.object,
@@ -20,11 +22,12 @@ export default class Reader extends Component {
   }
 
   image(entry) {
-    const url = entry.get('url');
+    const {url} = entry;
     const {pathname} = urlParse(url);
 
-    return pathname.match(/\.(jpg|jpeg|png|gif)$/)
-      || hostMatch('imgur.com', url);
+    return imageRegex.test(pathname)
+      || hostMatch('imgur.com', url)
+      || imageMimeTypeRegex.test(entry.mime_type);
   }
 
   preRender(entry) {

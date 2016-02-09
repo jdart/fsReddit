@@ -133,6 +133,28 @@ export default function redditContentReducer(state = initialState, action) {
       );
     }
 
+    case C.REDDIT_CONTENT_FETCH_MIME_TYPE_PENDING: {
+      return state.setIn(
+        ['entries', action.payload.entry.id, 'mime_type'],
+        false
+      );
+    }
+
+    case C.REDDIT_CONTENT_FETCH_MIME_TYPE_SUCCESS: {
+      return state.setIn(
+        ['entries', action.payload.entry.id, 'mime_type'],
+        'image/jpeg'
+      );
+    }
+
+    case C.REDDIT_CONTENT_FETCH_MIME_TYPE_FAILED: {
+      return state.setIn(
+        ['entries', action.payload.entry.id, 'mime_type'],
+        'text/html'
+      );
+    }
+
+
   }
 
   return state;

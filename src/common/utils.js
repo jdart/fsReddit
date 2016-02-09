@@ -26,3 +26,7 @@ export function genConsts(simple, promise) {
 export function now() {
   return Math.floor(Date.now() / 1000);
 }
+
+export const imageRegex = /\.(jpg|jpeg|png|gif)$/;
+export const imageMimeTypeRegex = /\/(jpg|jpeg|png|gif)$/;
+

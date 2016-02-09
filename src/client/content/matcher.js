@@ -13,12 +13,14 @@ import Gifv from './Gifv.react';
 import {hostMatch} from '../utils';
 import ImgurNav from './ImgurNav.react';
 import C from '../../common/reddit/content/consts';
+import {imageRegex, imageMimeTypeRegex} from '../../common/utils';
 
 const matchers = [{
   test: (_, entry) => entry.viewMode === C.REDDIT_CONTENT_VIEW_MODE_COMMENTS,
   component: Reddit,
 }, {
-  test: (entryUrl, _) => entryUrl.match(/\.(jpg|jpeg|png|gif)$/),
+  test: (entryUrl, entry) => imageRegex.test(entryUrl)
+    || imageMimeTypeRegex.test(entry.mime_type),
   component: FsImg,
 }, {
   host: 'imgur.com',
