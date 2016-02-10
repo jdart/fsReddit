@@ -15,6 +15,7 @@ export default class Comments extends Component {
   componentDidMount() {
     this.fetch();
   }
+
   componentDidUpdate() {
     this.fetch();
   }
@@ -38,15 +39,29 @@ export default class Comments extends Component {
     return !fetching && fetching !== null;
   }
 
+  renderFailed() {
+    return (
+      <div className="query-failed error">
+        <p>
+          Failed to get entries, your session likely expired.
+          Go back <a href="/"><i className="fa fa-home"/>home</a>.
+        </p>
+      </div>
+    );
+  }
+
   render() {
     const comments = this.comments();
     if (!this.ready())
       return (<Loader />);
     return (
       <div className="reddit-comments">
-        {comments.children.map(child =>
-          <Comment data={child.data} key={child.data.id} />
-        )}
+        {this.comments().failed
+          ? this.renderFailed()
+          : comments.children.map(child =>
+            <Comment data={child.data} key={child.data.id} />
+          )
+        }
       </div>
     );
   }
