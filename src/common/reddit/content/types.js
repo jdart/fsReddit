@@ -15,7 +15,8 @@ export const Query = Record({
 
 export const Comments = Record({
   fetching: null,
-  children: null
+  children: null,
+  failed: false,
 });
 
 export const Comment = Record({

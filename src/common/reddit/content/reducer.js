@@ -100,12 +100,23 @@ export default function redditContentReducer(state = initialState, action) {
     }
 
     case C.REDDIT_CONTENT_FETCH_COMMENTS_SUCCESS: {
+      const entryPath = ['entries', action.payload.id];
+      const commentsPath = concat(entryPath, 'comments');
+      state = state
+        .setIn(concat(commentsPath, 'fetching'), false);
+      if (action.payload.error)
+        return state.setIn(concat(commentsPath, 'failed'), true);
       const entryData = action.payload[1];
+      return state
+        .setIn(concat(commentsPath, 'children'), entryData.data.children);
+    }
+
+    case C.REDDIT_CONTENT_FETCH_COMMENTS_FAILED: {
       const entryPath = ['entries', action.payload.id];
       const commentsPath = concat(entryPath, 'comments');
       return state
-        .setIn(concat(commentsPath, 'children'), entryData.data.children)
-        .setIn(concat(commentsPath, 'fetching'), false);
+        .setIn(concat(commentsPath, 'fetching'), false)
+        .setIn(concat(commentsPath, 'failed'), true);
     }
 
     case RUC.REDDIT_USER_FRIEND_SUCCESS: {
