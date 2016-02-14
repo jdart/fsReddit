@@ -1,11 +1,7 @@
 
-import {Record, List} from 'immutable';
+import {Record, List, Map} from 'immutable';
 
-export const Subreddits = Record({
-  fetching: false,
-  failed: null,
-  list: new List(['all', 'gadgets', 'sports', 'gaming', 'pics', 'worldnews', 'videos', 'AskReddit', 'aww', 'Music', 'funny', 'news', 'movies', 'blog', 'books', 'history', 'food', 'philosophy', 'television', 'Jokes', 'Art', 'DIY', 'space', 'Documentaries', 'Fitness', 'askscience', 'nottheonion', 'todayilearned', 'personalfinance', 'gifs', 'listentothis', 'IAmA', 'announcements', 'TwoXChromosomes', 'creepy', 'nosleep', 'GetMotivated', 'WritingPrompts', 'LifeProTips', 'EarthPorn', 'explainlikeimfive', 'Showerthoughts', 'Futurology', 'photoshopbattles', 'mildlyinteresting', 'dataisbeautiful', 'tifu', 'OldSchoolCool', 'UpliftingNews', 'InternetIsBeautiful', 'science'])
-});
+const defaultSubs = List(['all', 'gadgets', 'sports', 'gaming', 'pics', 'worldnews', 'videos', 'AskReddit', 'aww', 'Music', 'funny', 'news', 'movies', 'blog', 'books', 'history', 'food', 'philosophy', 'television', 'Jokes', 'Art', 'DIY', 'space', 'Documentaries', 'Fitness', 'askscience', 'nottheonion', 'todayilearned', 'personalfinance', 'gifs', 'listentothis', 'IAmA', 'announcements', 'TwoXChromosomes', 'creepy', 'nosleep', 'GetMotivated', 'WritingPrompts', 'LifeProTips', 'EarthPorn', 'explainlikeimfive', 'Showerthoughts', 'Futurology', 'photoshopbattles', 'mildlyinteresting', 'dataisbeautiful', 'tifu', 'OldSchoolCool', 'UpliftingNews', 'InternetIsBeautiful', 'science']);
 
 export const OauthData = Record({
   state: null,
@@ -20,7 +16,26 @@ export const Oauth = Record({
   fetching: null,
   didInvalidate: null,
   lastUpdated: null,
-  data: new OauthData,
+  data: OauthData(),
 });
 
+export const Subreddits = Record({
+  fetching: null,
+  failed: null,
+  list: List(),
+});
+
+export const InitialState = Record({
+  authenticated: false,
+  oauth: Oauth(),
+  details: Map(),
+  loaded: false,
+  subreddits: Subreddits(),
+  api: null,
+});
+
+export const initialUnauthState = InitialState()
+  .set('loaded', true)
+  .setIn(['subreddits', 'list'], defaultSubs)
+  .setIn(['subreddits', 'fetching'], false);
 
