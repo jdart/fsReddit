@@ -12,7 +12,6 @@ const initialState = new InitialState();
 
 export default function redditUserReducer(state = initialState, action) {
   const {payload} = action;
-  const oauth = (payload && payload.oauth) || null;
 
   switch (action.type) {
 
@@ -46,6 +45,7 @@ export default function redditUserReducer(state = initialState, action) {
     }
 
     case C.REDDIT_USER_LOGIN_VALIDATE_SUCCESS: {
+      const {oauth} = payload;
       const expiry = Date.now() + parseInt(oauth.expires_in, 10) * 1000;
       return state
         .set('api', api)
