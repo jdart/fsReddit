@@ -10,6 +10,7 @@ export const Subreddits = Record({
 export const OauthData = Record({
   state: null,
   expires_in: null,
+  expiry: null,
   access_token: null,
   scope: null,
   token_type: null,

@@ -78,3 +78,10 @@ function authenticatedApi(oauth) {
   return api.auth(oauth.access_token).then(() => api);
 }
 
+export function sessionExpired() {
+  return {
+    type: C.REDDIT_USER_SESSION_EXPIRED,
+    payload: {},
+  };
+}
+

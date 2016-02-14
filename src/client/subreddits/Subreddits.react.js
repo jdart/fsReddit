@@ -16,7 +16,10 @@ export default class Subreddits extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.fetch(nextProps);
+    this.fetch(
+      nextProps,
+      nextProps.redditUser.authenticated !== this.props.redditUser.authenticated
+    );
   }
 
   componentWillMount() {
@@ -24,18 +27,18 @@ export default class Subreddits extends Component {
   }
 
   renderLogin() {
-    if (this.props.redditUser.get('authenticated'))
+    if (this.props.redditUser.authenticated)
       return;
     return (
       <Login {...this.props} />
     );
   }
 
-  fetch(props) {
-    if (!this.empty(props))
+  fetch(props, force = false) {
+    if (!force && !this.empty(props))
       return;
     props.actions.redditUser.fetchSubreddits(
-      props.redditUser.get('api')
+      props.redditUser.api
     );
   }
 
@@ -44,7 +47,7 @@ export default class Subreddits extends Component {
   }
 
   renderUpvoted() {
-    if (!this.props.redditUser.get('authenticated'))
+    if (!this.props.redditUser.authenticated)
       return;
     return (
       <li key="upvoted">

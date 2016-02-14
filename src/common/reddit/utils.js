@@ -42,7 +42,8 @@ export function asyncUnauthRedditAction(type, action, url, options = {}, payload
 
 export function invalidate(state) {
   return state.setIn(['oauth', 'data'], {})
-    .setIn(['authenticated'], false);
+    .set('authenticated', false)
+    .set('api', null);
 }
 
 export function invalidateIf401(state, status) {
