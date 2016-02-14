@@ -4,6 +4,7 @@ import {genConsts} from '../../utils';
 export default genConsts([
   'REDDIT_USER_LOGGED_IN',
   'REDDIT_USER_LOGIN',
+  'REDDIT_USER_SESSION_EXPIRED',
 ], [
   'REDDIT_USER_LOGIN_VALIDATE',
   'REDDIT_USER_FRIEND',

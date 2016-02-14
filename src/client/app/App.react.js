@@ -15,9 +15,27 @@ import {connect} from 'react-redux';
 export default class App extends Component {
 
   static propTypes = {
+    actions: PropTypes.object.isRequired,
     children: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     redditUser: PropTypes.object.isRequired,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      redditUser: {authenticated, oauth},
+      actions: {
+        redditUser: {sessionExpired},
+        flash: {enqueue},
+      }
+    } = nextProps;
+    if (!authenticated || oauth.data.expiry > Date.now())
+      return;
+    sessionExpired();
+    enqueue(
+      'Your session has expired, return to the homepage to login again.',
+      'success'
+    );
   }
 
   render() {

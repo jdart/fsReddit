@@ -4,6 +4,7 @@ import {promiseConsts} from '../utils';
 import queryString from 'query-string';
 import merge from 'lodash/merge';
 import {Entry, Comments} from './content/types';
+import {initialUnauthState} from './user/types';
 
 export function asyncAction(type, promise, payload = {}) {
   return {
@@ -41,8 +42,7 @@ export function asyncUnauthRedditAction(type, action, url, options = {}, payload
 }
 
 export function invalidate(state) {
-  return state.setIn(['oauth', 'data'], {})
-    .setIn(['authenticated'], false);
+  return initialUnauthState;
 }
 
 export function invalidateIf401(state, status) {

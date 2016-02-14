@@ -1,6 +1,6 @@
 
 import {Record, List, Map} from 'immutable';
-import {Subreddits, Oauth} from './types';
+import {Subreddits, Oauth, OauthData, InitialState, initialUnauthState} from './types';
 import api from '../api';
 import window from '../window';
 import getRandomString from '../../lib/getRandomString';
@@ -8,36 +8,28 @@ import {invalidate, invalidateIf401} from '../utils';
 import C from './consts';
 import RCC from '../content/consts';
 
-const InitialState = Record({
-  authenticated: false,
-  oauth: new Oauth,
-  details: new Map,
-  loaded: false,
-  subreddits: new Subreddits,
-  api: null,
-});
-
 const initialState = new InitialState();
 
 export default function redditUserReducer(state = initialState, action) {
   const {payload} = action;
-  const oauth = (payload && payload.oauth) || null;
 
   switch (action.type) {
 
     case 'REDUX_STORAGE_LOAD': {
-      const newState = state.set('loaded', true);
       if (!payload.redditUser)
-        return newState;
-      const {access_token} = payload.redditUser.oauth.data;
-      if (access_token)
-        api.auth(access_token);
-      return newState
-        .mergeIn(['oauth', 'data'], payload.redditUser.oauth.data)
-        .mergeIn(['details'], payload.redditUser.details)
-        .set('api', access_token ? api : null)
-        .setIn(['subreddits', 'fetching'], access_token ? null : false)
-        .setIn(['authenticated'], access_token ? true : false);
+        return initialUnauthState;
+      const {
+        details,
+        oauth: {data, data: {access_token, expiry}}
+      } = payload.redditUser;
+      if (!access_token || expiry < Date.now())
+        return initialUnauthState;
+      return state
+        .mergeIn(['oauth', 'data'], data)
+        .mergeIn(['details'], details)
+        .set('api', api.auth(access_token) && api)
+        .set('loaded', true)
+        .set('authenticated', true);
     }
 
     case C.REDDIT_USER_LOGIN: {
@@ -52,12 +44,15 @@ export default function redditUserReducer(state = initialState, action) {
     }
 
     case C.REDDIT_USER_LOGIN_VALIDATE_SUCCESS: {
+      const {oauth} = payload;
+      const expiry = Date.now() + parseInt(oauth.expires_in, 10) * 1000;
       return state
         .set('api', api)
         .setIn(['oauth', 'fetching'], false)
         .setIn(['authenticated'], true)
         .mergeIn(['details'], payload.me)
-        .mergeIn(['oauth', 'data'], oauth)
+        .setIn(['oauth', 'data'], OauthData(oauth))
+        .setIn(['oauth', 'data', 'expiry'], expiry)
         .setIn(['subreddits', 'fetching'], null)
         .setIn(['subreddits', 'list'], new List);
     }
@@ -85,6 +80,10 @@ export default function redditUserReducer(state = initialState, action) {
       return invalidateIf401(state, action.payload.status)
         .setIn(['subreddits', 'fetching'], false)
         .setIn(['subreddits', 'failed'], true);
+    }
+
+    case C.REDDIT_USER_SESSION_EXPIRED: {
+      return invalidate(state);
     }
 
     case RCC.REDDIT_CONTENT_FETCH_ENTRIES_SUCCESS: {

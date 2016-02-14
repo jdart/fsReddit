@@ -21,15 +21,15 @@ export default class Oauth extends Component {
   }
 
   runActions() {
-    const {history} = this.props;
+    const {history, redditUser, actions} = this.props;
     const qs = queryString.parse(window.location.hash);
-    if (!this.props.redditUser.loaded)
+    if (!redditUser.loaded)
       return;
-    if (this.props.redditUser.oauth.fetching === null) {
-      this.props.actions.redditUser.loginValidate(qs);
-    } else if (this.props.redditUser.authenticated) {
-      this.props.actions.redditUser.loggedIn(history);
-      this.props.actions.flash.enqueue(
+    if (redditUser.oauth.fetching === null) {
+      actions.redditUser.loginValidate(qs);
+    } else if (redditUser.authenticated) {
+      actions.redditUser.loggedIn(history);
+      actions.flash.enqueue(
         'Successfully logged in!<br>Your session will expire in 1 hour.',
         'success'
       );
