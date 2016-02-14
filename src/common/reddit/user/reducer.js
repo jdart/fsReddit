@@ -22,8 +22,7 @@ export default function redditUserReducer(state = initialState, action) {
         details,
         oauth: {data, data: {access_token, expiry}}
       } = payload.redditUser;
-      const valid = access_token && expiry > Date.now();
-      if (!valid)
+      if (!access_token || expiry < Date.now())
         return initialUnauthState;
       return state
         .mergeIn(['oauth', 'data'], data)
