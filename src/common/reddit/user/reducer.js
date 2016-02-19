@@ -1,6 +1,6 @@
 
-import {Record, List, Map} from 'immutable';
-import {Subreddits, Oauth, OauthData, InitialState, initialUnauthState} from './types';
+import {List} from 'immutable';
+import {OauthData, InitialState, initialUnauthState} from './types';
 import api from '../api';
 import window from '../window';
 import getRandomString from '../../lib/getRandomString';
