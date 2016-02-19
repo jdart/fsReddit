@@ -76,7 +76,8 @@ export default class ImgurNav extends Component {
       return;
     const action = this.props.actions.imgur.step;
     const title = `${index + 1} / ${size}`;
-    const step = () => action(offset);
+    const id = parse(this.props.url).id;
+    const step = () => action(id, nextIndex);
     return (
       <a className={`direction-${icon}`} href="#" onClick={step}>
         <i className={`fa fa-arrow-${icon}`} />
