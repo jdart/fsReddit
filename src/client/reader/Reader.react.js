@@ -5,11 +5,8 @@ import Content from '../content/Content.react';
 import Nav from './Nav.react';
 import {urlParse, hostMatch} from '../utils';
 import './Reader.styl';
-import {imageRegex, imageMimeTypeRegex} from '../../common/utils';
-import {
-  componentMatcher,
-  navComponentMatcher,
-} from '../content/matcher';
+import {imageUrl, imageMimeTypeRegex} from '../../common/utils';
+import {componentMatcher} from '../content/matcher';
 
 export default class Reader extends Component {
 
@@ -21,24 +18,16 @@ export default class Reader extends Component {
     redditUser: PropTypes.object,
   }
 
-  image(entry) {
-    const {url} = entry;
-    const {pathname} = urlParse(url);
-
-    return imageRegex.test(pathname)
-      || hostMatch('imgur.com', url)
-      || imageMimeTypeRegex.test(entry.mime_type);
-  }
-
   preRender(entry) {
-    if (!entry || !this.image(entry))
+    const config = componentMatcher(entry);
+    if (!config.preload)
       return;
 
     return (
       <div className="reader-preloader">
         <Content
           {...this.props}
-          contentComponent={componentMatcher(entry)}
+          contentComponent={config.component}
           entry={entry}
           preloading={true}
         />
@@ -54,23 +43,24 @@ export default class Reader extends Component {
   render() {
     const current = this.entryByKey('current');
     const next = this.entryByKey('next');
+    const config = componentMatcher(current);
 
     return (
       <div className="reader">
         <Nav
           {...this.props}
-          api={this.props.redditUser.get('api')}
+          api={this.props.redditUser.api}
           entry={current}
-          secondaryNavComponent={navComponentMatcher(current)}
+          secondaryNavComponent={config.navComponent}
         />
         <Content
           {...this.props}
           comments={this.props.comments}
-          contentComponent={componentMatcher(current)}
+          contentComponent={config.component}
           entry={current}
           preloading={false}
         />
-        {this.preRender(next)}
+        {next && this.preRender(next)}
       </div>
     );
   }
