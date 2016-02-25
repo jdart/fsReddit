@@ -6,7 +6,7 @@ import {set, without, concat, remove, clone, sortBy, filter} from 'lodash';
 import Promise from 'bluebird';
 import {parse} from './utils';
 
-const maxAge = 60 * 60 * 24 * 30; //month
+const maxAge = 60 * 60 * 24 * 30 * 12; //month
 const imgurTypes = ['image', 'album', 'gallery'];
 
 function robustFetcher(id, type, created) {
