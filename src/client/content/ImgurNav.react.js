@@ -89,13 +89,12 @@ export default class ImgurNav extends Component {
   renderQuality() {
     const {actions, imgur} = this.props;
     const icon = imgur.hq ? 'check-square-o' : 'square-o';
-    const title = imgur.hq ? 'HQ' : 'SQ';
     const onClick = (e) => e.preventDefault() || actions.imgur.hq();
     return (
       <div className="icon-title quality">
         <a href="#" onClick={onClick}>
           <i className={`fa fa-${icon}`} />
-          <span>{title}</span>
+          <span>HQ</span>
         </a>
       </div>
     );
