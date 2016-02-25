@@ -3,9 +3,7 @@ import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import Content from '../content/Content.react';
 import Nav from './Nav.react';
-import {urlParse, hostMatch} from '../utils';
 import './Reader.styl';
-import {imageUrl, imageMimeTypeRegex} from '../../common/utils';
 import {componentMatcher} from '../content/matcher';
 
 export default class Reader extends Component {
