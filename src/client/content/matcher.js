@@ -13,15 +13,16 @@ import Gifv from './Gifv.react';
 import {hostMatch} from '../utils';
 import ImgurNav from './ImgurNav.react';
 import C from '../../common/reddit/content/consts';
-import {imageRegex, imageMimeTypeRegex} from '../../common/utils';
+import {imageUrl, imageMimeTypeRegex} from '../../common/utils';
 
 const matchers = [{
   test: (_, entry) => entry.viewMode === C.REDDIT_CONTENT_VIEW_MODE_COMMENTS,
   component: Reddit,
 }, {
-  test: (entryUrl, entry) => imageRegex.test(entryUrl)
+  test: (entryUrl, entry) => imageUrl(entryUrl)
     || imageMimeTypeRegex.test(entry.mime_type),
   component: FsImg,
+  preload: true,
 }, {
   host: 'imgur.com',
   test: (entryUrl, _) => entryUrl.match(/\.gifv$/),
@@ -36,6 +37,7 @@ const matchers = [{
   host: 'imgur.com',
   component: Imgur,
   navComponent: ImgurNav,
+  preload: true,
 }, {
   host: 'streamable.com',
   component: Streamable,
@@ -54,7 +56,7 @@ const matchers = [{
   component: Readability,
 }];
 
-function configMatcher(entry) {
+export function componentMatcher(entry) {
   const entryUrl = entry.url;
   const matches = matchers
     .filter(({host}) =>
@@ -65,15 +67,5 @@ function configMatcher(entry) {
   return matches.length
     ? matches[0]
     : false;
-}
-
-export function componentMatcher(entry) {
-  const config = configMatcher(entry);
-  return config ? config.component : false;
-}
-
-export function navComponentMatcher(entry) {
-  const config = configMatcher(entry);
-  return config ? config.navComponent : false;
 }
 

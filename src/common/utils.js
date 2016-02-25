@@ -1,5 +1,6 @@
 
 import {isArray, merge, set} from 'lodash';
+import url from 'url';
 
 export function arrayToKeyValuePairs(array) {
   return array.reduce((hash, next) => set(hash, next, next), {});
@@ -29,4 +30,9 @@ export function now() {
 
 export const imageRegex = /\.(jpg|jpeg|png|gif)$/;
 export const imageMimeTypeRegex = /\/(jpg|jpeg|png|gif)$/;
+
+export function imageUrl(candidate) {
+  const parts = url.parse(candidate);
+  return imageRegex.test(parts.pathname);
+}
 
