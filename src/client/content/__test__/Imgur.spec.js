@@ -2,8 +2,9 @@
 import Imgur from '../Imgur.react';
 import FsImg from '../FsImg.react';
 import Loader from '../../ui/Loader.react';
-import {Map} from 'immutable';
-import {Image} from '../../../common/imgur/types';
+import {Map, List} from 'immutable';
+import {Image, Query} from '../../../common/imgur/types';
+import {InitialState} from '../../../common/imgur/reducer';
 
 import {
   expect,
@@ -14,7 +15,7 @@ import {
 
 describe('Imgur component', () => {
   let actions;
-  let imgur = Map({queries: Map({})});
+  let imgur = InitialState();
   let preloading = false;
   let url;
   let entry = Image();
@@ -55,6 +56,9 @@ describe('Imgur component', () => {
 
   describe('initially', () => {
     beforeEach(() => {
+      imgur = imgur.merge({
+        images: {}
+      });
       component = renderComponent();
     });
     it('renders', () => {
@@ -80,7 +84,7 @@ describe('Imgur component', () => {
     beforeEach(() => {
       imgur = imgur.merge({
         queries: {
-          ekVnf: {failed: null, fetching: true}
+          ekVnf: Query({failed: null, fetching: true})
         },
         images: {}
       });
@@ -99,13 +103,13 @@ describe('Imgur component', () => {
     beforeEach(() => {
       imgur = imgur.merge({
         queries: {
-          ekVnf: {failed: true, fetching: false}
+          ekVnf: Query({failed: true, fetching: false})
         },
-        images: {}
+        images: {},
       });
       component = renderComponent();
     });
-    it('shows failure message', function() {
+    it('shows failure message', () => {
       const msg = TestUtils.findRenderedDOMComponentWithClass(
         component,
         'failed'
@@ -120,17 +124,17 @@ describe('Imgur component', () => {
       beforeEach(() => {
         imgur = imgur.merge({
           queries: {
-            ekVnf: {
+            ekVnf: Query({
               failed: false,
               fetching: false,
-              entries: ['abc'],
+              entries: List(['abc']),
               index: 0,
-            },
+            }),
           },
-          images: {
-            abc: Image({preloaded: false, id: 'abc'})
-          },
-          preloadQueue: {images: []},
+          images: Map({
+            abc: Image({preloaded: false, id: 'abc', gifv: false})
+          }),
+          preloadQueue: {images: List([])},
         });
         component = renderComponent();
       });
@@ -141,7 +145,7 @@ describe('Imgur component', () => {
         );
         expect(loader).to.exist;
       });
-      it('draws div.imgur', function() {
+      it('draws div.imgur', () => {
         const div = TestUtils.findRenderedDOMComponentWithClass(
           component,
           'imgur'
@@ -154,17 +158,17 @@ describe('Imgur component', () => {
       beforeEach(() => {
         imgur = imgur.merge({
           queries: {
-            ekVnf: {
+            ekVnf: Query({
               failed: false,
               fetching: false,
-              entries: ['abc'],
+              entries: List(['abc']),
               index: 0,
-            }
+            }),
           },
           images: {
-            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'})
+            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg', gifv: false})
           },
-          preloadQueue: {images: []},
+          preloadQueue: {images: List([])},
         });
         component = renderComponent();
       });
@@ -191,20 +195,20 @@ describe('Imgur component', () => {
       beforeEach(() => {
         imgur = imgur.merge({
           queries: {
-            ekVnf: {
+            ekVnf: Query({
               failed: false,
               fetching: false,
-              entries: ['abc', 'bcd', 'cde', 'def'],
+              entries: List(['abc', 'bcd', 'cde', 'def']),
               index: 0,
-            }
+            }),
           },
           images: {
-            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'}),
-            bcd: Image({preloaded: null, id: 'bcd', url: 'http://a.com/b.jpg'}),
-            cde: Image({preloaded: null, id: 'cde', url: 'http://a.com/c.jpg'}),
-            def: Image({preloaded: null, id: 'def', url: 'http://a.com/d.jpg'}),
+            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg', gifv: false}),
+            bcd: Image({preloaded: null, id: 'bcd', url: 'http://a.com/b.jpg', gifv: false}),
+            cde: Image({preloaded: null, id: 'cde', url: 'http://a.com/c.jpg', gifv: false}),
+            def: Image({preloaded: null, id: 'def', url: 'http://a.com/d.jpg', gifv: false}),
           },
-          preloadQueue: {images: []},
+          preloadQueue: {images: List([])},
         });
         component = renderComponent();
       });
@@ -217,18 +221,18 @@ describe('Imgur component', () => {
       beforeEach(() => {
         imgur = imgur.merge({
           queries: {
-            ekVnf: {
+            ekVnf: Query({
               failed: false,
               fetching: false,
-              entries: ['abc', 'bcd'],
+              entries: List(['abc', 'bcd']),
               index: 0,
-            }
+            }),
           },
           images: {
-            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg'}),
-            bcd: Image({preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'})
+            abc: Image({preloaded: true, id: 'abc', url: 'http://a.com/a.jpg', gifv: false}),
+            bcd: Image({preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg', gifv: false})
           },
-          preloadQueue: {images: ['bcd'], working: false},
+          preloadQueue: {images: List(['bcd']), working: false},
         });
         component = renderComponent();
       });
@@ -247,16 +251,16 @@ describe('Imgur component', () => {
     beforeEach(() => {
       imgur = imgur.merge({
         queries: {
-          ekVnf: {
+          ekVnf: Query({
             failed: false,
             fetching: null,
-            entries: ['abc', 'bcv'],
+            entries: List(['abc', 'bcv']),
             index: 0,
-          }
+          }),
         },
         images: {
-          abc: Image({preloaded: null, id: 'abc', url: 'http://a.com/a.jpg'}),
-          bcd: Image({preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg'})
+          abc: Image({preloaded: null, id: 'abc', url: 'http://a.com/a.jpg', gifv: false}),
+          bcd: Image({preloaded: null, id: 'bcd', url: 'http://b.com/b.jpg', gifv: false})
         },
         preloadQueue: {images: []},
       });

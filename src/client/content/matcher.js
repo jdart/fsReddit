@@ -19,6 +19,11 @@ const matchers = [{
   test: (_, entry) => entry.viewMode === C.REDDIT_CONTENT_VIEW_MODE_COMMENTS,
   component: Reddit,
 }, {
+  host: 'imgur.com',
+  component: Imgur,
+  navComponent: ImgurNav,
+  preload: true,
+}, {
   test: (entryUrl, entry) => imageUrl(entryUrl)
     || imageMimeTypeRegex.test(entry.mime_type),
   component: FsImg,
@@ -33,11 +38,6 @@ const matchers = [{
 }, {
   host: 'twitter.com',
   component: Twitter,
-}, {
-  host: 'imgur.com',
-  component: Imgur,
-  navComponent: ImgurNav,
-  preload: true,
 }, {
   host: 'streamable.com',
   component: Streamable,

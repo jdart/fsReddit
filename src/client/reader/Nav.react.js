@@ -259,13 +259,13 @@ export default class Nav extends Component {
                 <li><h5>Reddit Posts</h5></li>
                 <li>
                   <div className="key"><i className="fa fa-arrow-right" /></div>
-                  {', '}
+                  {' / '}
                   <div className="key">D</div>
                   <span className="title">Next</span>
                 </li>
                 <li>
                   <div className="key"><i className="fa fa-arrow-left" /></div>
-                  {', '}
+                  {' / '}
                   <div className="key">A</div>
                   <span className="title">Previous</span>
                 </li>
@@ -278,13 +278,13 @@ export default class Nav extends Component {
                 <li><h5>Imgur Galleries</h5></li>
                 <li>
                   <div className="key"><i className="fa fa-arrow-down" /></div>
-                  {', '}
+                  {' / '}
                   <div className="key">S</div>
                   <span className="title">Next</span>
                 </li>
                 <li>
                   <div className="key"><i className="fa fa-arrow-up" /></div>
-                  {', '}
+                  {' / '}
                   <div className="key">W</div>
                   <span className="title">Previous</span>
                 </li>

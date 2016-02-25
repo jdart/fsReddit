@@ -12,6 +12,7 @@ export const Image = Record({
   id: null,
   preloaded: null,
   url: null,
+  sqUrl: null,
   gifv: null,
   title: null,
   width: null,
