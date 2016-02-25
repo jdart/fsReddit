@@ -4,13 +4,14 @@ import {Record, List, Map} from 'immutable';
 import {Query} from './types';
 import {imagesArrayToKVP, responseToImageArray, addToQueue} from './utils';
 
-const InitialState = Record({
+export const InitialState = Record({
   images: new Map,
   queries: new Map,
   preloadQueue: new Map({
     images: new List,
     working: false
   }),
+  hq: true,
 });
 
 export const initialState = new InitialState;
@@ -92,6 +93,9 @@ export default function imgurReducer(state = initialState, action) {
         .setIn(['images', id, 'preloaded'], true);
     }
 
+    case C.IMGUR_HQ: {
+      return state.set('hq', !state.hq);
+    }
   }
 
   return state;

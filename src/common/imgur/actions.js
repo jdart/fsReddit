@@ -6,7 +6,7 @@ import {set, without, concat, remove, clone, sortBy, filter} from 'lodash';
 import Promise from 'bluebird';
 import {parse} from './utils';
 
-const maxAge = 60 * 60 * 24 * 30; //month
+const maxAge = 60 * 60 * 24 * 30 * 12; //month
 const imgurTypes = ['image', 'album', 'gallery'];
 
 function robustFetcher(id, type, created) {
@@ -55,12 +55,12 @@ function fetchType(type, id) {
   }});
 }
 
-function imageLoader(image, current, index) {
+function imageLoader(image, current, index, hq) {
   return new Promise((resolve, reject) => {
     let img = new Image;
     img.onload = () => resolve({image, current, index});
     img.onerror = () => reject({image, current, index});
-    img.src = image.get('url');
+    img.src = hq ? image.url : image.sqUrl;
   });
 }
 
@@ -85,13 +85,13 @@ export function step(id, index) {
 }
 
 export function queueRun(image, current, index) {
-  return {
+  return ({getState}) => ({
     type: Object.keys(promiseConsts(C.IMGUR_QUEUE_RUN)),
     payload: {
-      promise: imageLoader(image, current, index),
+      promise: imageLoader(image, current, index, getState().imgur.hq),
       data: {image}
     },
-  };
+  });
 }
 
 export function queueAdd(images) {
@@ -105,6 +105,13 @@ export function imageCached(image) {
   return {
     type: C.IMGUR_IMAGE_CACHED,
     payload: {image},
+  };
+}
+
+export function hq() {
+  return {
+    type: C.IMGUR_HQ,
+    payload: {},
   };
 }
 

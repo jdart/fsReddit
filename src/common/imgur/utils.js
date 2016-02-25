@@ -43,6 +43,7 @@ export function imagesArrayToKVP(data) {
     (output, image) => set(output, image.id, new Image({
       id: image.id,
       url: image.link,
+      sqUrl: image.link.replace(/\.jpg$/, 'h.jpg'),
       gifv: image.gifv,
       title: image.title,
       description: image.description,

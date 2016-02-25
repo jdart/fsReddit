@@ -86,6 +86,21 @@ export default class ImgurNav extends Component {
     );
   }
 
+  renderQuality() {
+    const {actions, imgur} = this.props;
+    const icon = imgur.hq ? 'check-square-o' : 'square-o';
+    const title = imgur.hq ? 'HQ' : 'SQ';
+    const onClick = (e) => e.preventDefault() || actions.imgur.hq();
+    return (
+      <div className="icon-title quality">
+        <a href="#" onClick={onClick}>
+          <i className={`fa fa-${icon}`} />
+          <span>{title}</span>
+        </a>
+      </div>
+    );
+  }
+
   render() {
     if (!this.query)
       return (<div />);
@@ -94,13 +109,16 @@ export default class ImgurNav extends Component {
     const first = index === 0;
     const renderLink = this.renderLink.bind(this);
 
-    if (size < 2)
+    if (size < 1)
       return (<div />);
+    if (size < 2)
+      return this.renderQuality();
 
     return (
       <div className="nav-vert icon-title">
         {renderLink('up', -1, !first)}
         {renderLink('down', 1, first)}
+        {this.renderQuality()}
       </div>
     );
   }

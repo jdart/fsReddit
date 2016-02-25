@@ -18,11 +18,11 @@ export default class Imgur extends Component {
 
   getImage(offset = 0, props) {
     const query = this.query;
-    const index = query.get('index') + offset;
-    const imageId = query.getIn(['entries', index]);
-    if (index < 0 || index > query.get('entries').size)
+    const index = query.index + offset;
+    const imageId = query.entries.get(index);
+    if (index < 0 || index > query.entries.size)
       return null;
-    return props.imgur.getIn(['images', imageId]);
+    return props.imgur.images.get(imageId);
   }
 
   getImageByIndex(index, props) {
@@ -42,8 +42,8 @@ export default class Imgur extends Component {
     if (this.fetchData(props))
       return;
 
-    const success = this.query.get('fetching') === false
-      && !this.query.get('failed');
+    const success = this.query.fetching === false
+      && !this.query.failed;
     if (!success)
       return;
 
@@ -72,7 +72,6 @@ export default class Imgur extends Component {
       .filter(image => image.preloaded === null)
       .filter(image => !image.gifv)
       .map(image => image.id);
-
 
     const add = without(nextImageIds, ...queue.get('images').toJS());
 
@@ -113,18 +112,24 @@ export default class Imgur extends Component {
     setTimeout(() => imageCached(image));
   }
 
+  qualityUrl(image) {
+    if (this.props.imgur.hq)
+      return image.url;
+    return image.sqUrl;
+  }
+
   render() {
-    if (!this.query || this.query.get('fetching') !== false)
+    if (!this.query || this.query.fetching !== false)
       return (<Loader />);
 
     if (this.props.preloading)
-      return (<div/>);
+      return (<div />);
 
-    if (this.query.get('failed'))
+    if (this.query.failed)
       return (<div className="failed">Failed to find content on imgur.</div>);
 
     const image = this.getImage(0, this.props);
-    const {gifv, url, title, description} = image;
+    const {gifv, title, description} = image;
     const caption = [title, description]
       .filter(s => !!s)
       .join(' - ');
@@ -137,9 +142,10 @@ export default class Imgur extends Component {
       <div className="imgur">
         {image.preloaded ? '' : (<Loader />)}
         <FsImg
-          {...{caption, url}}
+          caption={caption}
           onload={this.onload.bind(this)}
           tallMode={images.size === 1}
+          url={this.qualityUrl(image)}
         />
       </div>
     );
