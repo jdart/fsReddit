@@ -12,6 +12,7 @@ import gfycat from '../gfycat/reducer';
 import flash from '../flash/reducer';
 import streamable from '../streamable/reducer';
 import reader from '../reader/reducer';
+import vidme from '../vidme/reducer';
 
 const appReducer = combineReducers({
   device,
@@ -23,6 +24,7 @@ const appReducer = combineReducers({
   flash,
   streamable,
   reader,
+  vidme,
 });
 
 export default appReducer;
