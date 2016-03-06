@@ -7,6 +7,7 @@ import * as gfycat from '../gfycat/actions';
 import * as streamable from '../streamable/actions';
 import * as reader from '../reader/actions';
 import * as flash from '../flash/actions';
+import * as vidme from '../vidme/actions';
 import {mapValues} from 'lodash';
 import {bindActionCreators} from 'redux';
 
@@ -19,6 +20,7 @@ const actionCreators = {
   streamable,
   reader,
   flash,
+  vidme,
 };
 
 export default function mapDispatchToProps(dispatch) {

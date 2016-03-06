@@ -4,6 +4,7 @@ import FsImg from './FsImg.react';
 import FsIframe from './FsIframe.react';
 import Reddit from './reddit/Reddit.react';
 import Gfycat from './Gfycat.react';
+import Vidme from './Vidme.react';
 import Instagram from './Instagram.react';
 import Youtube from './Youtube.react';
 import Twitter from './Twitter.react';
@@ -41,6 +42,9 @@ const matchers = [{
 }, {
   host: 'streamable.com',
   component: Streamable,
+}, {
+  host: 'vid.me',
+  component: Vidme,
 }, {
   host: 'gfycat.com',
   component: Gfycat,
