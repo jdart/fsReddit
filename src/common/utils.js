@@ -28,11 +28,12 @@ export function now() {
   return Math.floor(Date.now() / 1000);
 }
 
-export const imageRegex = /\.(jpg|jpeg|png|gif)$/;
-export const imageMimeTypeRegex = /\/(jpg|jpeg|png|gif)$/;
-
-export function imageUrl(candidate) {
-  const parts = url.parse(candidate);
-  return imageRegex.test(parts.pathname);
+export function extIn(...exts) {
+  const regex = new RegExp('\.(' + exts.join('|') + ')$', 'i');
+  return candidate => {
+    const parts = url.parse(candidate);
+    return regex.test(parts.pathname);
+  };
 }
+
 
