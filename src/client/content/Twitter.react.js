@@ -35,6 +35,13 @@ export default class Twitter extends Component {
     this.execWidget();
   }
 
+  componentWillReceiveProps() {
+    const iframe = this.refs.tweet.querySelector('iframe');
+    if (!iframe)
+      return;
+    iframe.parentNode.removeChild(iframe);
+  }
+
   execWidget() {
     const id = this.parseId(this.props.url);
     if (!window.twttr)

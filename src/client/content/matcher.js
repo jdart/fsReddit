@@ -13,8 +13,13 @@ import Readability from './Readability.react';
 import Gifv from './Gifv.react';
 import {hostMatch} from '../utils';
 import ImgurNav from './ImgurNav.react';
+import Video from './Video.react';
 import C from '../../common/reddit/content/consts';
-import {imageUrl, imageMimeTypeRegex} from '../../common/utils';
+import {extIn} from '../../common/utils';
+
+const imageUrl = extIn('jpg', 'jpeg', 'png', 'gif');
+const videoUrl = extIn('webm', 'mp4');
+const imageMimeTypeRegex = /\/(jpg|jpeg|png|gif)$/i;
 
 const matchers = [{
   test: (_, entry) => entry.viewMode === C.REDDIT_CONTENT_VIEW_MODE_COMMENTS,
@@ -30,9 +35,8 @@ const matchers = [{
   component: FsImg,
   preload: true,
 }, {
-  host: 'imgur.com',
-  test: (entryUrl, _) => entryUrl.match(/\.gifv$/),
-  component: Gifv,
+  test: (entryUrl, _) => videoUrl(entryUrl),
+  component: Video,
 }, {
   host: 'reddit.com',
   component: Reddit,
