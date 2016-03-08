@@ -24,7 +24,6 @@ export default function vidmeReducer(state = initialState, action) {
 
     case C.VIDME_FETCH_SUCCESS: {
       const url = action.payload.url;
-      debugger
       return state.mergeIn(
         ['queries', url, 'data'],
         action.payload.video

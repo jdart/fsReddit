@@ -2,15 +2,14 @@
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
 import Loader from '../ui/Loader.react';
-import url from 'url';
 import Video from './Video.react';
 
 export default class Gfycat extends Component {
 
   static propTypes = {
     actions: PropTypes.object,
-    vidme: PropTypes.object,
     url: PropTypes.string,
+    vidme: PropTypes.object,
   }
 
   componentDidMount() {
