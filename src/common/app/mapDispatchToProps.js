@@ -4,6 +4,7 @@ import * as redditUser from '../reddit/user/actions';
 import * as imgur from '../imgur/actions';
 import * as readability from '../readability/actions';
 import * as gfycat from '../gfycat/actions';
+import * as instagram from '../instagram/actions';
 import * as streamable from '../streamable/actions';
 import * as reader from '../reader/actions';
 import * as flash from '../flash/actions';
@@ -17,6 +18,7 @@ const actionCreators = {
   imgur,
   readability,
   gfycat,
+  instagram,
   streamable,
   reader,
   flash,
