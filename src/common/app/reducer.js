@@ -9,6 +9,7 @@ import redditUser from '../reddit/user/reducer';
 import imgur from '../imgur/reducer';
 import readability from '../readability/reducer';
 import gfycat from '../gfycat/reducer';
+import instagram from '../instagram/reducer';
 import flash from '../flash/reducer';
 import streamable from '../streamable/reducer';
 import reader from '../reader/reducer';
@@ -21,6 +22,7 @@ const appReducer = combineReducers({
   imgur,
   readability,
   gfycat,
+  instagram,
   flash,
   streamable,
   reader,
