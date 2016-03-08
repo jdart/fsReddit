@@ -17,8 +17,6 @@ export default class Twitter extends Component {
   }
 
   componentWillMount() {
-    if (!this.executedIds)
-      this.executedIds = {};
     if (window.twttr)
       return;
     let g = document.createElement('script');
@@ -31,34 +29,35 @@ export default class Twitter extends Component {
     this.execWidget();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    console.log(prevProps);
+    const changed = prevProps.url !== this.props.url;
+    if (!changed)
+      return;
+    this.clean();
     this.execWidget();
   }
 
-  componentWillReceiveProps() {
-    const iframe = this.refs.tweet.querySelector('iframe');
-    if (!iframe)
+  clean() {
+    const iframes = this.refs.tweet.querySelectorAll('iframe');
+    if (!iframes)
       return;
-    iframe.parentNode.removeChild(iframe);
+    Array.prototype.slice.call(iframes).forEach(iframe =>
+      iframe.parentNode.removeChild(iframe)
+    );
   }
 
   execWidget() {
-    const id = this.parseId(this.props.url);
     if (!window.twttr)
       return setTimeout(this.execWidget.bind(this), 500);
-    if (this.executedIds[id])
-      return;
-
-    this.executedIds[id] = true;
-    window.twttr.widgets.createTweet(
-      this.parseId(this.props.url),
-      this.refs.tweet
-    );
+    const id = this.parseId(this.props.url);
+    window.twttr.widgets.createTweet(id, this.refs.tweet);
   }
 
   render() {
     if (!this.props.url)
       return (<div/>);
+    const id = this.parseId(this.props.url);
     return (
       <div className="twitter-aligner">
         <div className="tweet" ref="tweet" />
