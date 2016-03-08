@@ -30,7 +30,6 @@ export default class Twitter extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps);
     const changed = prevProps.url !== this.props.url;
     if (!changed)
       return;
@@ -57,7 +56,6 @@ export default class Twitter extends Component {
   render() {
     if (!this.props.url)
       return (<div/>);
-    const id = this.parseId(this.props.url);
     return (
       <div className="twitter-aligner">
         <div className="tweet" ref="tweet" />
