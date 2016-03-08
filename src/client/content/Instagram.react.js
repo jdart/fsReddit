@@ -1,15 +1,15 @@
 
 import Component from 'react-pure-render/component';
 import React, {PropTypes} from 'react';
-import url from 'url';
 import Loader from '../ui/Loader.react';
 import './Instagram.styl';
 
 export default class Instagram extends Component {
 
   static propTypes = {
-    url: PropTypes.string.isRequired,
+    actions: PropTypes.object,
     instagram: PropTypes.object,
+    url: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
