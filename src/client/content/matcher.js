@@ -10,7 +10,6 @@ import Youtube from './Youtube.react';
 import Twitter from './Twitter.react';
 import Streamable from './Streamable.react';
 import Readability from './Readability.react';
-import Gifv from './Gifv.react';
 import {hostMatch} from '../utils';
 import ImgurNav from './ImgurNav.react';
 import Video from './Video.react';
