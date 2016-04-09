@@ -6,7 +6,6 @@ import ReactDOMServer from 'react-dom/server';
 import config from '../config';
 import configureStore from '../../common/configureStore';
 import createRoutes from '../../client/createRoutes';
-import useragent from 'useragent';
 import {HOT_RELOAD_PORT} from '../../../webpack/constants';
 import {Provider} from 'react-redux';
 import {RoutingContext, match} from 'react-router';
@@ -97,8 +96,6 @@ function getAppHtml(store, renderProps) {
 
 function getScriptHtml(headers, hostname) {
   let scriptHtml = '';
-
-  const ua = useragent.is(headers['user-agent']);
 
   const appScriptSrc = config.isProduction
     ? '/_assets/app.js?' + config.assetsHashes.appJs
