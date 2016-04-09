@@ -10,9 +10,8 @@ import {connect} from 'react-redux';
 // // logRenderTime is useful for app with huge UI to check render performance.
 // import logRenderTime from '../lib/logRenderTime';
 
-@connect(mapStateToProps, mapDispatchToProps)
 // @logRenderTime
-export default class App extends Component {
+class App extends Component {
 
   static propTypes = {
     actions: PropTypes.object.isRequired,
@@ -55,3 +54,6 @@ export default class App extends Component {
   }
 
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+

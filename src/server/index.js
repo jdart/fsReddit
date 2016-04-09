@@ -14,7 +14,7 @@ if (global.Intl) {
   global.Intl = require('intl');
 }
 
-require('babel/register')({optional: ['es7']});
+require('babel-register');
 
 // To ignore webpack custom loaders on server.
 serverConfig.webpackStylesExtensions.forEach(function(ext) {
