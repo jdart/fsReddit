@@ -60,30 +60,19 @@ export default function makeConfig(isDevelopment) {
         loader: 'url-loader?limit=100000',
         test: /\.(gif|jpg|png|woff|woff2|eot|ttf|svg)$/
       }, {
+        test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel',
         query: {
-          stage: 0,
+          cacheDirectory: true,
+          plugins: ['transform-runtime', 'add-module-exports'],
+          presets: ['es2015', 'react', 'stage-1'],
           env: {
             development: {
-              // react-transform belongs to webpack config only, not to .babelrc
-              plugins: ['react-transform'],
-              extra: {
-                'react-transform': {
-                  transforms: [{
-                    transform: 'react-transform-hmr',
-                    imports: ['react'],
-                    locals: ['module']
-                  }, {
-                    transform: 'react-transform-catch-errors',
-                    imports: ['react', 'redbox-react']
-                  }]
-                }
-              }
+              presets: ['react-hmre']
             }
           }
-        },
-        test: /\.js$/
+        }
       }].concat(stylesLoaders())
     },
     output: isDevelopment ? {
@@ -141,7 +130,8 @@ export default function makeConfig(isDevelopment) {
       modulesDirectories: ['src', 'node_modules'],
       root: constants.ABSOLUTE_BASE,
       alias: {
-        'react$': require.resolve(path.join(constants.NODE_MODULES_DIR, 'react'))
+        'react$': require.resolve(path.join(constants.NODE_MODULES_DIR, 'react')),
+        'react/lib/Object.assign': 'object-assign',
       }
     }
   };

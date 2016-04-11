@@ -6,9 +6,7 @@ import ReactDOMServer from 'react-dom/server';
 import config from '../config';
 import configureStore from '../../common/configureStore';
 import createRoutes from '../../client/createRoutes';
-import useragent from 'useragent';
 import {HOT_RELOAD_PORT} from '../../../webpack/constants';
-import {IntlProvider} from 'react-intl';
 import {Provider} from 'react-redux';
 import {RoutingContext, match} from 'react-router';
 import {createMemoryHistory} from 'history';
@@ -91,24 +89,13 @@ function renderPage(store, renderProps, req) {
 function getAppHtml(store, renderProps) {
   return ReactDOMServer.renderToString(
     <Provider store={store}>
-      <IntlProvider>
-        <RoutingContext {...renderProps} />
-      </IntlProvider>
+      <RoutingContext {...renderProps} />
     </Provider>
   );
 }
 
 function getScriptHtml(headers, hostname) {
   let scriptHtml = '';
-
-  const ua = useragent.is(headers['user-agent']);
-  const needIntlPolyfill = ua.safari || (ua.ie && ua.version < '11');
-  if (needIntlPolyfill) {
-    scriptHtml += `
-      <script src="/node_modules/intl/dist/Intl.min.js"></script>
-      <script src="/node_modules/intl/locale-data/jsonp/en-US.js"></script>
-    `;
-  }
 
   const appScriptSrc = config.isProduction
     ? '/_assets/app.js?' + config.assetsHashes.appJs
