@@ -14,6 +14,7 @@ import flash from '../flash/reducer';
 import streamable from '../streamable/reducer';
 import reader from '../reader/reducer';
 import vidme from '../vidme/reducer';
+import vimeo from '../vimeo/reducer';
 
 const appReducer = combineReducers({
   device,
@@ -27,6 +28,7 @@ const appReducer = combineReducers({
   streamable,
   reader,
   vidme,
+  vimeo,
 });
 
 export default appReducer;
