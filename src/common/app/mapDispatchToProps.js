@@ -9,6 +9,7 @@ import * as streamable from '../streamable/actions';
 import * as reader from '../reader/actions';
 import * as flash from '../flash/actions';
 import * as vidme from '../vidme/actions';
+import * as vimeo from '../vimeo/actions';
 import {mapValues} from 'lodash';
 import {bindActionCreators} from 'redux';
 
@@ -23,6 +24,7 @@ const actionCreators = {
   reader,
   flash,
   vidme,
+  vimeo,
 };
 
 export default function mapDispatchToProps(dispatch) {
