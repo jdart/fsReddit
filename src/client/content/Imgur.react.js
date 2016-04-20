@@ -140,15 +140,13 @@ export default class Imgur extends Component {
 
     return (
       <div className="imgur">
-        {image.preloaded
-          ? <FsImg
-              caption={caption}
-              onload={this.onload.bind(this)}
-              tallMode={images.size === 1}
-              url={this.qualityUrl(image)}
-            />
-          : <Loader />
-        }
+        <FsImg
+          caption={caption}
+          onload={this.onload.bind(this)}
+          tallMode={images.size === 1}
+          url={this.qualityUrl(image)}
+        />
+        {image.preloaded ? '' : <Loader />}
       </div>
     );
   }
