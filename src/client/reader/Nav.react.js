@@ -220,81 +220,83 @@ export default class Nav extends Component {
 
     return (
       <div className="reader-nav">
-        {this.renderContextTitle.bind(this)()}
-        <div className="padded">
-          <div className="bg">
-            {this.renderTitle.bind(this)(current)}
-            <div className="icon-title">
-              <Link to={`/r/${current.subreddit}`}>
-                <i className="fa fa-reddit" />
-                {current.subreddit}
-              </Link>
-              <div className="author">
-                <Link to={`/u/${current.author}`}>
-                  <i className="fa fa-user" />
-                  {current.author}
+        <div className="fixer">
+          {this.renderContextTitle.bind(this)()}
+          <div className="padded">
+            <div className="bg">
+              {this.renderTitle.bind(this)(current)}
+              <div className="icon-title">
+                <Link to={`/r/${current.subreddit}`}>
+                  <i className="fa fa-reddit" />
+                  {current.subreddit}
                 </Link>
-                {this.renderFollow.bind(this)(current)}
+                <div className="author">
+                  <Link to={`/u/${current.author}`}>
+                    <i className="fa fa-user" />
+                    {current.author}
+                  </Link>
+                  {this.renderFollow.bind(this)(current)}
+                </div>
+                {this.renderVote.bind(this)(current)}
+                {this.renderCommentLink.bind(this)(current)}
+                {this.renderOpenInTab.bind(this)(current)}
               </div>
-              {this.renderVote.bind(this)(current)}
-              {this.renderCommentLink.bind(this)(current)}
-              {this.renderOpenInTab.bind(this)(current)}
+              <div className="icon-title nav-horiz">
+                {renderLink('right', 1, next)}
+                {renderLink('left', -1, previous, true)}
+              </div>
+              <div className="icon-title">
+                <Link to="/"><i className="fa fa-home"/>Home</Link>
+                <a href="#" onClick={this.toggleFullScreen}>
+                  <i className="fa fa-expand" /><span>Fullscreen</span>
+                </a>
+              </div>
+              {this.renderSecondaryNav()}
             </div>
-            <div className="icon-title nav-horiz">
-              {renderLink('right', 1, next)}
-              {renderLink('left', -1, previous, true)}
-            </div>
-            <div className="icon-title">
-              <Link to="/"><i className="fa fa-home"/>Home</Link>
-              <a href="#" onClick={this.toggleFullScreen}>
-                <i className="fa fa-expand" /><span>Fullscreen</span>
-              </a>
-            </div>
-            {this.renderSecondaryNav()}
-          </div>
-          <div className="bottom-content">
-            <div className="legend">
-              <h4>Keyboard Navigation</h4>
-              <ul>
-                <li><h5>Reddit Posts</h5></li>
-                <li>
-                  <div className="key"><i className="fa fa-arrow-right" /></div>
-                  {' / '}
-                  <div className="key">D</div>
-                  <span className="title">Next</span>
-                </li>
-                <li>
-                  <div className="key"><i className="fa fa-arrow-left" /></div>
-                  {' / '}
-                  <div className="key">A</div>
-                  <span className="title">Previous</span>
-                </li>
-                <li>
-                  <div className="key">C</div>
-                  <span className="title">Comments</span>
-                </li>
-              </ul>
-              <ul>
-                <li><h5>Imgur Galleries</h5></li>
-                <li>
-                  <div className="key"><i className="fa fa-arrow-down" /></div>
-                  {' / '}
-                  <div className="key">S</div>
-                  <span className="title">Next</span>
-                </li>
-                <li>
-                  <div className="key"><i className="fa fa-arrow-up" /></div>
-                  {' / '}
-                  <div className="key">W</div>
-                  <span className="title">Previous</span>
-                </li>
-              </ul>
-            </div>
-            <div className="bugs">
-              <a href="https://github.com/jdart/fsReddit/issues/new">
-                <i className="fa fa-bug" />
-                {' '}Report a bug
-              </a>
+            <div className="bottom-content">
+              <div className="legend">
+                <h4>Keyboard Navigation</h4>
+                <ul>
+                  <li><h5>Reddit Posts</h5></li>
+                  <li>
+                    <div className="key"><i className="fa fa-arrow-right" /></div>
+                    {' / '}
+                    <div className="key">D</div>
+                    <span className="title">Next</span>
+                  </li>
+                  <li>
+                    <div className="key"><i className="fa fa-arrow-left" /></div>
+                    {' / '}
+                    <div className="key">A</div>
+                    <span className="title">Previous</span>
+                  </li>
+                  <li>
+                    <div className="key">C</div>
+                    <span className="title">Comments</span>
+                  </li>
+                </ul>
+                <ul>
+                  <li><h5>Imgur Galleries</h5></li>
+                  <li>
+                    <div className="key"><i className="fa fa-arrow-down" /></div>
+                    {' / '}
+                    <div className="key">S</div>
+                    <span className="title">Next</span>
+                  </li>
+                  <li>
+                    <div className="key"><i className="fa fa-arrow-up" /></div>
+                    {' / '}
+                    <div className="key">W</div>
+                    <span className="title">Previous</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="bugs">
+                <a href="https://github.com/jdart/fsReddit/issues/new">
+                  <i className="fa fa-bug" />
+                  {' '}Report a bug
+                </a>
+              </div>
             </div>
           </div>
         </div>
