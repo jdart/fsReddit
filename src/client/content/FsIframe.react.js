@@ -20,7 +20,7 @@ export default class FsIframe extends Component {
   }
 
   componentWillMount() {
-    this.reset();
+    this.reset(this.props);
     this.blurCheckInterval = setInterval(this.blurCheck.bind(this), 300);
   }
 
@@ -28,9 +28,9 @@ export default class FsIframe extends Component {
     clearInterval(this.blurCheckInterval);
   }
 
-  reset() {
+  reset(props) {
     this.scrollToTop();
-    this.mimeTypeActions(this.props);
+    this.mimeTypeActions(props);
     this.timers = {};
     this.blurred = false;
   }
@@ -45,16 +45,12 @@ export default class FsIframe extends Component {
     if (blur) {
       this.refs.iframe.blur();
       this.blurred = true;
-      console.log('blurrrrred')
     }
   }
 
   componentWillUpdate(nextProps) {
-    this.mimeTypeActions(nextProps);
-    if (this.props.url !== nextProps.url) {
-      this.reset();
-      setTimeout(this.blur.bind(this), 2000);
-    }
+    if (this.props.url !== nextProps.url)
+      this.reset(nextProps);
   }
 
   // See if this is really an image without the usual file extensions
