@@ -20,15 +20,41 @@ export default class FsIframe extends Component {
   }
 
   componentWillMount() {
+    this.reset();
+    this.blurCheckInterval = setInterval(this.blurCheck.bind(this), 300);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.blurCheckInterval);
+  }
+
+  reset() {
+    this.scrollToTop();
     this.mimeTypeActions(this.props);
     this.timers = {};
-    this.scrollToTop();
+    this.blurred = false;
+  }
+
+  blurCheck() {
+    if (this.blurred)
+      return;
+
+    const blur = this.refs.iframe
+      && this.refs.iframe === document.activeElement;
+
+    if (blur) {
+      this.refs.iframe.blur();
+      this.blurred = true;
+      console.log('blurrrrred')
+    }
   }
 
   componentWillUpdate(nextProps) {
     this.mimeTypeActions(nextProps);
-    if (this.props.url !== nextProps.url)
-      this.scrollToTop();
+    if (this.props.url !== nextProps.url) {
+      this.reset();
+      setTimeout(this.blur.bind(this), 2000);
+    }
   }
 
   // See if this is really an image without the usual file extensions
@@ -117,6 +143,7 @@ export default class FsIframe extends Component {
         </div>
         <iframe
           onLoad={this.loaded.bind(this)}
+          ref="iframe"
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
           src={this.props.url}
         />
