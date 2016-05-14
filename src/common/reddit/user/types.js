@@ -1,7 +1,8 @@
 
 import {Record, List, Map} from 'immutable';
+import {caseInsensitiveSort} from '../utils';
 
-const defaultSubs = List(['all', 'gadgets', 'sports', 'gaming', 'pics', 'worldnews', 'videos', 'AskReddit', 'aww', 'Music', 'funny', 'news', 'movies', 'blog', 'books', 'history', 'food', 'philosophy', 'television', 'Jokes', 'Art', 'DIY', 'space', 'Documentaries', 'Fitness', 'askscience', 'nottheonion', 'todayilearned', 'personalfinance', 'gifs', 'listentothis', 'IAmA', 'announcements', 'TwoXChromosomes', 'creepy', 'nosleep', 'GetMotivated', 'WritingPrompts', 'LifeProTips', 'EarthPorn', 'explainlikeimfive', 'Showerthoughts', 'Futurology', 'photoshopbattles', 'mildlyinteresting', 'dataisbeautiful', 'tifu', 'OldSchoolCool', 'UpliftingNews', 'InternetIsBeautiful', 'science']);
+const defaultSubs = List(['gadgets', 'sports', 'gaming', 'pics', 'worldnews', 'videos', 'AskReddit', 'aww', 'Music', 'funny', 'news', 'movies', 'blog', 'books', 'history', 'food', 'philosophy', 'television', 'Jokes', 'Art', 'DIY', 'space', 'Documentaries', 'Fitness', 'askscience', 'nottheonion', 'todayilearned', 'personalfinance', 'gifs', 'listentothis', 'IAmA', 'announcements', 'TwoXChromosomes', 'creepy', 'nosleep', 'GetMotivated', 'WritingPrompts', 'LifeProTips', 'EarthPorn', 'explainlikeimfive', 'Showerthoughts', 'Futurology', 'photoshopbattles', 'mildlyinteresting', 'dataisbeautiful', 'tifu', 'OldSchoolCool', 'UpliftingNews', 'InternetIsBeautiful', 'science']).sort(caseInsensitiveSort).unshift('all');
 
 export const OauthData = Record({
   state: null,

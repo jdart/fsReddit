@@ -6,6 +6,9 @@ import merge from 'lodash/merge';
 import {Entry, Comments} from './content/types';
 import {initialUnauthState} from './user/types';
 
+export const caseInsensitiveSort = (a, b) =>
+  a.toLowerCase().localeCompare(b.toLowerCase());
+
 export function asyncAction(type, promise, payload = {}) {
   return {
     type: Object.keys(promiseConsts(type)),

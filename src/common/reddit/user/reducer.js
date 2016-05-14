@@ -4,7 +4,7 @@ import {OauthData, InitialState, initialUnauthState} from './types';
 import api from '../api';
 import window from '../window';
 import getRandomString from '../../lib/getRandomString';
-import {invalidate, invalidateIf401} from '../utils';
+import {invalidate, invalidateIf401, caseInsensitiveSort} from '../utils';
 import C from './consts';
 import RCC from '../content/consts';
 
@@ -71,7 +71,7 @@ export default function redditUserReducer(state = initialState, action) {
         extras.push('friends');
       return state.updateIn(['subreddits', 'list'], list => new List([
         ...extras,
-        ...action.payload.data.children.map(sr => sr.data.display_name)
+        ...action.payload.data.children.map(sr => sr.data.display_name).sort(caseInsensitiveSort)
       ]))
       .setIn(['subreddits', 'fetching'], false);
     }
