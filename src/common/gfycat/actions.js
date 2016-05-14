@@ -6,7 +6,7 @@ import set from 'lodash/set';
 
 
 function fetcher(id) {
-  return isomorphicFetch('http://gfycat.com/cajax/get/' + id);
+  return isomorphicFetch('https://gfycat.com/cajax/get/' + id);
 }
 
 export function fetch(id) {
