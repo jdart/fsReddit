@@ -58,8 +58,13 @@ export default class Subreddits extends Component {
     );
   }
 
+  onChange(e) {
+    this.props.actions.redditUser.filter(e.target.value);
+  }
+
   render() {
     const {redditUser: {subreddits}} = this.props;
+    const onChange = this.onChange.bind(this);
     if (this.empty(this.props) || subreddits.fetching)
       return (<Loader />);
 
@@ -75,6 +80,7 @@ export default class Subreddits extends Component {
         <li className="extras">
           {this.renderLogin()}
           <CustomSubreddit {...this.props} />
+          <input type="text" onChange={onChange} ref="filter" />
         </li>
         <li key="frontpage">
           <Link to="/f/hot">
@@ -82,7 +88,7 @@ export default class Subreddits extends Component {
           </Link>
         </li>
         {this.renderUpvoted()}
-        {this.props.redditUser.subreddits.list.valueSeq().map((subreddit) => (
+        {this.props.redditUser.subreddits.filtered.valueSeq().map((subreddit) => (
           <li key={subreddit}>
             <Link to={`/r/${subreddit}`}>
               {subreddit}

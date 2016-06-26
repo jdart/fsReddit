@@ -24,6 +24,7 @@ export const Subreddits = Record({
   fetching: null,
   failed: null,
   list: List(),
+  filtered: List(),
 });
 
 export const InitialState = Record({

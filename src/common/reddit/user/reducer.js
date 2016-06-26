@@ -82,6 +82,18 @@ export default function redditUserReducer(state = initialState, action) {
         .setIn(['subreddits', 'failed'], true);
     }
 
+    case C.REDDIT_USER_SUBREDDIT_FILTER: {
+      const filter = payload.input;
+      console.log(filter, state.subreddits.toJS())
+      if (!filter)
+        return state.setIn(['subreddits', 'filtered'], state.subreddits.list);
+      return state.updateIn(['subreddits', 'filtered'], () =>
+        state.subreddits.list.filter(
+          subreddit => subreddit.toLowerCase().indexOf(filter.toLowerCase()) >= 0
+        )
+      );
+    }
+
     case C.REDDIT_USER_SESSION_EXPIRED: {
       return invalidate(state);
     }

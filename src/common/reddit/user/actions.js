@@ -3,6 +3,13 @@ import api from '../api';
 import C from './consts';
 import {asyncAction, asyncRedditAction} from '../utils';
 
+export function filter(input) {
+  return {
+    type: C.REDDIT_USER_SUBREDDIT_FILTER,
+    payload: {input}
+  };
+}
+
 export function friend(api, author) {
   return asyncRedditAction(
     api,
