@@ -1,7 +1,7 @@
 
 import {Record, List, Map} from 'immutable';
 
-const defaultSubs = List(["Art", "AskReddit", "DIY", "Documentaries", "EarthPorn", "Fitness", "Futurology", "GetMotivated", "IAmA", "InternetIsBeautiful", "Jokes", "LifeProTips", "Music", "OldSchoolCool", "Showerthoughts", "TwoXChromosomes", "UpliftingNews", "WritingPrompts", "announcements", "askscience", "aww", "blog", "books", "creepy", "dataisbeautiful", "explainlikeimfive", "food", "funny", "gadgets", "gaming", "gifs", "history", "listentothis", "mildlyinteresting", "movies", "news", "nosleep", "nottheonion", "personalfinance", "philosophy", "photoshopbattles", "pics", "science", "space", "sports", "television", "tifu", "todayilearned", "videos", "worldnews"]).unshift('all');
+const defaultSubs = List(['Art', 'AskReddit', 'DIY', 'Documentaries', 'EarthPorn', 'Fitness', 'Futurology', 'GetMotivated', 'IAmA', 'InternetIsBeautiful', 'Jokes', 'LifeProTips', 'Music', 'OldSchoolCool', 'Showerthoughts', 'TwoXChromosomes', 'UpliftingNews', 'WritingPrompts', 'announcements', 'askscience', 'aww', 'blog', 'books', 'creepy', 'dataisbeautiful', 'explainlikeimfive', 'food', 'funny', 'gadgets', 'gaming', 'gifs', 'history', 'listentothis', 'mildlyinteresting', 'movies', 'news', 'nosleep', 'nottheonion', 'personalfinance', 'philosophy', 'photoshopbattles', 'pics', 'science', 'space', 'sports', 'television', 'tifu', 'todayilearned', 'videos', 'worldnews']).unshift('all');
 
 export const OauthData = Record({
   state: null,

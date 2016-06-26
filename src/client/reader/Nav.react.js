@@ -65,29 +65,6 @@ export default class Nav extends Component {
     );
   }
 
-  toggleFullScreen() {
-    if (!document.fullscreenElement &&    // alternative standard method
-        !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {  // current working methods
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      } else if (document.documentElement.msRequestFullscreen) {
-        document.documentElement.msRequestFullscreen();
-      } else if (document.documentElement.mozRequestFullScreen) {
-        document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-      }
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-  }
-
   isRedditDotCom() {
     return hostMatch(
       'reddit.com',
@@ -212,6 +189,19 @@ export default class Nav extends Component {
     );
   }
 
+  renderFullscreen() {
+    const {fullscreen} = this.props.reader;
+    const icon = fullscreen ? 'fa fa-compress' : 'fa fa-expand';
+    const text = fullscreen ? 'Exit Fullscreen' : 'Go Fullscreen';
+    const action = this.props.actions.reader.fullscreen;
+
+    return (
+      <a href="#" onClick={action.bind(this, !fullscreen)}>
+        <i className={icon} /><span>{text}</span>
+      </a>
+    );
+  }
+
   render() {
     const current = this.props.entry;
     const next = this.entryByKey('next');
@@ -247,9 +237,7 @@ export default class Nav extends Component {
               </div>
               <div className="icon-title">
                 <Link to="/"><i className="fa fa-home"/>Home</Link>
-                <a href="#" onClick={this.toggleFullScreen}>
-                  <i className="fa fa-expand" /><span>Fullscreen</span>
-                </a>
+                {this.renderFullscreen()}
               </div>
               {this.renderSecondaryNav()}
             </div>
