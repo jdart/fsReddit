@@ -99,7 +99,7 @@ export default class Imgur extends Component {
     const id = this.imgId(url);
     this.onload();
     return (
-      <Video url={`//i.imgur.com/${id}.webm`} />
+      <Video url={`//i.imgur.com/${id}.mp4`} />
     );
   }
 
