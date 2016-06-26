@@ -2,6 +2,7 @@
 import C from './consts';
 import {Record} from 'immutable';
 import {now} from '../utils';
+import {isFullscreen} from './utils';
 
 const InitialState = Record({
   query: null,
@@ -9,6 +10,7 @@ const InitialState = Record({
   previous: null,
   current: null,
   next: null,
+  fullscreen: isFullscreen(),
 });
 
 const initialState = new InitialState;
@@ -21,6 +23,11 @@ export default function readerReducer(state = initialState, action) {
     case C.READER_QUERY: {
       const {id} = action.payload;
       return state.set('query', id);
+    }
+
+    case C.READER_FULLSCREEN: {
+      const {enabled} = action.payload;
+      return state.set('fullscreen', enabled);
     }
 
     case C.READER_NAV: {

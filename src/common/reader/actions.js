@@ -2,11 +2,20 @@
 import C from './consts';
 import {queryIndex} from '../reddit/content/actions';
 import {entryAtOffset} from '../reddit/utils';
+import {fullscreen as setFullscreen} from './utils';
 
 export function query(id) {
   return {
     type: C.READER_QUERY,
     payload: {id},
+  };
+}
+
+export function fullscreen(enabled) {
+  setFullscreen(enabled);
+  return {
+    type: C.READER_FULLSCREEN,
+    payload: {enabled}
   };
 }
 
