@@ -44,7 +44,7 @@ export function imagesArrayToKVP(data) {
       id: image.id,
       url: image.link,
       sqUrl: image.link.replace(/\.jpg$/, 'h.jpg'),
-      gifv: image.gifv,
+      gifv: image.mp4,
       title: image.title,
       description: image.description,
       width: image.width,
