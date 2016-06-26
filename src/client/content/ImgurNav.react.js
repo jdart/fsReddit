@@ -90,6 +90,10 @@ export default class ImgurNav extends Component {
     const {actions, imgur} = this.props;
     const icon = imgur.hq ? 'check-square-o' : 'square-o';
     const onClick = (e) => e.preventDefault() || actions.imgur.hq();
+    const {index, entries} = this.query;
+    const image = imgur.images.get(entries.get(index));
+    if (!image.hasMultipleQualities)
+      return (<div />);
     return (
       <div className="icon-title quality">
         <a href="#" onClick={onClick}>

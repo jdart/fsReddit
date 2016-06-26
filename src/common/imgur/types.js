@@ -18,5 +18,6 @@ export const Image = Record({
   width: null,
   height: null,
   description: null,
+  hasMultipleQualities: null,
 });
 

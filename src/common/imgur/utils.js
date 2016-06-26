@@ -49,6 +49,7 @@ export function imagesArrayToKVP(data) {
       description: image.description,
       width: image.width,
       height: image.height,
+      hasMultipleQualities: !image.mp4
     })),
     {}
   );
