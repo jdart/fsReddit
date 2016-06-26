@@ -50,7 +50,9 @@ export default class Nav extends Component {
 
   renderLink(icon, offset, entry, truncate) {
     let className = `direction-${icon}`;
-    const action = () => this.props.actions.reader.nav(offset);
+    const action = this.preventDefaultThen(
+      () => this.props.actions.reader.nav(offset)
+    );
     if (truncate)
       className += ' truncate';
     if (!entry)
@@ -91,15 +93,22 @@ export default class Nav extends Component {
       enqueue('Failed to vote, post might be too old.', 'error');
   }
 
+  preventDefaultThen(fn) {
+    return (e) => {
+      e.preventDefault();
+      fn();
+    };
+  }
+
   renderVote(entry) {
     if (!this.props.redditUser.authenticated)
       return;
     const {vote} = this.props.actions.redditUser;
-    const onClickVote = () => vote(
+    const onClickVote = this.preventDefaultThen(() => vote(
       this.props.api,
       entry,
       this.notifyFailedVote()
-    );
+    ));
     const icon = entry.likes ? 'arrow-circle-up' : 'arrow-circle-o-up';
     const title = entry.likes ? 'Unvote' : 'Upvote';
     return (
@@ -126,10 +135,13 @@ export default class Nav extends Component {
   }
 
   renderCommentLink(entry) {
+    const onClick = this.preventDefaultThen(
+      this.toggleCommentMode.bind(this)
+    );
     if (this.isRedditDotCom())
       return;
     return (
-      <a href="#" onClick={this.toggleCommentMode.bind(this)}>
+      <a href="#" onClick={onClick}>
         <i className="fa fa-commenting" />
         {this.commentMode() ? 'Content' : 'Comments'}
       </a>
@@ -151,9 +163,10 @@ export default class Nav extends Component {
     if (!this.props.redditUser.authenticated)
       return;
 
-    const friend = () => this.props.actions.redditUser.friend(
-      this.props.api,
-      entry.author
+    const friend = this.preventDefaultThen(
+      () => this.props.actions.redditUser.friend(
+        this.props.api,
+        entry.author)
     );
 
     return (
@@ -193,10 +206,11 @@ export default class Nav extends Component {
     const {fullscreen} = this.props.reader;
     const icon = fullscreen ? 'fa fa-compress' : 'fa fa-expand';
     const text = fullscreen ? 'Exit Fullscreen' : 'Go Fullscreen';
-    const action = this.props.actions.reader.fullscreen;
+    const action = this.preventDefaultThen(
+      this.props.actions.reader.fullscreen.bind(this, !fullscreen));
 
     return (
-      <a href="#" onClick={action.bind(this, !fullscreen)}>
+      <a href="#" onClick={action}>
         <i className={icon} /><span>{text}</span>
       </a>
     );
