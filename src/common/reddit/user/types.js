@@ -1,8 +1,7 @@
 
 import {Record, List, Map} from 'immutable';
-import {caseInsensitiveSort} from '../utils';
 
-const defaultSubs = List(['gadgets', 'sports', 'gaming', 'pics', 'worldnews', 'videos', 'AskReddit', 'aww', 'Music', 'funny', 'news', 'movies', 'blog', 'books', 'history', 'food', 'philosophy', 'television', 'Jokes', 'Art', 'DIY', 'space', 'Documentaries', 'Fitness', 'askscience', 'nottheonion', 'todayilearned', 'personalfinance', 'gifs', 'listentothis', 'IAmA', 'announcements', 'TwoXChromosomes', 'creepy', 'nosleep', 'GetMotivated', 'WritingPrompts', 'LifeProTips', 'EarthPorn', 'explainlikeimfive', 'Showerthoughts', 'Futurology', 'photoshopbattles', 'mildlyinteresting', 'dataisbeautiful', 'tifu', 'OldSchoolCool', 'UpliftingNews', 'InternetIsBeautiful', 'science']).sort(caseInsensitiveSort).unshift('all');
+const defaultSubs = List(["Art", "AskReddit", "DIY", "Documentaries", "EarthPorn", "Fitness", "Futurology", "GetMotivated", "IAmA", "InternetIsBeautiful", "Jokes", "LifeProTips", "Music", "OldSchoolCool", "Showerthoughts", "TwoXChromosomes", "UpliftingNews", "WritingPrompts", "announcements", "askscience", "aww", "blog", "books", "creepy", "dataisbeautiful", "explainlikeimfive", "food", "funny", "gadgets", "gaming", "gifs", "history", "listentothis", "mildlyinteresting", "movies", "news", "nosleep", "nottheonion", "personalfinance", "philosophy", "photoshopbattles", "pics", "science", "space", "sports", "television", "tifu", "todayilearned", "videos", "worldnews"]).unshift('all');
 
 export const OauthData = Record({
   state: null,
