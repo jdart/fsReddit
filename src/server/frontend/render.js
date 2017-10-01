@@ -8,8 +8,7 @@ import configureStore from '../../common/configureStore';
 import createRoutes from '../../client/createRoutes';
 import {HOT_RELOAD_PORT} from '../../../webpack/constants';
 import {Provider} from 'react-redux';
-import {RoutingContext, match} from 'react-router';
-import {createMemoryHistory} from 'history';
+import {RouterContext, match} from 'react-router';
 
 export default function render(req, res, next) {
   const initialState = {
@@ -23,9 +22,8 @@ export default function render(req, res, next) {
   // store.dispatch method.
 
   const routes = createRoutes(() => store.getState());
-  const location = createMemoryHistory().createLocation(req.url);
 
-  match({routes, location}, (error, redirectLocation, renderProps) => {
+  match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
 
     if (redirectLocation) {
       res.redirect(301, redirectLocation.pathname + redirectLocation.search);
@@ -89,7 +87,7 @@ function renderPage(store, renderProps, req) {
 function getAppHtml(store, renderProps) {
   return ReactDOMServer.renderToString(
     <Provider store={store}>
-      <RoutingContext {...renderProps} />
+      <RouterContext {...renderProps} />
     </Provider>
   );
 }

@@ -11,7 +11,10 @@ const compiler = webpack(webpackConfig);
 
 app.use(webpackDev(compiler, {
   noInfo: true,
-  publicPath: webpackConfig.output.publicPath
+  publicPath: webpackConfig.output.publicPath,
+	headers: {
+    'Access-Control-Allow-Origin': '*',
+  },
 }));
 
 app.use(webpackHot(compiler));

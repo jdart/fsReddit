@@ -37,7 +37,7 @@ export default function configureStore({engine, initialState}) {
   if (loggerEnabled) {
     const logger = createLogger({
       collapsed: true,
-      transformer: stateToJS
+      stateTransformer: stateToJS
     });
     // Logger must be the last middleware in chain.
     middleware.push(logger);

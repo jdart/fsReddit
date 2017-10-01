@@ -14,8 +14,6 @@ import Readability from './Readability.react';
 import {hostMatch} from '../utils';
 import ImgurNav from './ImgurNav.react';
 import Video from './Video.react';
-import Eshare from './Eshare.react';
-import {domain as eshareDomain} from './Eshare.react';
 import C from '../../common/reddit/content/consts';
 import {extIn} from '../../common/utils';
 import {domainDecoder} from '../utils';
@@ -55,9 +53,6 @@ const matchers = [{
 }, {
   host: 'vimeo.com',
   component: Vimeo,
-}, {
-  host: domainDecoder(eshareDomain),
-  component: Eshare,
 }, {
   host: 'gfycat.com',
   component: Gfycat,

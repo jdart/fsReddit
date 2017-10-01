@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Router from 'react-router';
+import {Router} from 'react-router';
 import configureStore from '../common/configureStore';
-import createBrowserHistory from 'history/lib/createBrowserHistory';
+import {browserHistory} from 'react-router'
 import createEngine from 'redux-storage/engines/localStorage';
 import createRoutes from './createRoutes';
 import {Provider} from 'react-redux';
@@ -26,7 +26,7 @@ function logPageView(nextState) {
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={createBrowserHistory()} onUpdate={logPageView}>
+    <Router history={browserHistory} onUpdate={logPageView}>
       {routes}
     </Router>
   </Provider>,

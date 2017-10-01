@@ -104,6 +104,7 @@ export default function makeConfig(isDevelopment) {
       );
       else plugins.push(
         new HtmlWebpackPlugin({
+          filename: 'index.html',
           template: './src/client/index.html',
           hash: true,
           title: 'FullScreenit',
