@@ -1,6 +1,7 @@
 
 import Component from 'react-pure-render/component';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import './Video.styl';
 
 export default class Video extends Component {

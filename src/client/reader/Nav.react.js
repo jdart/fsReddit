@@ -1,6 +1,7 @@
 
+import PropTypes from 'prop-types';
 import {Component} from 'react';
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {Link} from 'react-router';
 import {hostMatch} from '../utils';
 import {Keys} from 'react-keydown';

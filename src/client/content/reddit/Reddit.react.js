@@ -1,6 +1,7 @@
 
 import Component from 'react-pure-render/component';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Link} from 'react-router';
 import Comments from './Comments.react';
 import url from 'url';

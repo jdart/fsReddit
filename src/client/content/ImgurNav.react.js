@@ -1,6 +1,7 @@
 
+import PropTypes from 'prop-types';
 import {Component} from 'react';
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {Keys} from 'react-keydown';
 import './ImgurNav.styl';
 import {parse, imgurQuery} from '../../common/imgur/utils';

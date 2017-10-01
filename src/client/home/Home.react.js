@@ -1,7 +1,8 @@
 
 import Component from 'react-pure-render/component';
 import DocumentTitle from 'react-document-title';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Subreddits from '../subreddits/Subreddits.react';
 
 import './Home.styl';

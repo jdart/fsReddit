@@ -1,5 +1,6 @@
 import Component from 'react-pure-render/component';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 // RouterHandler is back since suggested solution via React.cloneElement sucks.
 // https://github.com/rackt/react-router/blob/master/UPGRADE_GUIDE.md#routehandler

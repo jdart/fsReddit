@@ -1,6 +1,7 @@
 
 import Component from 'react-pure-render/component';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import Content from '../content/Content.react';
 import Nav from './Nav.react';
 import './Reader.styl';

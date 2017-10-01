@@ -1,7 +1,8 @@
 import './App.styl';
 import Component from 'react-pure-render/component';
 import Flashes from '../ui/Flashes.react';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import RouterHandler from '../../common/components/RouterHandler.react';
 import mapDispatchToProps from '../../common/app/mapDispatchToProps';
 import mapStateToProps from '../../common/app/mapStateToProps';

@@ -1,6 +1,7 @@
 
 import Component from 'react-pure-render/component';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import FsImg from './FsImg.react';
 import Loader from '../ui/Loader.react';
 import without from 'lodash/without';
